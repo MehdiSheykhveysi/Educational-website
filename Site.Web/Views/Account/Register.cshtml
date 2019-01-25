@@ -1,0 +1,50 @@
+@model RegisterViewModel
+
+<main class="client-page">
+    <div class="container-content">
+
+        <header><h2> عضویت در سایت </h2></header>
+
+        <div class="form-layer">
+
+            <form asp-action="Register" method="post">
+                <div class="input-group">
+                     <input asp-for="ReturnUrl" type="hidden" />
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                    <input asp-for="Username" type="text" class="form-control" placeholder="ایمیل" aria-describedby="email-address" required >
+                     <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                 <div class="input-group">
+                    <span class="input-group-addon" id="Password"><i class="zmdi zmdi-lock"></i></span>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="شماره تلفن " aria-describedby="password" required >
+                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon" id="Password"><i class="zmdi zmdi-lock"></i></span>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="رمز عبور " aria-describedby="password" required >
+                     <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon" id="password"><i class="zmdi zmdi-lock"></i></span>
+                    <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="تکرار رمز عبور " aria-describedby="password">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="link">
+                    <a asp-action="Login" asp-comtroller="Account"> <i class="zmdi zmdi-account"></i> ورود به سایت </a>
+                </div>
+                <div asp-validation-summary="All" class="text-danger">
+
+                </div>        
+                <button class="btn btn-success"> عضویت در سایت </button>
+
+            </form>
+        </div>
+
+    </div>
+</main>
