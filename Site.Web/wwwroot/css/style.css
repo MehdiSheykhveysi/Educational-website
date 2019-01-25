@@ -92,7 +92,8 @@ a,i,input[type="submit"], form button{ -webkit-transition : all 0.2s linear 0s; 
 .landing-layer .search-form {
   width: 500px;
   margin: 0 auto;
-  padding-bottom: 30px
+  padding-bottom: 30px;
+  margin-top:400px;
 }
 .landing-layer .search-form form{
    width: 100%;
