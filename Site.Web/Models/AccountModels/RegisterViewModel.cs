@@ -24,6 +24,5 @@ namespace Site.Web.Models.AccountModels
         [Display(Name = "تکرار پسوورد")]
         [Required(ErrorMessage = "لطفا تکرار {0} را وارد کنید")]
         public string ConfirmPassword { get; set; }
-        public string ReturnUrl { get; set; } = "";
     }
 }

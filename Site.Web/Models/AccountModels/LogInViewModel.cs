@@ -11,7 +11,6 @@ namespace Site.Web.Models.AccountModels
         [Display(Name="پسوورد")]
         [Required(ErrorMessage = "لطفا پسوورد را وارد کنید")]
         public string PassWord { get; set; }
-        public string ReturnUrl { get; set; }
         [Display(Name="مرا به خاطر بسپار")]
         public bool RememberMe { get; set; }
     }

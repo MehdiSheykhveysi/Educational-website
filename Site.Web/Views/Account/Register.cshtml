@@ -11,13 +11,16 @@
                 <p>ثبت نام شما انجام شد ، ایمیلی حاوی لینک فعالسازی به ایمیمل "@Model.Username" ارسال شد .</p>
                 <p>جهت ادامه ثبت نام وارد ایمیل خود شوید و روی لینک کلیک کنید .</p>
             </div>
+            <script>
+                // Your delay in milliseconds
+                var delay = 3000;
+                window.setTimeout(function () { window.location = @ViewBag.returnUrl; }, delay);
+            </script>
         }
         <div class="form-layer">
 
             <form asp-action="Register" method="post">
-                <div class="input-group">
-                    <input asp-for="ReturnUrl" type="hidden" />
-                </div>
+
                 <div class="input-group">
                     <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
                     <input asp-for="Username" type="text" class="form-control" placeholder="ایمیل" aria-describedby="email-address" required>
@@ -45,10 +48,14 @@
                 <div class="link">
                     <a asp-action="Login" asp-comtroller="Account"> <i class="zmdi zmdi-account"></i> ورود به سایت </a>
                 </div>
-                <div asp-validation-summary="All" class="text-danger">
-
+                <div class="input-group">
+                    <div asp-validation-summary="All" class="text-danger">
+                    </div>
                 </div>
-                <button class="btn btn-success"> عضویت در سایت </button>
+                <div class="input-group">
+
+                    <input type="submit" asp-route-returnUrl=@ViewBag.returnUrl class="btn btn-success" value="عضویت در سایت" />
+                </div>
 
             </form>
         </div>

@@ -1,17 +1,20 @@
-﻿<h2>فعالسازی ایمیل</h2>
+﻿<h2>@ViewData["Title"]</h2>
 
 @if (ViewBag.IsSuccess)
 {
     <div class="alert alert-success">
-        <p>حساب کاربری شما با موفقیت فعال شد</p>
+        <p >@ViewData["ConfirmMessage"]</p>
         <p>
-            <a asp-action="LogIn" asp-controller="Account">ورود به سایت</a>
+            <a class="btn btn-info" asp-action="LogIn" asp-controller="Account">ورود به سایت</a>
         </p>
     </div>
 }
 else
 {
     <div class="alert alert-danger">
-        <p>حساب کاربری با مشخصات ارسال شده یافت نشد</p>
+        <p>@ViewData["ConfirmMessage"]</p>
+        <p>
+            <a class="btn btn-info" asp-action="LogIn" asp-controller="Account">ورود به سایت</a>
+        </p>
     </div>
 }

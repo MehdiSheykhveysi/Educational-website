@@ -25,17 +25,14 @@ namespace Web.Controllers
         }
         public IActionResult Register(string ReturnUrl = "/")
         {
-            RegisterViewModel model = new RegisterViewModel
-            {
-                ReturnUrl = ReturnUrl
-            };
-            return View(model);
+            ViewBag.returnUrl = ReturnUrl;
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model,string returnUrl)
         {
-            model.ReturnUrl = model.ReturnUrl ?? "/";
+            returnUrl = returnUrl ?? "/";
             if (ModelState.IsValid)
             {
                 CustomUser user = new CustomUser
@@ -53,6 +50,7 @@ namespace Web.Controllers
                     await _emailSender.SendEmailAsync(model.Username, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                     ViewBag.IsRegister = true;
+                    ViewBag.returnUrl = returnUrl;
                     return View(model);
                 }
                 else
@@ -63,17 +61,24 @@ namespace Web.Controllers
             }
             return View(model);
         }
+
         public async Task<IActionResult> ConfirmEmail(string userId, string Code)
         {
             if (userId == null || Code == null)
             {
-                return RedirectToPage("/Index");
+                ViewData["Title"] = "فعال سازی اکانت";
+                ViewData["ConfirmMessage"] = "مشخصات وارد شده صحیح نمیباشد";
+                ViewBag.IsSuccess = false;
+                return View("ConfirmEmail");
             }
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                ViewData["Title"] = "فعال سازی اکانت";
+                ViewData["ConfirmMessage"] = "مشخصات وارد شده صحیح نمیباشد";
+                ViewBag.IsSuccess = false;
+                return View("ConfirmEmail");
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, Code);
@@ -82,30 +87,44 @@ namespace Web.Controllers
                 return NotFound($"Error confirming email for user with ID '{userId}':");
             }
             ViewBag.IsSuccess = true;
+            ViewData["Title"] = "فعال سازی اکانت";
+            ViewData["ConfirmMessage"] = "شما با موفقیت اکانت خود را فعال کردید";
+            ViewBag.IsSuccess = true;
             return View();
         }
+
         public IActionResult LogIn(string ReturnUrl = "/")
         {
-            LogInViewModel model = new LogInViewModel
-            {
-                ReturnUrl = ReturnUrl
-            };
-            return View(model);
+            ViewBag.returnUrl = ReturnUrl;
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogIn(LogInViewModel model)
+        public async Task<IActionResult> LogIn(LogInViewModel model, string returnUrl = "/")
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
+                    //if (user.LockoutEnabled)
+                    //{
+                    //    ViewData["Title"] = "فعال سازی اکانت";
+                    //    ViewData["ConfirmMessage"] = "متاسفانه حساب شما قفل شده است";
+                    //    return View("ConfirmEmail");
+                    //}
+                    if (!user.EmailConfirmed)
+                    {
+                        ViewData["Title"] = "فعال سازی اکانت";
+                        ViewData["ConfirmMessage"] = "متاسفانه حساب شما فعال نمیباشد";
+                        ViewBag.IsSuccess = false;
+                        return View("ConfirmEmail");
+                    }
                     await _signInManager.SignOutAsync();
                     var SignInResult = await _signInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: false);
                     if (SignInResult.Succeeded)
                     {
-                        return Redirect(model.ReturnUrl);
+                        return Redirect(returnUrl);
                     }
                     else
                     {
@@ -113,7 +132,15 @@ namespace Web.Controllers
                     }
                 }
             }
+            ViewBag.returnUrl = "/";
             return View(model);
+        }
+        public async Task<IActionResult> LogOut(string returnUrl = "/")
+        {
+            returnUrl = returnUrl ?? "/";
+            await _signInManager.SignOutAsync();
+            return Redirect(returnUrl);
+
         }
     }
 }

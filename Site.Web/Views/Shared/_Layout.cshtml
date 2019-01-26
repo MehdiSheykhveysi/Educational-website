@@ -8,7 +8,7 @@
     <script src="~/js/jquery.min.js"></script>
 </head>
 <body>
-    <script src="/js/modernizr-custom.js"></script>
+    <script src="~/js/modernizr-custom.js"></script>
 
     <div class="landing-layer">
         <div class="container">
@@ -30,8 +30,16 @@
                             </div>
                             <div class="signin">
                                 <i class="zmdi zmdi-account"></i>
-                                <a asp-action="LogIn" asp-area="" asp-controller="Account"> ورود </a> /
-                                <a asp-action="Register" asp-area="" asp-controller="Account"> عضویت </a>
+
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a asp-action="LogIn" asp-area="" asp-controller="Account"> @User.Identity.Name </a> //
+                                    <a asp-action="LogOut" asp-area="" asp-controller="Account" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"> LogOut </a>
+                                }else
+                                {
+                                <a asp-action="LogIn" asp-area="" asp-controller="Account" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"> ورود </a> //
+                                <a asp-action="Register" asp-area="" asp-controller="Account" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"> عضویت </a>
+                                }
                             </div>
                         </div>
                     </div>
