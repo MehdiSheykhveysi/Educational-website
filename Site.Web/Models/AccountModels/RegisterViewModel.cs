@@ -20,7 +20,7 @@ namespace Site.Web.Models.AccountModels
         public string Password { get; set; }
 
         [UIHint("Password")]
-        [Compare(nameof(Password))]
+        [Compare(nameof(Password),ErrorMessage ="پسوورد وتکرار آن باهم مطابقت ندارد")]
         [Display(Name = "تکرار پسوورد")]
         [Required(ErrorMessage = "لطفا تکرار {0} را وارد کنید")]
         public string ConfirmPassword { get; set; }

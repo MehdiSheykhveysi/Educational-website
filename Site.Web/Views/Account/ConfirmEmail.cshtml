@@ -1,0 +1,17 @@
+﻿<h2>فعالسازی ایمیل</h2>
+
+@if (ViewBag.IsSuccess)
+{
+    <div class="alert alert-success">
+        <p>حساب کاربری شما با موفقیت فعال شد</p>
+        <p>
+            <a asp-action="LogIn" asp-controller="Account">ورود به سایت</a>
+        </p>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        <p>حساب کاربری با مشخصات ارسال شده یافت نشد</p>
+    </div>
+}

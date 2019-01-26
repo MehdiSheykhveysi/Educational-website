@@ -4,29 +4,36 @@
     <div class="container-content">
 
         <header><h2> عضویت در سایت </h2></header>
-
+        @if (ViewBag.IsRegister != null)
+        {
+            <div class="alert alert-success">
+                <h2>@Model.Username عزیز !</h2>
+                <p>ثبت نام شما انجام شد ، ایمیلی حاوی لینک فعالسازی به ایمیمل "@Model.Username" ارسال شد .</p>
+                <p>جهت ادامه ثبت نام وارد ایمیل خود شوید و روی لینک کلیک کنید .</p>
+            </div>
+        }
         <div class="form-layer">
 
             <form asp-action="Register" method="post">
                 <div class="input-group">
-                     <input asp-for="ReturnUrl" type="hidden" />
+                    <input asp-for="ReturnUrl" type="hidden" />
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
-                    <input asp-for="Username" type="text" class="form-control" placeholder="ایمیل" aria-describedby="email-address" required >
-                     <span asp-validation-for="Username" class="text-danger"></span>
-                </div>
-
-                 <div class="input-group">
-                    <span class="input-group-addon" id="Password"><i class="zmdi zmdi-lock"></i></span>
-                    <input asp-for="PhoneNumber" class="form-control" placeholder="شماره تلفن " aria-describedby="password" required >
-                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <input asp-for="Username" type="text" class="form-control" placeholder="ایمیل" aria-describedby="email-address" required>
+                    <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
 
                 <div class="input-group">
                     <span class="input-group-addon" id="Password"><i class="zmdi zmdi-lock"></i></span>
-                    <input asp-for="Password" type="password" class="form-control" placeholder="رمز عبور " aria-describedby="password" required >
-                     <span asp-validation-for="Password" class="text-danger"></span>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="شماره تلفن " aria-describedby="password" required>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon" id="Password"><i class="zmdi zmdi-lock"></i></span>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="رمز عبور " aria-describedby="password" required>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
                 <div class="input-group">
@@ -40,7 +47,7 @@
                 </div>
                 <div asp-validation-summary="All" class="text-danger">
 
-                </div>        
+                </div>
                 <button class="btn btn-success"> عضویت در سایت </button>
 
             </form>
