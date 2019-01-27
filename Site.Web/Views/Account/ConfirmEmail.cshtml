@@ -3,18 +3,15 @@
 @if (ViewBag.IsSuccess)
 {
     <div class="alert alert-success">
-        <p >@ViewData["ConfirmMessage"]</p>
-        <p>
-            <a class="btn btn-info" asp-action="LogIn" asp-controller="Account">ورود به سایت</a>
-        </p>
+        <p>@ViewData["ConfirmMessage"]</p>
     </div>
+    <p>
+        <a class="btn btn-default" asp-action="LogIn" asp-controller="Account">ورود به سایت</a>
+    </p>
 }
 else
 {
     <div class="alert alert-danger">
         <p>@ViewData["ConfirmMessage"]</p>
-        <p>
-            <a class="btn btn-info" asp-action="LogIn" asp-controller="Account">ورود به سایت</a>
-        </p>
     </div>
 }

@@ -19,18 +19,16 @@ namespace Web.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+
         public IActionResult Register(string ReturnUrl = "/")
         {
             ViewBag.returnUrl = ReturnUrl;
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model,string returnUrl)
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl)
         {
             returnUrl = returnUrl ?? "/";
             if (ModelState.IsValid)
@@ -98,6 +96,7 @@ namespace Web.Controllers
             ViewBag.returnUrl = ReturnUrl;
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogIn(LogInViewModel model, string returnUrl = "/")
@@ -135,12 +134,93 @@ namespace Web.Controllers
             ViewBag.returnUrl = "/";
             return View(model);
         }
+
         public async Task<IActionResult> LogOut(string returnUrl = "/")
         {
             returnUrl = returnUrl ?? "/";
             await _signInManager.SignOutAsync();
             return Redirect(returnUrl);
 
+        }
+
+        public IActionResult CheckEmail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckEmail(CheckEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                CustomUser user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    ViewData["ErrorMessage"] = "متاسفانه اربری با چنین ایمیلی وجود ندارد";
+                    ViewBag.Issuccess = false;
+                    return View("ResetPassword");
+                }
+                if (!user.EmailConfirmed)
+                {
+                    ViewData["Title"] = "فعال سازی اکانت";
+                    ViewData["ConfirmMessage"] = "متاسفانه حساب شما فعال نمیباشد";
+                    ViewBag.IsSuccess = false;
+                    return View("ConfirmEmail");
+                }
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var resetLink = Url.Action("ResetPassword",
+                                "Account", new {UserId=user.Id, Token = token },
+                                 protocol: Request.Scheme);
+                await _emailSender.SendEmailAsync(user.Email, "Change Password",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(resetLink)}'>clicking here</a>.");
+                ViewData["Title"] = "تغییر پسوورد";
+                ViewData["ConfirmMessage"] = "لینک تغیر پسوورد به ایمیل شما فرستاده شد";
+                ViewBag.IsSuccess = true;
+                return View("ConfirmEmail");
+            }
+            return View(model);
+        }
+
+        public IActionResult ResetPassword(string UserId,string Token)
+        {
+            ResetPasswordViewModel model = new ResetPasswordViewModel
+            {
+                UserId = UserId,
+                Token = Token
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (model.UserId == null || model.Token == null)
+            {
+                ViewData["Title"] = "تغییر پسوورد";
+                ViewData["ConfirmMessage"] = "مشخصات وارد شده صحیح نمیباشد";
+                ViewBag.IsSuccess = false;
+                return View("ConfirmEmail");
+            }
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                ViewData["Title"] = "تغییر پسوورد";
+                ViewData["ConfirmMessage"] = "مشخصات وارد شده صحیح نمیباشد";
+                ViewBag.IsSuccess = false;
+                return View("ConfirmEmail");
+            }
+            var result =await _userManager.ResetPasswordAsync(user, model.Token,model.NewPassword);
+            if (result.Succeeded)
+            {
+                ViewBag.IsSuccess = true;
+                ViewData["Title"] = "تغییر پسوورد";
+                ViewData["ConfirmMessage"] = "شما با موفقیت پسوورد خورد را عوض کردید";
+                return View("ConfirmEmail");
+            }
+            return View(model);
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿@model CheckEmailViewModel
+
+<main class="client-page">
+    <div class="container-content">
+        @if (ViewBag.Issuccess != null)
+        {
+            @if (ViewBag.Issuccess)
+            {
+                <div class="alert alert-success">
+                    <p class="help-block">کاربر گرامی ما ایمیلی را به @ViewData["EmailAddress"] فرستادیم جهت تغییر پسوورد ایمیل خود را چک کنید</p>
+                </div>
+            }
+            else
+            {
+                <div class="alert text-danger">
+                    <p class="help-block">@ViewData["ErrorMessage"]</p>
+                </div>
+            }
+        }
+
+        <header><h2> ورود به سایت </h2></header>
+
+
+        <div class="form-layer">
+
+            <form asp-action="CheckEmail" method="post">
+                <div class="input-group">
+                    <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="ایمیل" required>
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <div class="input-group">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+                <div class="link">
+                    <a asp-action="Register" asp-controller="Account" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"> <i class="zmdi zmdi-account"></i> عضویت در سایت </a>
+                </div>
+                <div class="input-group">
+                    <input type="submit" class="btn btn-success" value="ادامه" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</main>

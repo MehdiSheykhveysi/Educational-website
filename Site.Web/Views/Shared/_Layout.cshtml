@@ -33,12 +33,13 @@
 
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <a asp-action="LogIn" asp-area="" asp-controller="Account"> @User.Identity.Name </a> //
-                                    <a asp-action="LogOut" asp-area="" asp-controller="Account" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"> LogOut </a>
-                                }else
+                                    <a asp-action="LogIn" asp-area="" asp-controller="Account"> @User.Identity.Name </a>
+                                    <a asp-action="LogOut" asp-area="" asp-controller="Account">/ LogOut </a>
+                                }
+                                else
                                 {
-                                <a asp-action="LogIn" asp-area="" asp-controller="Account" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"> ورود </a> //
-                                <a asp-action="Register" asp-area="" asp-controller="Account" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"> عضویت </a>
+                                    <a asp-action="LogIn" asp-area="" asp-controller="Account"> ورود /</a>
+                                    <a asp-action="Register" asp-area="" asp-controller="Account"> عضویت </a>
                                 }
                             </div>
                         </div>
