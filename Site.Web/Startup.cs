@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Site.Core.DataBase.Context;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures;
+using Site.Web.Infrastructures;
 
 namespace Site.Web
 {
@@ -30,6 +31,7 @@ namespace Site.Web
                 Options.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<LearningSiteDbContext>().AddDefaultTokenProviders();
             services.AddDbContext<LearningSiteDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<GetUser, GetUser>();
             services.AddMvc();
             services.AddTransient<IEmailSender, EmailSender>();
         }
@@ -44,7 +46,17 @@ namespace Site.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+                routes.MapRoute(
+                 name: "default",
+                 template: "{controller=Home}/{action=Index}/{id?}"
+               );
+            });
 
         }
     }

@@ -5,7 +5,8 @@ namespace Site.Core.Domain.Entities
 {
     public class CustomUser:IdentityUser
     {
-        public string PhoneNunber { get; set; }
         public string Avatar { get; set; }
+        public DateTime RegisterDate { get; set; }
+        public decimal Wallet { get; set; }
     }
 }

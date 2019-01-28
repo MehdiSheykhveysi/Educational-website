@@ -40,7 +40,7 @@
                     <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
                 <div class="link">
-                    <a href="/ForgotPassword"> <i class="zmdi zmdi-lock"></i> رمز عبور خود را فراموش کرده ام !</a>
+                    <a asp-action="CheckEmail" asp-controller="Account"> <i class="zmdi zmdi-lock"></i> رمز عبور خود را فراموش کرده ام !</a>
                     <a asp-action="Register" asp-controller="Account" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"> <i class="zmdi zmdi-account"></i> عضویت در سایت </a>
                 </div>
                 <div class="input-group">

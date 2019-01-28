@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Site.Core.Domain.Entities;
 using Site.Web.Models.AccountModels;
+using System;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -38,7 +39,9 @@ namespace Web.Controllers
                     UserName = model.Username,
                     Email = model.Username,
                     PhoneNumber = model.PhoneNumber,
-                    Avatar = "index.png"
+                    Avatar = "index.png",
+                    RegisterDate = DateTime.Now,
+                    Wallet = 0
                 };
                 var Result = await _userManager.CreateAsync(user, model.Password);
                 if (Result.Succeeded)
@@ -171,7 +174,7 @@ namespace Web.Controllers
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                 var resetLink = Url.Action("ResetPassword",
-                                "Account", new {UserId=user.Id, Token = token },
+                                "Account", new { UserId = user.Id, Token = token },
                                  protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(user.Email, "Change Password",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(resetLink)}'>clicking here</a>.");
@@ -183,7 +186,7 @@ namespace Web.Controllers
             return View(model);
         }
 
-        public IActionResult ResetPassword(string UserId,string Token)
+        public IActionResult ResetPassword(string UserId, string Token)
         {
             ResetPasswordViewModel model = new ResetPasswordViewModel
             {
@@ -212,7 +215,7 @@ namespace Web.Controllers
                 ViewBag.IsSuccess = false;
                 return View("ConfirmEmail");
             }
-            var result =await _userManager.ResetPasswordAsync(user, model.Token,model.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
             if (result.Succeeded)
             {
                 ViewBag.IsSuccess = true;

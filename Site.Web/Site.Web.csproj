@@ -24,11 +24,4 @@
     <ProjectReference Include="..\Site.Core\Site.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\wew\Controllers\" />
-    <Folder Include="Areas\wew\Data\" />
-    <Folder Include="Areas\wew\Models\" />
-    <Folder Include="Areas\wew\Views\" />
-  </ItemGroup>
-
 </Project>
