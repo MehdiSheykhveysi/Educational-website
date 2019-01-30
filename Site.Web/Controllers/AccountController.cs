@@ -186,6 +186,7 @@ namespace Web.Controllers
             return View(model);
         }
 
+        
         public IActionResult ResetPassword(string UserId, string Token)
         {
             ResetPasswordViewModel model = new ResetPasswordViewModel

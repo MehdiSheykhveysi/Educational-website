@@ -33,8 +33,8 @@
 
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <a asp-action="LogIn" asp-area="" asp-controller="Account"> @User.Identity.Name </a>
-                                    <a asp-action="LogOut" asp-area="" asp-controller="Account">/ LogOut </a>
+                                    <a asp-action="Index" asp-area="User" asp-controller="Home">ورود به پنل کاربری</a>
+                                    <a asp-action="LogOut" asp-area="" asp-controller="Account">/ خروج </a>
                                 }
                                 else
                                 {

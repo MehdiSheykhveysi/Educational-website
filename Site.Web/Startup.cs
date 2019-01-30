@@ -9,6 +9,8 @@ using Site.Core.DataBase.Context;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures;
 using Site.Web.Infrastructures;
+using Site.Web.Infrastructures.ImplementationInterfaces;
+using Site.Web.Infrastructures.Interfaces;
 
 namespace Site.Web
 {
@@ -34,6 +36,8 @@ namespace Site.Web
             services.AddTransient<GetUser, GetUser>();
             services.AddMvc();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IImageHandler, ImageHandler>();
+            services.AddTransient<IImageWriter, ImageWriter>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

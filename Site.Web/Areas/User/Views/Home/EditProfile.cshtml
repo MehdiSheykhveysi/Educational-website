@@ -1,0 +1,50 @@
+﻿@model EditUserProfileViewModel
+
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                @await Component.InvokeAsync("ProfileView")
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <section class="user-account-content">
+                        <header><h1> داشبورد </h1></header>
+                        <div class="inner"s>
+                            <div class="account-information">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="form-group">
+                                                <label asp-for="UserName" class="control-label"></label>
+                                                <input asp-for="UserName" type="text" class="form-control" />
+                                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Email" class="control-label"></label>
+                                                <input asp-for="Email" type="email" class="form-control" />
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                                <input asp-for="PhoneNumber" class="form-control" />
+                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="FormFile" class="control-label"></label>
+                                                <input asp-for="FormFile" type="file" />
+                                                <span asp-validation-for="FormFile" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-success" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
