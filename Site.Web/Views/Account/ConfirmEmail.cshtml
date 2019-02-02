@@ -14,4 +14,10 @@ else
     <div class="alert alert-danger">
         <p>@ViewData["ConfirmMessage"]</p>
     </div>
+    <p>
+        @if (ViewBag.DoActive != null)
+        {
+        <a class="btn btn-info" asp-action="ActiveAccount" asp-controller="Account">فعال سازی اکانت</a>
+        }
+    </p>
 }

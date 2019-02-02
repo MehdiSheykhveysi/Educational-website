@@ -16,12 +16,12 @@ namespace Site.Web.Infrastructures.ImplementationInterfaces
         {
             _hostingEnvironment = hostingEnvironment;
         }
-        public async Task<string> UploadImage(IFormFile file, string PathToUploadFile)
+        public async Task<string> UploadImage(IFormFile file, string PathToUploadFile,string OldProfileImagePath)
         {
             if (CheckIfImageFile(file))
             {
                 FileUploadHelper objFile = new FileUploadHelper();
-                string strFilePath = await objFile.SaveFileAsync(file, PathToUploadFile);
+                string strFilePath = await objFile.SaveFileAsync(file, PathToUploadFile,OldProfileImagePath);
                 strFilePath = strFilePath
                     .Replace(_hostingEnvironment.WebRootPath + "\\images\\UserProfile\\", string.Empty)
                     .Replace("\\", "/");//Relative Path can be stored in database or do logically what is needed.

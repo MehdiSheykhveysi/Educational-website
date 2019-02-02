@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Site.Web.Infrastructures.CustomValidationAttribute;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Site.Web.Areas.User.Models.HomeModels
 {
@@ -20,8 +18,5 @@ namespace Site.Web.Areas.User.Models.HomeModels
         [StringLength(11, ErrorMessage = "طول {0} معتبر نیس")]
         public string PhoneNumber { get; set; }
 
-        [Display(Name ="آواتار")]
-        [FileVerifyExtensionsAttribute(fileExtensions: "jpg,jpeg,png,gif",ErrorMessage ="لطفا یک فایل با فرمت صحیح انتخاب کنید")]
-        public IFormFile FormFile { get; set; }
     }
 }

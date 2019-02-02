@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Site.Core.Domain.Entities;
+using Site.Core.Infrastructures.Interfaces;
 using Site.Web.Models.AccountModels;
 using System;
 using System.Text.Encodings.Web;
@@ -13,12 +13,12 @@ namespace Web.Controllers
     {
         private readonly UserManager<CustomUser> _userManager;
         private readonly SignInManager<CustomUser> _signInManager;
-        public IEmailSender _emailSender { get; set; }
-        public AccountController(UserManager<CustomUser> userManager, SignInManager<CustomUser> signInManager, IEmailSender emailSender)
+        public IEmailHandler _emailHandler { get; set; }
+        public AccountController(UserManager<CustomUser> userManager, SignInManager<CustomUser> signInManager, IEmailHandler emailHandler)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
+            _emailHandler = emailHandler;
         }
 
         public IActionResult Register(string ReturnUrl = "/")
@@ -48,7 +48,7 @@ namespace Web.Controllers
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, Code = code }, protocol: Request.Scheme);
-                    await _emailSender.SendEmailAsync(model.Username, "Confirm your email",
+                    await _emailHandler.SendEmailAsync(model.Username, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                     ViewBag.IsRegister = true;
                     ViewBag.returnUrl = returnUrl;
@@ -120,6 +120,7 @@ namespace Web.Controllers
                         ViewData["Title"] = "فعال سازی اکانت";
                         ViewData["ConfirmMessage"] = "متاسفانه حساب شما فعال نمیباشد";
                         ViewBag.IsSuccess = false;
+                        ViewBag.DoActive = true;
                         return View("ConfirmEmail");
                     }
                     await _signInManager.SignOutAsync();
@@ -130,9 +131,17 @@ namespace Web.Controllers
                     }
                     else
                     {
-                        ModelState.TryAddModelError("", "پسوورد یا ایمیلتان اشتباه است");
+                        ModelState.AddModelError("", "پسوورد یا ایمیلتان اشتباه است");
                     }
                 }
+                else
+                {
+                    ModelState.AddModelError("", "پسوورد یا ایمیلتان اشتباه است");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "اطلاعات وارد شده صحیح است");
             }
             ViewBag.returnUrl = "/";
             return View(model);
@@ -160,7 +169,7 @@ namespace Web.Controllers
                 CustomUser user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null)
                 {
-                    ViewData["ErrorMessage"] = "متاسفانه اربری با چنین ایمیلی وجود ندارد";
+                    ViewData["ErrorMessage"] = "متاسفانه کاربری با چنین ایمیلی وجود ندارد";
                     ViewBag.Issuccess = false;
                     return View("ResetPassword");
                 }
@@ -169,14 +178,15 @@ namespace Web.Controllers
                     ViewData["Title"] = "فعال سازی اکانت";
                     ViewData["ConfirmMessage"] = "متاسفانه حساب شما فعال نمیباشد";
                     ViewBag.IsSuccess = false;
+                    ViewBag.DoActive = true;
                     return View("ConfirmEmail");
                 }
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 var resetLink = Url.Action("ResetPassword",
-                                "Account", new { UserId = user.Id, Token = token },
+                                "Account", new { userId = user.Id, Code = token },
                                  protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(user.Email, "Change Password",
+                await _emailHandler.SendEmailAsync(user.Email, "Change Password",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(resetLink)}'>clicking here</a>.");
                 ViewData["Title"] = "تغییر پسوورد";
                 ViewData["ConfirmMessage"] = "لینک تغیر پسوورد به ایمیل شما فرستاده شد";
@@ -186,7 +196,7 @@ namespace Web.Controllers
             return View(model);
         }
 
-        
+
         public IActionResult ResetPassword(string UserId, string Token)
         {
             ResetPasswordViewModel model = new ResetPasswordViewModel
@@ -226,5 +236,40 @@ namespace Web.Controllers
             }
             return View(model);
         }
+
+        public IActionResult ActiveAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActiveAccount(CheckEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                CustomUser user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    ViewData["ErrorMessage"] = "متاسفانه کاربری با چنین ایمیلی وجود ندارد";
+                    ViewBag.Issuccess = false;
+                    return View();
+                }
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var resetLink = Url.Action("ConfirmEmail",
+                                "Account", new { userId = user.Id, Code = token },
+                                 protocol: Request.Scheme);
+                await _emailHandler.SendEmailAsync(model.Email, "Change Password",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(resetLink)}'>clicking here</a>.");
+                ViewBag.IsSuccess = true;
+                @ViewData["EmailAddress"] = model.Email;
+                ViewBag.IsSuccess = true;
+                return View();
+            }
+            ModelState.AddModelError("Email", "فرمت ایمیل وارد شده صحیح نیست ");
+            return View(model);
+        }
+
     }
 }

@@ -4,7 +4,7 @@
     <aside>
         <div class="avatar-layer">
             <div class="img-layer">
-                <a href="" class="change-image"><i class="zmdi zmdi-edit"></i></a>
+                <a class="change-image" id="ClickToEdit"><i class="zmdi zmdi-edit"></i></a>
                 <img src="@Url.Content("~/Images/UserProfile/"+ Model.UserProfileUrl)" />
             </div>
             <div class="detail">
@@ -26,3 +26,26 @@
         </section>
     </aside>
 </div>
+<script>
+
+    jQuery(document).ready(function () {
+
+        $("#ClickToEdit").click(function (e) {
+            e.preventDefault();
+            var innerHtml = $("#Changable").html();
+            $.ajax({
+                url: "/User/Home/EditProfileImage",
+                type: "GET",
+                dataType: "html",
+                success: function (data) {
+                    $("#Changable").empty();
+                    $("#Changable").html(data);
+                },
+                error: function (data) {
+                    $("#Changable").html(innerHtml);
+                }
+            })
+        });
+
+    });
+</script>

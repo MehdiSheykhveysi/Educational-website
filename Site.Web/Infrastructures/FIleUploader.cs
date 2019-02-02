@@ -6,7 +6,7 @@ namespace Site.Web.Infrastructures
 {
     public class FileUploadHelper
     {
-        public async Task<string> SaveFileAsync(IFormFile file, string pathToUplaod)
+        public async Task<string> SaveFileAsync(IFormFile file, string pathToUplaod, string OldProfileImagePath)
         {
             string imageUrl = string.Empty;
             if (!Directory.Exists(pathToUplaod))
@@ -15,19 +15,29 @@ namespace Site.Web.Infrastructures
             string pathwithfileName = pathToUplaod + "\\" + SetFileName(file);
             using (FileStream fileStream = new FileStream(pathwithfileName, FileMode.Create))
             {
-                await file.CopyToAsync(fileStream);
+                string FileName = GetFileNameFromPath(OldProfileImagePath);
+                DeleteOldFile(OldProfileImagePath, FileName);
+                if (FileName != "index.png")
+                {
+                    await file.CopyToAsync(fileStream);
+                }
             }
             imageUrl = pathwithfileName;
             return imageUrl;
         }
 
-        public string SaveFile(IFormFile file, string pathToUplaod)
+        public string SaveFile(IFormFile file, string pathToUplaod, string OldProfileImagePath)
         {
             string imageUrl = string.Empty;
             string pathwithfileName = pathToUplaod + "\\" + SetFileName(file);
             using (FileStream fileStream = new FileStream(pathwithfileName, FileMode.Create))
             {
-                file.CopyToAsync(fileStream);
+                string FileName = GetFileNameFromPath(OldProfileImagePath);
+                DeleteOldFile(OldProfileImagePath, FileName);
+                if (FileName != "index.png")
+                {
+                    file.CopyToAsync(fileStream);
+                }
             }
             imageUrl = pathwithfileName;
             return imageUrl;
@@ -39,7 +49,7 @@ namespace Site.Web.Infrastructures
             string strUniqName = GetUniqueName("img");
             if (fileExtension == string.Empty)
             {
-                fileName = "index.jpg";
+                fileName = "index.png";
             }
             else
             {
@@ -65,6 +75,17 @@ namespace Site.Web.Infrastructures
                 : string.Empty;
             return fileExtension;
         }
+        public void DeleteOldFile(string OldProfileImageFile, string FileName)
+        {
 
+            if (System.IO.File.Exists(OldProfileImageFile) && FileName != "index.png")
+            {
+                System.IO.File.Delete(OldProfileImageFile);
+            }
+        }
+        public string GetFileNameFromPath(string Path)
+        {
+            return Path.Substring(Path.LastIndexOf('\\') + 1);
+        }
     }
 }

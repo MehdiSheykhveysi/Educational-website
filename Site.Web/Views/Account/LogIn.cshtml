@@ -31,13 +31,12 @@
                     <input asp-for="PassWord" type="password" class="form-control" placeholder="رمز عبور " required>
                 </div>
                 <span asp-validation-for="PassWord" class="text-danger"></span>
-
+                <div class="input-group">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
                 <div class="remember-me">
                     <label>  مرا بخاطر بسپار </label>
                     <input asp-for="RememberMe" type="checkbox">
-                </div>
-                <div class="input-group">
-                    <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
                 <div class="link">
                     <a asp-action="CheckEmail" asp-controller="Account"> <i class="zmdi zmdi-lock"></i> رمز عبور خود را فراموش کرده ام !</a>

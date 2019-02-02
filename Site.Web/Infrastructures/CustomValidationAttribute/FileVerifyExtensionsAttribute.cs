@@ -22,7 +22,6 @@ namespace Site.Web.Infrastructures.CustomValidationAttribute
 
                 return AllowedExtensions.Any(y => fileName.EndsWith(y));
             }
-
             return false;
         }
     }

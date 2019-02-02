@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Site.Core.DataBase.Context;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures;
+using Site.Core.Infrastructures.Implimentation;
+using Site.Core.Infrastructures.Interfaces;
 using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.ImplementationInterfaces;
 using Site.Web.Infrastructures.Interfaces;
@@ -35,6 +37,7 @@ namespace Site.Web
             services.AddDbContext<LearningSiteDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<GetUser, GetUser>();
             services.AddMvc();
+            services.AddTransient<IEmailHandler, EmailHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();

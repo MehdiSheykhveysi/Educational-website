@@ -14,6 +14,7 @@ namespace Site.Core.DataBase.Configurations
         {
             builder.Property(p=>p.Avatar).HasMaxLength(300);
             builder.Property(p=>p.PhoneNumber).HasMaxLength(11);
+            builder.Property(p => p.Wallet).HasColumnType("decimal(10, 2)");
         }
     }
 }

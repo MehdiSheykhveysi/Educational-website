@@ -14,7 +14,7 @@ namespace Site.Core.Infrastructures
                 UseDefaultCredentials = false,
                 Port= 587,
                 EnableSsl=true,
-                Credentials = new NetworkCredential("m.sheykhveysi4680@gmail.com", "MehdiSheykhveysi4680")
+                Credentials = new NetworkCredential("m.sheykhveysi4680@gmail.com", "MyPass")
             };
             MailMessage mailMessage = new MailMessage
             {

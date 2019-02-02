@@ -5,6 +5,6 @@ namespace Site.Web.Infrastructures.Interfaces
 {
     public interface IImageHandler
     {
-        Task<string> UploadImage(IFormFile file,string PathToUploadFile);
+        Task<string> UploadImage(IFormFile file,string PathToUploadFile,string OldProfileImagePath);
     }
 }

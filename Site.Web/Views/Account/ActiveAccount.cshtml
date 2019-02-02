@@ -1,0 +1,43 @@
+﻿@model CheckEmailViewModel
+
+<main class="client-page">
+    <div class="container-content">
+        @if (ViewBag.Issuccess != null)
+        {
+            @if (ViewBag.Issuccess)
+            {
+                <div class="alert alert-success">
+                    <p class="help-block">کاربر گرامی ما لینک فعال سازی اکانت را به ایمیل @ViewData["EmailAddress"] فرستادیم </p>
+                </div>
+            }
+            else
+            {
+                <div class="alert text-danger">
+                    <p class="help-block">@ViewData["ErrorMessage"]</p>
+                </div>
+            }
+        }
+
+        <header><h2> فعالسازی اکانت </h2></header>
+
+
+        <div class="form-layer">
+
+            <form asp-action="ActiveAccount" asp-controller="Account" method="post">
+                <div class="input-group">
+                    <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="ایمیل" required>
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <div class="input-group">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+                <div class="input-group">
+                    <input type="submit" class="btn btn-success" value="فعال سازی" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</main>
