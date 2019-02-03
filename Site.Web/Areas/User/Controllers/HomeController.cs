@@ -75,7 +75,7 @@ namespace Site.Web.Areas.User.Controllers
                 {
                     return Redirect("/Account/LogOut");
                 }
-                else if(!result.Succeeded)
+                else if (!result.Succeeded)
                 {
                     foreach (IdentityError Error in result.Errors)
                     {
@@ -97,40 +97,41 @@ namespace Site.Web.Areas.User.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProfileImage(AjaxUserEditProfileImage model)
         {
+            ValidationErrorViewModel result = new ValidationErrorViewModel();
+
             if (ModelState.IsValid)
             {
                 CustomUser user = await _getUser.GetloggedUser(User);
                 string uploads = Path.Combine(_hostingEnvironment.WebRootPath, "images", "UserProfile");
                 string OldProfileImagePath = $"{_hostingEnvironment.WebRootPath}\\images\\UserProfile\\{user.Avatar}";
-                string strFilePath = await _imageHandler.UploadImage(model.FormFile, uploads,OldProfileImagePath);
-                
+                string strFilePath = await _imageHandler.UploadImage(model.FormFile, uploads, OldProfileImagePath);
+
                 user.Avatar = strFilePath;
                 IdentityResult Result = await _userManager.UpdateAsync(user);
                 if (Result.Succeeded)
                 {
-                    return Redirect(nameof(Index));
+                    result.Status = "Success";
                 }
                 else
                 {
+                    result.Status = "error";
                     foreach (IdentityError Error in Result.Errors)
                     {
                         ModelState.AddModelError(Error.Code, Error.Description);
                     }
                 }
             }
-            List<string> list = new List<string>();
-            foreach (var modelStateVal in ViewData.ModelState.Values)
+            else
             {
-                list.AddRange(modelStateVal.Errors.Select(error => error.ErrorMessage));
+                result.Status = "error";
+                foreach (var modelStateVal in ViewData.ModelState.Values)
+                {
+                    result.Errors.AddRange(modelStateVal.Errors.Select(error => error.ErrorMessage));
+                }
             }
-            var result = new
-            {
-                status = "error",
-                errors = list
-            };
+
             return new JsonResult(result);
         }
 

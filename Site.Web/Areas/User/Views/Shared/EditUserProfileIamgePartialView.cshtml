@@ -1,42 +1,54 @@
 ﻿@model AjaxUserEditProfileImage
 
-
 <div class="row">
     <div class="col-md-9">
         <form method="post" id="MyForm" enctype="multipart/form-data">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FormFile" class="control-label"></label>
-                <input asp-for="FormFile" type="file" id="file" required />
+                <input asp-for="FormFile" type="file" id="fileUpload" required />
                 <span asp-validation-for="FormFile" class="text-danger"></span>
             </div>
             <div lass="form-group">
                 <input class="btn btn-success" type="button" id="Submit" value="save" />
             </div>
         </form>
-        
-
     </div>
 </div>
 <script>
     $(document).ready(function () {
 
         $("#Submit").click(function (e) {
-            e.preventDefault();
-           
-            var files = $("#file").get(0).files;
-            var data = new FormData();
-            data.append("FormFile", files[0]);
+            //e.preventDefault();
+           // var token = $('input[name=__RequestVerificationToken]').val();
+            // var model = {};
+            
+            var files = $("#fileUpload").get(0).files;
+            var formData = new FormData()
+            formData.append("FormFile", files[0]);
+            
+            $.ajax({
+                url: '/USer/Home/EditProfileImage',
+                type: 'POST',
+                dataType:"json",
+                processData: false,
+                contentType: false,
+                data: formData,
 
-            var token = $('input[name=__RequestVerificationToken]').val();
-            var Model = {};
-            Model.FormFile = data;
+                success: function (data) {
+                    if (data.status =="error") {
+                        $.each(data.errors, function (index, value) {
+                            alert(index + ": " + value);
+                        });
+                    } else {
+                        setTimeout(function () { window.location = "/USer/Home/Index"; }, 500);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(ajaxOptions + ": " + thrownError);
+                }
+            });
 
-            $.post("/User/Home/EditProfileImage", {
-                __RequestVerificationToken: token,
-                model: Model},function (data) {
-                    alert(data);
-                },"json")
         });
 
     });
