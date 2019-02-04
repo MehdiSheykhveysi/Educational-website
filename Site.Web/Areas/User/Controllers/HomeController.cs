@@ -6,7 +6,6 @@ using Site.Core.Domain.Entities;
 using Site.Web.Areas.User.Models.HomeModels;
 using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Interfaces;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -113,25 +112,21 @@ namespace Site.Web.Areas.User.Controllers
                 if (Result.Succeeded)
                 {
                     result.Status = "Success";
+                    return new JsonResult(result);
                 }
                 else
                 {
-                    result.Status = "error";
                     foreach (IdentityError Error in Result.Errors)
                     {
                         ModelState.AddModelError(Error.Code, Error.Description);
                     }
                 }
             }
-            else
+            result.Status = "Error";
+            foreach (var modelStateVal in ViewData.ModelState.Values)
             {
-                result.Status = "error";
-                foreach (var modelStateVal in ViewData.ModelState.Values)
-                {
-                    result.Errors.AddRange(modelStateVal.Errors.Select(error => error.ErrorMessage));
-                }
+                result.Errors.AddRange(modelStateVal.Errors.Select(error => error.ErrorMessage));
             }
-
             return new JsonResult(result);
         }
 
