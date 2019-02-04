@@ -36,12 +36,11 @@
                 success: function (result) {
                     if (result.status == "Success") {
                         setTimeout(function () { window.location = "/User/Home/Index"; }, 500);
-                    } else if (result.status=="Error") {
+                    } else if (result.status == "Error") {
+                        $("#ShowError").show();
+                        $("#loader").hide();
                         $.each(result.errors, function (index, value) {
-                            $("#ShowError").show();
-                            $("#ShowError").empty();
-                            $("#ShowError").append("- " + index + " - " + value);
-                            $("#loader").hide();
+                            $("#ShowError").append("- " + index + " - " + value); 
                         });
                     }
                 },
