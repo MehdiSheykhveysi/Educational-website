@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Site.Core.Domain.Entities
 {
-    public class Wallet : BaseEntity
+    public class Wallet : BaseEntity<Guid>
     {
         public WalletType WalletType { get; set; }
         public decimal Balance { get; set; }

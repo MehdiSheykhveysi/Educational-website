@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Site.Core.Domain.Entities
 {
-    public class CustomUser : IdentityUser<int>, IEntity
+    public class CustomUser : IdentityUser<Guid>, IEntity
     {
         public string Avatar { get; set; }
         public DateTime RegisterDate { get; set; }
@@ -11,7 +11,7 @@ namespace Site.Core.Domain.Entities
 
         //Navigation Peroperties
 
-        public int WalletID { get; set; }
+        public Guid WalletID { get; set; }
         public Wallet Wallet { get; set; }
     }
 }

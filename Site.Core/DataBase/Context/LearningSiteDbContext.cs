@@ -2,19 +2,16 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Utilities.Extensions;
+using System;
 
 namespace Site.Core.DataBase.Context
 {
-    public class LearningSiteDbContext : IdentityDbContext<CustomUser, Role, int>
+    public class LearningSiteDbContext : IdentityDbContext<CustomUser, Role,Guid>
     {
         public LearningSiteDbContext(DbContextOptions options) : base(options)
         {
 
         }
-
-        //public DbSet<Wallet> Wallets { get; set; }
-        //public DbSet<CustomUser> Users { get; set; }
-        //public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

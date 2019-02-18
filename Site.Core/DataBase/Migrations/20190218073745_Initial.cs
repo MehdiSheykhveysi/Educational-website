@@ -12,8 +12,7 @@ namespace Site.Core.DataBase.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "newsequentialid()"),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -27,8 +26,7 @@ namespace Site.Core.DataBase.Migrations
                 name: "Wallet",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "newsequentialid()"),
                     WalletType = table.Column<int>(nullable: false),
                     Balance = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
                     IsConfitmPayTransaction = table.Column<bool>(nullable: false),
@@ -37,7 +35,7 @@ namespace Site.Core.DataBase.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Wallet", x => x.ID);
+                    table.PrimaryKey("PK_Wallet", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,7 +44,7 @@ namespace Site.Core.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -65,8 +63,7 @@ namespace Site.Core.DataBase.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "newsequentialid()"),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -84,7 +81,7 @@ namespace Site.Core.DataBase.Migrations
                     Avatar = table.Column<string>(maxLength: 300, nullable: true),
                     RegisterDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     AccountBalance = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
-                    WalletID = table.Column<int>(nullable: false)
+                    WalletID = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,7 +90,7 @@ namespace Site.Core.DataBase.Migrations
                         name: "FK_AspNetUsers_Wallet_WalletID",
                         column: x => x.WalletID,
                         principalTable: "Wallet",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -103,7 +100,7 @@ namespace Site.Core.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -125,7 +122,7 @@ namespace Site.Core.DataBase.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,8 +139,8 @@ namespace Site.Core.DataBase.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,7 +163,7 @@ namespace Site.Core.DataBase.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)

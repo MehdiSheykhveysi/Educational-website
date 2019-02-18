@@ -8,7 +8,8 @@ namespace Site.Core.DataBase.Configurations
     {
         public void Configure(EntityTypeBuilder<Wallet> builder)
         {
-            builder.HasKey(w => w.ID);
+            builder.HasKey(w => w.Id);
+            builder.Property(p => p.Id).HasDefaultValueSql("newsequentialid()"); //Use Sequential Guid In SqlServer For Generate Key
             builder.Property(w => w.Description).HasMaxLength(300);
             builder.Property(w => w.TransactDate).HasColumnType("datetime");
         }
