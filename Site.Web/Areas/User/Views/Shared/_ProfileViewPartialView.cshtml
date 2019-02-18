@@ -5,6 +5,7 @@
         <div class="avatar-layer">
             <div class="img-layer">
                 <a class="change-image" id="ClickToEdit"><i class="zmdi zmdi-edit"></i></a>
+                <img src="~/images/ajax-loader(2).gif" class="loader change-image" id="ajaxloader" hidden />
                 <img src="@Url.Content("~/Images/UserProfile/"+ Model.UserProfileUrl)" />
             </div>
             <div class="detail">
@@ -32,15 +33,18 @@
 
         $("#ClickToEdit").click(function (e) {
             e.preventDefault();
+            $("#ajaxloader").show();
             var innerHtml = $("#Changable").html();
             $.ajax({
                 url: "/User/Home/EditProfileImage",
                 type: "GET",
                 dataType: "html",
                 success: function (data) {
+                    $("#ajaxloader").hide();
                     $("#Changable").html(data);
                 },
                 error: function (data) {
+                    $("#ajaxloader").hide();
                     $("#Changable").html(innerHtml);
                 }
             })

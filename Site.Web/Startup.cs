@@ -25,7 +25,7 @@ namespace Site.Web
         private IConfiguration Configuration { get; set; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<CustomUser, IdentityRole>(Options =>
+            services.AddIdentity<CustomUser, Role>(Options =>
             {
                 Options.Password.RequireNonAlphanumeric = false;
                 Options.Password.RequireLowercase = false;

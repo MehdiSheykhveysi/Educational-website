@@ -450,6 +450,10 @@ main .terms-items .term-col article i{
     z-index: 2;
     opacity:0;
 }
+.loader{
+    border-radius:20px;
+    border:none;
+}
 .user-account .avatar-layer .img-layer:hover .change-image{
     opacity:1;
 }

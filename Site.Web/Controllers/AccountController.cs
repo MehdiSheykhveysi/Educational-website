@@ -41,7 +41,7 @@ namespace Web.Controllers
                     PhoneNumber = model.PhoneNumber,
                     Avatar = "index.png",
                     RegisterDate = DateTime.Now,
-                    Wallet = 0
+                   // Wallet = 0
                 };
                 var Result = await _userManager.CreateAsync(user, model.Password);
                 if (Result.Succeeded)

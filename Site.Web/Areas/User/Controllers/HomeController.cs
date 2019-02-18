@@ -37,7 +37,7 @@ namespace Site.Web.Areas.User.Controllers
                 Email = LoggedUser.Email,
                 PhoneNumber = LoggedUser.PhoneNumber,
                 RegisterDate = LoggedUser.RegisterDate.ToShamsi(),
-                Wallet = LoggedUser.Wallet,
+               // Wallet = LoggedUser.Wallet,
                 UserProfileUrl = LoggedUser.Avatar
             };
 
