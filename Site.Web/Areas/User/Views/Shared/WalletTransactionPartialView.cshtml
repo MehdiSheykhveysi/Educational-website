@@ -1,0 +1,67 @@
+﻿@model WalletTransactViewModel
+
+<div class="row">
+    <div class="col-md-9">
+        <form method="post" id="ChargeForm" enctype="multipart/form-data">
+            <div id="ShowError" class="text-danger" hidden></div>
+            <div class="form-group">
+                <img src="~/images/ajax-loader.gif" id="loader" hidden />
+            </div>
+            <div class="form-group">
+                <label asp-for="Deposits" class="control-label"></label>
+                <input asp-for="Deposits" type="number" required />
+            </div>
+        </form>
+        <div class="form-group">
+            <input class="btn btn-success" type="button" id="Submit" value="شارژ" />
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>مبلغ</th>
+                        <th>تاریخ</th>
+                        <th>نوع تراکنش</th>
+                        <th>شرح</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @foreach (var item in Model.Wallets)
+                        {
+                            <tr>
+                                <td>@item.Balance.ToString("#,0 ريال")</td>
+                                <td>@item.TransactDate.ToShamsi()</td>
+                                <td>@item.WalletType.ToDisplay()</td>
+                                <td>@item.Description</td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("Submit").click(function () {
+            var model = {};
+            $("#loader").show();
+            model.Deposits = $("ChargeForm").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/User/Wallet/Payment',
+                data: model,
+                dataType: 'json',
+
+                success: function (result) {
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                }
+            });
+
+        });
+        
+    });
+</script>

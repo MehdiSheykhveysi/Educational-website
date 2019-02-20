@@ -22,7 +22,7 @@ namespace Site.Web.Areas.User.Models.HomeModels
 
         public string RegisterDate { get; set; }
 
-        public decimal Wallet { get; set; }
+        public decimal AccountBalance { get; set; }
 
         public string UserProfileUrl { get; set; }
     }

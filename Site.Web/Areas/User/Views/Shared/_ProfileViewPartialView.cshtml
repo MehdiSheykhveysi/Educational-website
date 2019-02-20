@@ -20,6 +20,7 @@
                     <li><a asp-action="Index" asp-controller="Home" asp-area="User"> مشاهده حساب کابری </a></li>
                     <li><a asp-action="EditProfile" asp-controller="Home" asp-area="User"> ویرایش حساب کابری </a></li>
                     <li><a asp-action="ResetPassword" asp-controller="Account" asp-area=""> تغییر رمز عبور </a></li>
+                    <li><a href="/User/Wallet/Index" id="ShowWallet">کیف پول  <img src="~/images/ajax-loader.gif" class="loader change-image" id="ajaxloader2" hidden /></a></li>
                     <li><a href=""> تنظیمات حساب کاربری </a></li>
                     <li><a asp-action="LogOut" asp-controller="Account" asp-area=""> خروج از حساب کاربری </a></li>
                 </ul>
@@ -45,6 +46,25 @@
                 },
                 error: function (data) {
                     $("#ajaxloader").hide();
+                    $("#Changable").html(innerHtml);
+                }
+            })
+        });
+
+        $("#ShowWallet").click(function (e) {
+            e.preventDefault();
+            $("#ajaxloader2").show();
+            var innerHtml = $("#Changable").html();
+            $.ajax({
+                url: $(this).attr("href"),
+                type: "GET",
+                dataType: "html",
+                success: function (data) {
+                    $("#ajaxloader2").hide();
+                    $("#Changable").html(data);
+                },
+                error: function (data) {
+                    $("#ajaxloader2").hide();
                     $("#Changable").html(innerHtml);
                 }
             })

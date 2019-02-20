@@ -134,7 +134,8 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
-                    b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .IsRequired();
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(11);
@@ -149,9 +150,8 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256);
-
-                    b.Property<Guid>("WalletID");
 
                     b.HasKey("Id");
 
@@ -162,8 +162,6 @@ namespace Site.Core.DataBase.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("WalletID");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -202,6 +200,8 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(10, 2)");
 
+                    b.Property<Guid>("CustomerID");
+
                     b.Property<string>("Description")
                         .HasMaxLength(300);
 
@@ -213,6 +213,8 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<int>("WalletType");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerID");
 
                     b.ToTable("Wallet");
                 });
@@ -262,11 +264,11 @@ namespace Site.Core.DataBase.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Site.Core.Domain.Entities.CustomUser", b =>
+            modelBuilder.Entity("Site.Core.Domain.Entities.Wallet", b =>
                 {
-                    b.HasOne("Site.Core.Domain.Entities.Wallet", "Wallet")
-                        .WithMany("CustomUsers")
-                        .HasForeignKey("WalletID")
+                    b.HasOne("Site.Core.Domain.Entities.CustomUser", "CustomUser")
+                        .WithMany("Wallets")
+                        .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

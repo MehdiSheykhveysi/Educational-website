@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Site.Core.DataBase.Context;
+using Site.Core.DataBase.Repositories;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures;
 using Site.Core.Infrastructures.Implimentation;
@@ -41,6 +42,7 @@ namespace Site.Web
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();
+            services.AddTransient<IWalletRepository, WalletRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

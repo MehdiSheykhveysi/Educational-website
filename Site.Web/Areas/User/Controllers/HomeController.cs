@@ -20,6 +20,7 @@ namespace Site.Web.Areas.User.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly UserManager<CustomUser> _userManager;
         private readonly IImageHandler _imageHandler;
+
         public HomeController(GetUser getUser, IHostingEnvironment hostingEnvironment, UserManager<CustomUser> userManager, IImageHandler imageHandler)
         {
             _getUser = getUser;
@@ -37,7 +38,7 @@ namespace Site.Web.Areas.User.Controllers
                 Email = LoggedUser.Email,
                 PhoneNumber = LoggedUser.PhoneNumber,
                 RegisterDate = LoggedUser.RegisterDate.ToShamsi(),
-               // Wallet = LoggedUser.Wallet,
+                AccountBalance = LoggedUser.AccountBalance,
                 UserProfileUrl = LoggedUser.Avatar
             };
 

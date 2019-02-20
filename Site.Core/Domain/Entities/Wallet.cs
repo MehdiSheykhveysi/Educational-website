@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Site.Core.Domain.Entities
@@ -13,8 +12,8 @@ namespace Site.Core.Domain.Entities
         public DateTime TransactDate { get; set; }
 
         //Navigation Peroperties
-
-        public ICollection<CustomUser> CustomUsers { get; set; }
+        public Guid CustomerID { get; set; }
+        public CustomUser CustomUser { get; set; }
     }
 
 

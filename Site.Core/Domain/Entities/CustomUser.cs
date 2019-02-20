@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 namespace Site.Core.Domain.Entities
@@ -10,8 +11,7 @@ namespace Site.Core.Domain.Entities
         public decimal AccountBalance { get; set; }
 
         //Navigation Peroperties
-
-        public Guid WalletID { get; set; }
-        public Wallet Wallet { get; set; }
+        
+        public ICollection<Wallet> Wallets { get; set; }
     }
 }
