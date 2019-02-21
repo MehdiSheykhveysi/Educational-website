@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Site.Core.DataBase.Repositories;
 using Site.Core.Domain.Entities;
+using Site.Core.Infrastructures;
 using Site.Web.Areas.User.Models.HomeModels;
 using Site.Web.Areas.User.Models.WalletModels;
 using Site.Web.Infrastructures;
@@ -20,34 +22,46 @@ namespace Site.Web.Areas.User.Controllers
     {
         private readonly UserManager<CustomUser> _userManager;
         private readonly GetUser _getUser;
-        private readonly IWalletRepository walletRepository;
+        private readonly IWalletRepository _walletRepository;
+        private readonly IMapper _mapper;
 
-        public WalletController(UserManager<CustomUser> userManager, GetUser getUser, IWalletRepository WalletRepository)
+        public WalletController(UserManager<CustomUser> userManager, GetUser getUser, IWalletRepository walletRepository, IMapper mapper)
         {
             _userManager = userManager;
             _getUser = getUser;
-            walletRepository = WalletRepository;
+            _walletRepository = walletRepository;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            Guid UserID =await _getUser.GetloggedUserID<Guid>(User);
+            Guid UserID = await _getUser.GetloggedUserID<Guid>(User);
 
-            List<Wallet> wallets =await walletRepository.GetWalletByUserId(UserID, cancellationToken);
+            List<Wallet> wallets = await _walletRepository.GetWalletByUserId(UserID, cancellationToken);
 
             WalletTransactViewModel model = new WalletTransactViewModel
             {
-                Wallets=wallets
+                Wallets = wallets
             };
             return PartialView("WalletTransactionPartialView", model);
         }
 
-        public IActionResult Payment(WalletTransactViewModel model,CancellationToken cancellationToken)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Payment(WalletTransactViewModel model, CancellationToken cancellationToken)
         {
+
             ValidationErrorViewModel result = new ValidationErrorViewModel();
             if (ModelState.IsValid)
             {
-
+                PayInput input = _mapper.Map<WalletTransactViewModel, PayInput>(model);
+                result.Status = "Success";
+                return new JsonResult(result);
+            }
+            result.Status = "Error";
+            foreach (var modelStateVal in ViewData.ModelState.Values)
+            {
+                result.Errors.AddRange(modelStateVal.Errors.Select(error => error.ErrorMessage));
             }
             return new JsonResult(result);
         }

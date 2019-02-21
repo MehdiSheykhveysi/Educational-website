@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Deposits" class="control-label"></label>
-                <input asp-for="Deposits" type="number" required />
+                <input asp-for="Deposits" id="#Deposits" type="number" required />
             </div>
         </form>
         <div class="form-group">
@@ -26,15 +26,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @foreach (var item in Model.Wallets)
-                        {
-                            <tr>
-                                <td>@item.Balance.ToString("#,0 ريال")</td>
-                                <td>@item.TransactDate.ToShamsi()</td>
-                                <td>@item.WalletType.ToDisplay()</td>
-                                <td>@item.Description</td>
-                            </tr>
-                        }
+                    @foreach (var item in Model.Wallets)
+                    {
+                        <tr>
+                            <td>@item.Balance.ToString("#,0 ريال")</td>
+                            <td>@item.TransactDate.ToShamsi()</td>
+                            <td>@item.WalletType.ToDisplay()</td>
+                            <td>@item.Description</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -43,10 +43,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $("Submit").click(function () {
-            var model = {};
+        $("#Submit").click(function () {
+            var model = $("#ChargeForm").serialize();
+            var token = $('input[name=__RequestVerificationToken]').val();
+            model.__RequestVerificationToken = token;
+
             $("#loader").show();
-            model.Deposits = $("ChargeForm").serialize();
             $.ajax({
                 type: 'POST',
                 url: '/User/Wallet/Payment',
@@ -54,14 +56,24 @@
                 dataType: 'json',
 
                 success: function (result) {
-
+                    if (result.status == "Success") {
+                        $("#loader").hide();
+                    } else if (result.status == "Error") {
+                        $("#ShowError").show();
+                        $("#loader").hide();
+                        $.each(result.errors, function (index, value) {
+                            $("#ShowError").append("- " + index + " - " + value);
+                        });
+                    }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-
+                    $("#ShowError").show();
+                    $("#ShowError").html(" - " + ajaxOptions + ": " + thrownError);
+                    $("#loader").hide();
                 }
             });
 
         });
-        
+
     });
 </script>
