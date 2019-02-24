@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Context;
 using Site.Core.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace Site.Core.DataBase.Repositories
 {
-    public class WalletRepository : GenericRepositories<Wallet>, IWalletRepository
+    public class WalletRepository : GenericRepositories<Transact>, IWalletRepository
     {
         public WalletRepository(LearningSiteDbContext context) : base(context)
         {
 
         }
 
-        public async Task<List<Wallet>> GetWalletByUserId(object UserId, CancellationToken cancellationToken, bool IsConfitmPayFlag = true)
+        public async Task<List<Transact>> GetWalletByUserId(Guid UserId, CancellationToken cancellationToken, bool IsConfitmPayFlag = true)
         {
-            var query = NoTrackEntities.Include(w => w.CustomUser);
-            return await query.Where(u => u.CustomUser.Id.Equals(UserId) && u.IsConfitmPayTransaction == IsConfitmPayFlag).AsNoTracking().ToListAsync(cancellationToken);
+            List<Transact> query = await NoTrackEntities.Where(t => t.CustomUserId == UserId && t.IsConfitmPayTransaction == IsConfitmPayFlag).AsNoTracking().ToListAsync(cancellationToken);
+            return query;
         }
     }
 }

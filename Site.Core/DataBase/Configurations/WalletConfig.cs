@@ -4,9 +4,9 @@ using Site.Core.Domain.Entities;
 
 namespace Site.Core.DataBase.Configurations
 {
-    public class WalletConfig : IEntityTypeConfiguration<Wallet>
+    public class WalletConfig : IEntityTypeConfiguration<Transact>
     {
-        public void Configure(EntityTypeBuilder<Wallet> builder)
+        public void Configure(EntityTypeBuilder<Transact> builder)
         {
             builder.HasKey(w => w.Id);
             builder.Property(p => p.Id).HasDefaultValueSql("newsequentialid()"); //Use Sequential Guid In SqlServer For Generate Key

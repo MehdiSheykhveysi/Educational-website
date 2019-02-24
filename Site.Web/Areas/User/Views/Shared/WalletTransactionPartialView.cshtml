@@ -31,7 +31,7 @@
                         <tr>
                             <td>@item.Balance.ToString("#,0 ريال")</td>
                             <td>@item.TransactDate.ToShamsi()</td>
-                            <td>@item.WalletType.ToDisplay()</td>
+                            <td>@item.TransactType.ToDisplay()</td>
                             <td>@item.Description</td>
                         </tr>
                     }
@@ -58,6 +58,7 @@
                 success: function (result) {
                     if (result.status == "Success") {
                         $("#loader").hide();
+                        window.location.href = result.redirectUrl;
                     } else if (result.status == "Error") {
                         $("#ShowError").show();
                         $("#loader").hide();

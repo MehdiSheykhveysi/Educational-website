@@ -157,23 +157,23 @@ namespace Site.Core.DataBase.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Wallet",
+                name: "Transact",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false, defaultValueSql: "newsequentialid()"),
-                    WalletType = table.Column<int>(nullable: false),
+                    TransactType = table.Column<int>(nullable: false),
                     Balance = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
                     IsConfitmPayTransaction = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(maxLength: 300, nullable: true),
                     TransactDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CustomerID = table.Column<Guid>(nullable: false)
+                    CustomUserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Wallet", x => x.Id);
+                    table.PrimaryKey("PK_Transact", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Wallet_AspNetUsers_CustomerID",
-                        column: x => x.CustomerID,
+                        name: "FK_Transact_AspNetUsers_CustomUserId",
+                        column: x => x.CustomUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -219,9 +219,9 @@ namespace Site.Core.DataBase.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Wallet_CustomerID",
-                table: "Wallet",
-                column: "CustomerID");
+                name: "IX_Transact_CustomUserId",
+                table: "Transact",
+                column: "CustomUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -242,7 +242,7 @@ namespace Site.Core.DataBase.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Wallet");
+                name: "Transact");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -10,7 +10,7 @@ using Site.Core.DataBase.Context;
 namespace Site.Core.DataBase.Migrations
 {
     [DbContext(typeof(LearningSiteDbContext))]
-    [Migration("20190220130053_Initial")]
+    [Migration("20190224172711_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,7 +193,7 @@ namespace Site.Core.DataBase.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Site.Core.Domain.Entities.Wallet", b =>
+            modelBuilder.Entity("Site.Core.Domain.Entities.Transact", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -202,7 +202,7 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<Guid>("CustomerID");
+                    b.Property<Guid>("CustomUserId");
 
                     b.Property<string>("Description")
                         .HasMaxLength(300);
@@ -212,13 +212,13 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<DateTime>("TransactDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("WalletType");
+                    b.Property<int>("TransactType");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("CustomUserId");
 
-                    b.ToTable("Wallet");
+                    b.ToTable("Transact");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -266,11 +266,11 @@ namespace Site.Core.DataBase.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Site.Core.Domain.Entities.Wallet", b =>
+            modelBuilder.Entity("Site.Core.Domain.Entities.Transact", b =>
                 {
                     b.HasOne("Site.Core.Domain.Entities.CustomUser", "CustomUser")
-                        .WithMany("Wallets")
-                        .HasForeignKey("CustomerID")
+                        .WithMany("Transactions")
+                        .HasForeignKey("CustomUserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

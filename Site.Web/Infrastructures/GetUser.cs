@@ -25,16 +25,11 @@ namespace Site.Web.Infrastructures
             return loggedUser;
         }
 
-        public async Task<T> GetloggedUserID<T>(ClaimsPrincipal user)
+        public async Task<TKey> GetloggedUserID<TKey>(ClaimsPrincipal user)
         {
             CustomUser loggedUser = await _userManager.GetUserAsync(user);
             object UserId = loggedUser.Id;
-            return (T)UserId;
+            return (TKey)UserId;
         }
-
-        //    object obj = feature.GetDataRow(fieldName)[fieldName];
-        //if (obj.ToString().IsAGuid())
-        //    obj = new Guid(obj.ToString());
-        //return (T) obj;
     }
 }

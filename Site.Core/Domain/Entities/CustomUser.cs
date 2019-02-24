@@ -11,7 +11,6 @@ namespace Site.Core.Domain.Entities
         public decimal AccountBalance { get; set; }
 
         //Navigation Peroperties
-        
-        public ICollection<Wallet> Wallets { get; set; }
+        public ICollection<Transact> Transactions { get; set; }
     }
 }

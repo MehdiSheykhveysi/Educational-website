@@ -15,18 +15,24 @@ using Site.Core.Infrastructures.Interfaces;
 using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.ImplementationInterfaces;
 using Site.Web.Infrastructures.Interfaces;
+using Site.Core.ApplicationService.SiteSettings;
+using Site.Web.Infrastructures.PaymentsImplimentation;
 
 namespace Site.Web
 {
     public class Startup
     {
+        private readonly SiteSetting siteSetting;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            siteSetting = configuration.GetSection(nameof(SiteSetting)).Get<SiteSetting>();
         }
         private IConfiguration Configuration { get; set; }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<SiteSetting>(Configuration.GetSection("SiteSetting"));
             services.AddIdentity<CustomUser, Role>(Options =>
             {
                 Options.Password.RequireNonAlphanumeric = false;
@@ -36,7 +42,7 @@ namespace Site.Web
                 Options.Password.RequireDigit = false;
                 Options.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<LearningSiteDbContext>().AddDefaultTokenProviders();
-            services.AddDbContext<LearningSiteDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LearningSiteDbContext>(options => options.UseSqlServer(siteSetting.DefaultConnection));
             services.AddTransient<GetUser, GetUser>();
             services.AddMvc();
             services.AddAutoMapper();
@@ -45,6 +51,7 @@ namespace Site.Web
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();
             services.AddTransient<IWalletRepository, WalletRepository>();
+            services.AddTransient<IPayment,PaymnetPayIr>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

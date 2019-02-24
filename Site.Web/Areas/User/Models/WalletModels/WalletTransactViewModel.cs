@@ -6,7 +6,7 @@ namespace Site.Web.Areas.User.Models.WalletModels
 {
     public class WalletTransactViewModel
     {
-        public List<Wallet> Wallets { get; set; }
+        public List<Transact> Wallets { get; set; }
 
         [Display(Name ="مبلغ شارژ حساب")]
         [Required(ErrorMessage ="لطفا مبلغ را وارد کنید")]

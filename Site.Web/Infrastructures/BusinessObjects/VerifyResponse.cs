@@ -1,4 +1,4 @@
-﻿namespace Site.Core.Infrastructures
+﻿namespace Site.Web.Infrastructures.BusinessObjects
 {
     public class VerifyResponse
     {
