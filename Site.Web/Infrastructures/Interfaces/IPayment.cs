@@ -7,6 +7,6 @@ namespace Site.Web.Infrastructures.Interfaces
     public interface IPayment
     {
         Task<PaymentRequest> PayAsync(PayInput input, CancellationToken cancellationToken);
-        Task<VerifyResponse> VerifyAsync(string Authority, CancellationToken cancellationToken);
+        Task<VerifyResponse> VerifyAsync(string TransID, CancellationToken cancellationToken);
     }
 }

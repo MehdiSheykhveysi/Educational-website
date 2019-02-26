@@ -68,7 +68,7 @@ namespace Site.Web.Areas.User.Controllers
                 input.Description = "شارژ حساب";
                 input.Redirect = "https://localhost:5001/User/Wallet/Verify";
                 PaymentRequest response = await payment.PayAsync(input, cancellationToken); ;
-                if (Assert.NotNull(response) && response.status == 1 && Assert.NotNull(response.token))
+                if (Assert.NotNull(response) && response.Status == 1 && Assert.NotNull(response.Token))
                 {
                     user.Transactions = new List<Transact> {
                         new Transact
@@ -85,13 +85,13 @@ namespace Site.Web.Areas.User.Controllers
                     await _userManager.UpdateAsync(user);
 
                     result.Status = "Success";
-                    result.RedirectUrl = siteSetting.RedirectUrl + response.token;
+                    result.RedirectUrl = siteSetting.RedirectUrl + response.Token;
                     return new JsonResult(result);
                 }
                 else
                 {
                     result.Status = "Error";
-                    result.Errors.Add(response.errorMessage);
+                    result.Errors.Add(response.ErrorMessage);
                 }
 
                 return new JsonResult(result);
@@ -102,6 +102,14 @@ namespace Site.Web.Areas.User.Controllers
                 result.Errors.AddRange(modelStateVal.Errors.Select(error => error.ErrorMessage));
             }
             return new JsonResult(result);
+        }
+
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Verify(VerifyInput verifyInput, CancellationToken cancellationToken)
+        {
+            VerifyResponse verifyResponse = await payment.VerifyAsync(verifyInput.Token, cancellationToken);
+            return View(verifyResponse);
         }
     }
 }

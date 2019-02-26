@@ -2,10 +2,9 @@
 {
     public class PaymentRequest 
     {
-        public int status { get; set; }
-        public string token { get; set; }
-        public double amount { get; set; }
-        public string errorCode { get; set; }
-        public string errorMessage { get; set; }
+        public int Status { get; set; }
+        public string Token { get; set; }
+        public string ErrorCode { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

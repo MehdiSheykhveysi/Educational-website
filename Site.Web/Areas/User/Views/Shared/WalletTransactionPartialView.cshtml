@@ -57,6 +57,7 @@
 
                 success: function (result) {
                     if (result.status == "Success") {
+                        $("#ShowError").hide();
                         $("#loader").hide();
                         window.location.href = result.redirectUrl;
                     } else if (result.status == "Error") {

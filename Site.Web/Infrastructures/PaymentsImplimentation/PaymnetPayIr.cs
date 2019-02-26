@@ -3,7 +3,6 @@ using Site.Core.ApplicationService.SiteSettings;
 using Site.Core.Infrastructures.Utilities.Extensions;
 using Site.Web.Infrastructures.BusinessObjects;
 using Site.Web.Infrastructures.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Site.Core.Infrastructures;
@@ -29,13 +28,19 @@ namespace Site.Web.Infrastructures.PaymentsImplimentation
                 { "redirect", input.Redirect },
                 { "description", input.Description },
             };
-            string response = await RequestSender.RequestAsync(HttpMethod.Post, siteSetting.GatewaySend, post_values,cancellationToken);
+            string response = await RequestSender.RequestAsync(HttpMethod.Post, siteSetting.GatewaySend, post_values, cancellationToken);
             return response.ToCsharpObject<PaymentRequest>();
         }
 
-        public Task<VerifyResponse> VerifyAsync(string Authority, CancellationToken cancellationToken)
+        public async Task<VerifyResponse> VerifyAsync(string Token, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Dictionary<string, string> post_values = new Dictionary<string, string>
+            {
+                { "api", siteSetting.Api },
+                { "token", Token }
+            };
+            string response = await RequestSender.RequestAsync(HttpMethod.Post, siteSetting.GatewayResult, post_values, cancellationToken);
+            return response.ToCsharpObject<VerifyResponse>();
         }
     }
 }
