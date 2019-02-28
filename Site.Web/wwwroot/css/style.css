@@ -15,7 +15,8 @@ body{
   font-family: 'BYekan';
   font-size: 14px;
   word-spacing: -1px;
-  background-color: #f2f2f2
+  background-color: #f2f2f2;
+  direction:rtl;
 }
 
 /***********Default setting************/
@@ -191,12 +192,15 @@ a,i,input[type="submit"], form button{ -webkit-transition : all 0.2s linear 0s; 
   color: #0c740a
 }
 
+.sidebar {
+    float: right;
+    width: 250px;
+}
 
-
-footer .top-footer{
-  width: 100%;
-  background-color: #26292c;
-  padding: 40px 0 20px
+footer .top-footer {
+    width: 100%;
+    background-color: #26292c;
+    padding: 40px 0 20px
 }
 .top-footer .list{
   margin-bottom: 20px
