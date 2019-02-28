@@ -7,9 +7,9 @@ namespace Site.Core.Domain.Entities
     {
         public TransactType TransactType { get; set; }
         public decimal Balance { get; set; }
-        public bool IsConfitmPayTransaction { get; set; }
         public string Description { get; set; }
         public DateTime TransactDate { get; set; }
+        public string TransactId { get; set; }
 
         //Navigation Peroperties
         public Guid CustomUserId { get; set; }

@@ -8,6 +8,6 @@ namespace Site.Core.DataBase.Repositories
 {
     public interface IWalletRepository: IGenericRepositories<Transact>
     {
-        Task<List<Transact>> GetWalletByUserId(Guid UserId, CancellationToken cancellationToken,bool IsConfitmPayFlag = true);
+        Task<List<Transact>> GetWalletByUserId(Guid UserId, CancellationToken cancellationToken);
     }
 }

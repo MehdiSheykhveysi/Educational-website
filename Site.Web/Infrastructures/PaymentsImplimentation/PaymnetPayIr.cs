@@ -27,6 +27,7 @@ namespace Site.Web.Infrastructures.PaymentsImplimentation
                 { "amount", input.Deposits.ToString() },
                 { "redirect", input.Redirect },
                 { "description", input.Description },
+                { "mobile", input.PhoneNumber },
             };
             string response = await RequestSender.RequestAsync(HttpMethod.Post, siteSetting.GatewaySend, post_values, cancellationToken);
             return response.ToCsharpObject<PaymentRequest>();

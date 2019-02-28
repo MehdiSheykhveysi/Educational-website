@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Site.Web.Infrastructures.BusinessObjects;
-using Site.Web.Infrastructures.Interfaces;
-using System;
-using System.Threading.Tasks;
+﻿//using Microsoft.AspNetCore.Http;
+//using Site.Web.Infrastructures.BusinessObjects;
+//using Site.Web.Infrastructures.Interfaces;
+//using System;
+//using System.Threading.Tasks;
 
 namespace Site.Web.Infrastructures.PaymentImplimentation
 {

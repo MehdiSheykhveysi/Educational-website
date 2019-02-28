@@ -17,5 +17,9 @@ namespace Site.Core.Infrastructures.Utilities.Extensions
         {
             return JsonConvert.DeserializeObject<T>(JsonString);
         }
+        public static decimal ToDecimal(this string value)
+        {
+            return Convert.ToDecimal(value);
+        }
     }
 }

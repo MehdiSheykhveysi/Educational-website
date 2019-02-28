@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Site.Core.Infrastructures.Utilities.Extensions;
 using Site.Core.ApplicationService.SiteSettings;
 using Site.Core.DataBase.Repositories;
 using Site.Core.Domain.Entities;
@@ -41,6 +42,8 @@ namespace Site.Web.Areas.User.Controllers
             siteSetting = SiteSetting.Value;
         }
 
+        public int VerifyVieModel { get; private set; }
+
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             Guid UserID = await _getUser.GetloggedUserID<Guid>(User);
@@ -67,23 +70,10 @@ namespace Site.Web.Areas.User.Controllers
                 input.Deposits = model.Deposits;
                 input.Description = "شارژ حساب";
                 input.Redirect = "https://localhost:5001/User/Wallet/Verify";
+                input.PhoneNumber = user.PhoneNumber;
                 PaymentRequest response = await payment.PayAsync(input, cancellationToken); ;
                 if (Assert.NotNull(response) && response.Status == 1 && Assert.NotNull(response.Token))
                 {
-                    user.Transactions = new List<Transact> {
-                        new Transact
-                    {
-                        Balance = input.Deposits,
-                        Description = input.Description,
-                        IsConfitmPayTransaction = false,
-                        TransactType = TransactType.Creditor,
-                        TransactDate = DateTime.Now,
-                        CustomUserId = user.Id
-                    }
-                };
-                    user.AccountBalance += input.Deposits;
-                    await _userManager.UpdateAsync(user);
-
                     result.Status = "Success";
                     result.RedirectUrl = siteSetting.RedirectUrl + response.Token;
                     return new JsonResult(result);
@@ -109,7 +99,27 @@ namespace Site.Web.Areas.User.Controllers
         public async Task<IActionResult> Verify(VerifyInput verifyInput, CancellationToken cancellationToken)
         {
             VerifyResponse verifyResponse = await payment.VerifyAsync(verifyInput.Token, cancellationToken);
-            return View(verifyResponse);
+            VerifyViewModel model = _mapper.Map<VerifyViewModel>(verifyResponse);
+            model.Message = "عملیات شارژ انجام نشد";
+            if (verifyResponse.Status == "1" && verifyResponse.Message == "OK")
+            {
+                model.Message = "عملیات شارژ با موفقیت انجام شد";
+                CustomUser user = await _getUser.GetloggedUser(User);
+                user.Transactions = new List<Transact> {
+                        new Transact
+                    {
+                        Balance = verifyResponse.Amount.ToDecimal(),
+                        Description = verifyResponse.Description,
+                        TransactType =TransactType.Creditor,
+                        TransactDate = DateTime.Now,
+                        CustomUserId = user.Id,
+                        TransactId=verifyResponse.TransId
+                    }
+                };
+                user.AccountBalance += verifyResponse.Amount.ToDecimal();
+                await _userManager.UpdateAsync(user);
+            }
+            return View(model);
         }
     }
 }
