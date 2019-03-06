@@ -23,6 +23,7 @@ namespace Site.Core.DataBase.Repositories
 
         public virtual Task<TEntity> GetByIdAsync(object ID, CancellationToken CancellationToken)
         {
+            context.Set<TEntity>().FindAsync(ID, CancellationToken);
             return Entities.FindAsync(ID, CancellationToken);
         }
 

@@ -51,6 +51,7 @@ namespace Site.Web
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();
             services.AddTransient<IWalletRepository, WalletRepository>();
+            services.AddTransient<IUserRepository,UserRepository>();
             services.AddTransient<IPayment,PaymnetPayIr>();
         }
 

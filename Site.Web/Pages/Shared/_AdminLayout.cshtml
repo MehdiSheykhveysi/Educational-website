@@ -4,21 +4,29 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" >
+    <meta name="author">
     <title>پنل ادمین</title>
-    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/AdminStaticFiles/lib/metisMenu/metisMenu.min.css" rel="stylesheet" />
-    <link href="~/AdminStaticFiles/css/sb-admin-2.min.css" rel="stylesheet" />
-    <link href="~/AdminStaticFiles/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/AdminStaticFiles/css/site.min.css" />
+    <partial name="_StylesPartialView" />
+    <link href="~/AdminStaticFiles/lib/metisMenu/metisMenu.css" rel="stylesheet" />
+    <link href="~/AdminStaticFiles/css/sb-admin-2.css" rel="stylesheet" />
     <link href="~/AdminStaticFiles/css/main.css" rel="stylesheet" />
+    <link href="~/AdminStaticFiles/lib/font-awesome/css/font-awesome.css" type="text/css" rel="stylesheet" />
+    <link />
 </head>
 <body>
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"></a>
+            </div>
             <!-- /.navbar-header -->
             <!-- /.navbar-top-links -->
             <div class="navbar-default sidebar" role="navigation">
@@ -36,16 +44,16 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> پنل ادمین</a>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> داشبورد</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> مدیریت کاربران<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> مدیریت اخبار<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">دسترسی به کاربران</a>
+                                    <a href="flot.html">فلوچارت</a>
                                 </li>
                                 <li>
-                                    <a href="morris.html">افزودن نقش</a>
+                                    <a href="morris.html"> نمودار های Morris.js</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -70,10 +78,10 @@
                             {
                                 <div class="alert alert-danger"><h3>@TempData["Error"]</h3></div>
                             }
+                            
                         }
                         @RenderBody()
                     </div>
-                    <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
             </div>
@@ -84,8 +92,11 @@
     <!-- /#wrapper -->
     <!-- jQuery -->
     <script src="~/js/jquery.min.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
-    <script src="~/AdminStaticFiles/lib/metisMenu/metisMenu.min.js"></script>
-    <script src="~/AdminStaticFiles/js/sb-admin-2.min.js"></script>
+
+    <script src="~/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="~/AdminStaticFiles/lib/metisMenu/metisMenu.js"></script>
+
+    <script src="~/AdminStaticFiles/js/sb-admin-2.js"></script>
 </body>
 </html>

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Site.Core.Infrastructures.Utilities;
+
 namespace Site.Web.Infrastructures
 {
     public class FileUploadHelper
     {
-        public async Task<string> SaveFileAsync(IFormFile file, string pathToUplaod, string OldProfileImagePath)
+        public async Task<string> SaveFileAsync(IFormFile file, string pathToUplaod,CancellationToken cancellationToken, string OldProfileImagePath = null)
         {
             string imageUrl = string.Empty;
             if (!Directory.Exists(pathToUplaod))
@@ -15,11 +18,14 @@ namespace Site.Web.Infrastructures
             string pathwithfileName = pathToUplaod + "\\" + SetFileName(file);
             using (FileStream fileStream = new FileStream(pathwithfileName, FileMode.Create))
             {
-                string FileName = GetFileNameFromPath(OldProfileImagePath);
-                DeleteOldFile(OldProfileImagePath, FileName);
-                if (FileName != "index.png")
+                if (Assert.NotNull(OldProfileImagePath))
                 {
-                    await file.CopyToAsync(fileStream);
+                    string FileName = GetFileNameFromPath(OldProfileImagePath);
+                    DeleteOldFile(OldProfileImagePath, FileName);
+                    if (FileName != "index.png")
+                    {
+                        await file.CopyToAsync(fileStream,cancellationToken);
+                    }
                 }
             }
             imageUrl = pathwithfileName;

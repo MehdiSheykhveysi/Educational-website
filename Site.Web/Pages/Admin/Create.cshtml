@@ -1,0 +1,100 @@
+﻿@page
+@model CreateModel
+
+<form class="well form-horizontal" method="post" enctype="multipart/form-data">
+    <fieldset>
+
+        <!-- Form Name -->
+        <div style="text-align:center">
+            <h2><b>ساخت کاربر جدید</b></h2><br>
+        </div>
+        <!-- Text input-->
+
+        <div class="form-group">
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <div asp-validation-summary="All" class="text-danger glyphicon glyphicon-warning-sign" hidden></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" asp-for="@Model.Model.UserName"> </label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input asp-for="@Model.Model.UserName" placeholder="نام کاربری" class="form-control" type="text" required>
+                    <span asp-validation-for="@Model.Model.UserName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text input-->
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">ایمیل</label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                    <input asp-for="@Model.Model.Email" placeholder="test123@@gmail(mail).com" class="form-control" type="email" required>
+                    <span asp-validation-for="@Model.Model.Email" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <!-- Text input-->
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">شماره تلفن</label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                    <input asp-for="@Model.Model.PhoneNumber" pattern="[0-9]{4}[0-9]{3}[0-9]{4}" placeholder="4567 123 0990" class="form-control" type="tel">
+                    <span asp-validation-for="@Model.Model.PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text input-->
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">پسوورد</label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input asp-for="Model.PassWord" placeholder="پسوورد" class="form-control" type="password">
+                    <span asp-validation-for="@Model.Model.PassWord" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">آپلود عکس</label>
+            <div class="col-md-4 ">
+                <div class="input-group">
+                    <span class="input-group-addon def"><i class="glyphicon glyphicon-upload"></i></span>
+                    <input asp-for="@Model.Model.FormFile" class="btn" type="file">
+                </div>
+                <span asp-validation-for="@Model.Model.FormFile" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">فعالسازی</label>
+            <div class="col-md-4 ">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                    <input class="btn glyphicon glyphicon-check" asp-for="@Model.Model.IsActive">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-5 control-label"></label>
+            <div class="col-md-5">
+                <br>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" class="btn btn-warning">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspذخیره <span class="glyphicon glyphicon-send"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>

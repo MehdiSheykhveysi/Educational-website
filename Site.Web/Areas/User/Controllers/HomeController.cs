@@ -8,6 +8,7 @@ using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Interfaces;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Site.Web.Areas.User.Controllers
@@ -97,7 +98,7 @@ namespace Site.Web.Areas.User.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfileImage(AjaxUserEditProfileImage model)
+        public async Task<IActionResult> EditProfileImage(AjaxUserEditProfileImage model, CancellationToken cancellationToken)
         {
             ValidationErrorViewModel result = new ValidationErrorViewModel();
 
@@ -106,7 +107,7 @@ namespace Site.Web.Areas.User.Controllers
                 CustomUser user = await _getUser.GetloggedUser(User);
                 string uploads = Path.Combine(_hostingEnvironment.WebRootPath, "images", "UserProfile");
                 string OldProfileImagePath = $"{_hostingEnvironment.WebRootPath}\\images\\UserProfile\\{user.Avatar}";
-                string strFilePath = await _imageHandler.UploadImage(model.FormFile, uploads, OldProfileImagePath);
+                string strFilePath = await _imageHandler.UploadImageAsync(model.FormFile, uploads,cancellationToken, OldProfileImagePath);
 
                 user.Avatar = strFilePath;
                 IdentityResult Result = await _userManager.UpdateAsync(user);

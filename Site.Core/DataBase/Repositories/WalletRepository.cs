@@ -18,7 +18,10 @@ namespace Site.Core.DataBase.Repositories
 
         public async Task<List<Transact>> GetWalletByUserId(Guid UserId, CancellationToken cancellationToken)
         {
-            List<Transact> query = await NoTrackEntities.Where(t => t.CustomUserId == UserId).AsNoTracking().ToListAsync(cancellationToken);
+            List<Transact> query = await NoTrackEntities.
+                Where(t => t.CustomUserId == UserId).
+                AsNoTracking().
+                ToListAsync(cancellationToken);
             return query;
         }
     }

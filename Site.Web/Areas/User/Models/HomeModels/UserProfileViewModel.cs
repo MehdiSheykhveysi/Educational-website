@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Site.Web.Infrastructures.CustomValidationAttribute;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Site.Web.Areas.User.Models.HomeModels
 {
