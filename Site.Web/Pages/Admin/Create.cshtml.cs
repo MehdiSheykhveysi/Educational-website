@@ -3,10 +3,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Site.Core.Domain.Entities;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,9 +18,10 @@ namespace Site.Web.Pages.Admin
 {
     public class CreateModel : PageModel
     {
-        public CreateModel(UserManager<CustomUser> UserManager, IHostingEnvironment HostingEnvironment, IImageHandler ImageHandler, IMapper Mapper)
+        public CreateModel(UserManager<CustomUser> UserManager, RoleManager<Role> RoleManager, IHostingEnvironment HostingEnvironment, IImageHandler ImageHandler, IMapper Mapper)
         {
             userManager = UserManager;
+            roleManager = RoleManager;
             hostingEnvironment = HostingEnvironment;
             imageHandler = ImageHandler;
             mapper = Mapper;
@@ -26,24 +31,27 @@ namespace Site.Web.Pages.Admin
         private readonly IImageHandler imageHandler;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly UserManager<CustomUser> userManager;
+        private readonly RoleManager<Role> roleManager;
 
         [BindProperty]
         public AdminCreateModel Model { get; set; }
-        public void OnGet()
-        {
 
+        public async Task OnGetAsync(CancellationToken cancellationToken)
+        {
+            Model = new AdminCreateModel();
+            Model.SelectedRoles = mapper.Map<List<RoleModel>>(await roleManager.Roles.AsNoTracking().ToListAsync(cancellationToken));
         }
 
         public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
-                CustomUser user = new CustomUser();
+                CustomUser user = new CustomUser(DateTime.Now, Model.IsActive);
                 user = mapper.Map(Model, user);
                 string uploads = Path.Combine(hostingEnvironment.WebRootPath, "images", "UserProfile");
-                string strFilePath = await imageHandler.UploadImageAsync(Model.FormFile, uploads, cancellationToken);
+                user.Avatar = await imageHandler.UploadImageAsync(Model.FormFile, uploads, cancellationToken);
                 IdentityResult result = await userManager.CreateAsync(user, Model.PassWord);
-
+                IdentityResult identityResult = await userManager.AddToRolesAsync(user, Model.SelectedRoles.Where(r => r.Checked).Select(c => c.Name));
                 if (result.Succeeded)
                 {
                     return RedirectToPage("/Admin/index");

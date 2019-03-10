@@ -23,7 +23,7 @@ namespace Site.Core.DataBase.Repositories
 
             int ListCount = await NoTrackEntities.CountAsync();
 
-            paged.ListItem = await NoTrackEntities.Where(c => !Assert.NotNull(UserName) || c.UserName.IndexOf(UserName, StringComparison.CurrentCultureIgnoreCase) != -1).OrderBy(u => u.UserName).AsNoTracking().Skip((CurrentNumber - 1) * Count).Take(Count).ToListAsync(cancellationToken);
+            paged.ListItem = await NoTrackEntities.Where(c => !Assert.NotNull(UserName) || c.UserName.IndexOf(UserName, StringComparison.CurrentCultureIgnoreCase) != -1).OrderBy(u => u.UserName).Skip((CurrentNumber - 1) * Count).Take(Count).AsNoTracking().ToListAsync(cancellationToken);
 
             paged.PageData.CurentItem = CurrentNumber;
             paged.PageData.TotalItem = ListCount;

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Site.Core.Domain.Entities;
 
 namespace Site.Web.Controllers
 {
@@ -6,10 +8,11 @@ namespace Site.Web.Controllers
     {
         public HomeController()
         {
-            
+          
         }
         public IActionResult Index()
         {
+           
             return View();
         }
     }

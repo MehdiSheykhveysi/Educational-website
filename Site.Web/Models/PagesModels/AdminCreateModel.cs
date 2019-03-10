@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Site.Web.Infrastructures.CustomValidationAttribute;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Site.Web.Models.PagesModels
 {
     public class AdminCreateModel
     {
-        [Display(Name ="نام کاربری")]
-        [Required(ErrorMessage ="{0}الزامی است")]
+        [Display(Name = "نام کاربری")]
+        [Required(ErrorMessage = "{0}الزامی است")]
         public string UserName { get; set; }
 
         [Display(Name = "ایمیل")]
@@ -28,5 +29,16 @@ namespace Site.Web.Models.PagesModels
         [Display(Name = "آواتار")]
         [FileVerifyExtensions(fileExtensions: "jpg,jpeg,png,gif", ErrorMessage = "لطفا یک فایل با فرمت صحیح انتخاب کنید")]
         public IFormFile FormFile { get; set; }
+
+        public List<RoleModel> SelectedRoles { get; set; } = new List<RoleModel>();
+    }
+
+    public class RoleModel
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public bool Checked { get; set; }
     }
 }

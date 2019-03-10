@@ -45,14 +45,14 @@ namespace Site.Web
             services.AddDbContext<LearningSiteDbContext>(options => options.UseSqlServer(siteSetting.DefaultConnection));
             services.AddTransient<GetUser, GetUser>();
             services.AddMvc();
-            services.AddAutoMapper();
+            services.AddAutoMapper(cfg => cfg.ValidateInlineMaps = false);
             services.AddTransient<IEmailHandler, EmailHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();
             services.AddTransient<IWalletRepository, WalletRepository>();
-            services.AddTransient<IUserRepository,UserRepository>();
-            services.AddTransient<IPayment,PaymnetPayIr>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IPayment, PaymnetPayIr>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

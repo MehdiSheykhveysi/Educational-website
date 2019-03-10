@@ -5,7 +5,7 @@
     <fieldset>
 
         <!-- Form Name -->
-        <div style="text-align:center">
+        <div class="text-center">
             <h2><b>ساخت کاربر جدید</b></h2><br>
         </div>
         <!-- Text input-->
@@ -79,11 +79,49 @@
         </div>
 
         <div class="form-group">
+            <label class="col-md-4 control-label">انتخاب نقش کاربر</label>
+            <div class="col-md-4 ">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                    @for (int i = 0; i < Model.Model.SelectedRoles.Count; i++)
+                    {
+                        <div class="checkbox">
+                            <div class="form-inline col-md-offset-2">
+                                <input type="hidden" asp-for="@Model.Model.SelectedRoles[i].Id" />
+                                <input type="hidden" asp-for="@Model.Model.SelectedRoles[i].Name" />
+                                <input type="checkbox" asp-for="@Model.Model.SelectedRoles[i].Checked" />
+                                <label asp-for="@Model.Model.SelectedRoles[i].Id">@Model.Model.SelectedRoles[i].Name</label>
+                                &nbsp;|&nbsp;
+                            </div>
+                        </div>
+                    }
+                    @*@foreach (var item in Model.Model.SelectedRoles)
+                        {
+                            <div class="checkbox">
+                                <div class="form-inline col-md-offset-2">
+                                    <input type="hidden" asp-for="@item.Id" name="SelectedRoles" />
+                                    <input type="hidden" asp-for="@item.Name" name="SelectedRoles" />
+                                    <input type="checkbox" asp-for="@item.Checked" name="SelectedRoles" />
+                                    <label asp-for="@item.Id">@item.Name</label>
+                                    &nbsp;|&nbsp;
+                                </div>
+                            </div>
+                        }*@
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-md-4 control-label">فعالسازی</label>
             <div class="col-md-4 ">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
-                    <input class="btn glyphicon glyphicon-check" asp-for="@Model.Model.IsActive">
+                    <div class="checkbox">
+                        <div class="form-inline col-md-offset-2">
+                            <input class="btn glyphicon glyphicon-check" asp-for="@Model.Model.IsActive">
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

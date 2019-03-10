@@ -25,11 +25,9 @@
                     </div>
                     <div class="col-sm-6 col-xs-12">
                         <div class="clientarea">
-                            <div class="loggein hidden">
-                                <i class="zmdi zmdi-account"></i><a href="">  خوش آمدی </a>
-                            </div>
+
                             <div class="signin">
-                                <i class="zmdi zmdi-account"></i>
+                                <i class="glyphicon glyphicon-user"></i>
 
                                 @if (User.Identity.IsAuthenticated)
                                 {
@@ -62,7 +60,7 @@
     <partial name="_FooterPartialView" />
     <!-- /footer -->
 
-    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/js/script.js"></script>
     <script src="~/js/jquery.validate.min.js"></script>
     <script src="~/js/jquery.validate.unobtrusive.js"></script>

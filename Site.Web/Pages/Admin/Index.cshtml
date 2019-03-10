@@ -11,10 +11,10 @@
             <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
                 <div class="row">
                     <form method="get">
-                        <div class="col-sm-5 col-md-5">
+                        <div class="col-sm-6 col-md-6">
                             <input type="text" name="UserName" class="form-control" value=@ViewData["SearchKey"] placeholder="نام کاربری" />
                             <button type="submit" class="btn btn-info">جست و جو</button>
-                            <button class="btn btn-default btn-sm " type="reset">پاک کردن</button>
+                            <button class="btn btn-default" type="reset">پاک کردن</button>
                         </div>
                     </form>
                 </div>
@@ -26,8 +26,8 @@
                         <tr>
                             <th>تصویر کاربر</th>
                             <th>نام کاربری</th>
-                            <th>تاریخ عضویت </th>
                             <th>میزان شارژ حساب</th>
+                            <th>تاریخ عضویت </th>
                             <th>وضعیت عضویت</th>
                             <th>عملیات</th>
                         </tr>
@@ -59,7 +59,7 @@
                                     }
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-success">ویرایش</a>
+                                    <a asp-page="/Admin/Edit" asp-route-Id="@item.Id" class="btn btn-success">ویرایش</a>
                                     <a href="#" class="btn btn-default">جزئیات</a>
                                     <a href="#" class="btn btn-danger">حذف</a>
                                 </td>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Site.Core.Infrastructures.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,10 @@ namespace Site.Web.Infrastructures.CustomValidationAttribute
 
         public override bool IsValid(object value)
         {
-
+            if (!Assert.NotNull(value))
+            {
+                return true;
+            }
             if (value is IFormFile file)
             {
                 string fileName = file.FileName;
