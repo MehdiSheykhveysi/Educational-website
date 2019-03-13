@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Site.Web.Infrastructures.Attributes;
 
 namespace Site.Web.Areas.User.Controllers
 {
@@ -59,6 +60,7 @@ namespace Site.Web.Areas.User.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AjaxOnly]
         public async Task<IActionResult> Payment(WalletTransactViewModel model, CancellationToken cancellationToken)
         {
 

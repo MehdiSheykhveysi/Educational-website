@@ -8,7 +8,6 @@ using Site.Core.Domain.Entities;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -39,14 +38,14 @@ namespace Site.Web.Pages.Admin
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
             Model = new AdminCreateModel();
-            Model.SelectedRoles = mapper.Map<List<RoleModel>>(await roleManager.Roles.AsNoTracking().ToListAsync(cancellationToken));
+            mapper.Map(await roleManager.Roles.AsNoTracking().ToListAsync(cancellationToken), Model.SelectedRoles);
         }
 
-        public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
+        public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
-                CustomUser user = new CustomUser(DateTime.Now, Model.IsActive);
+                CustomUser user = new CustomUser(DateTime.Now);
                 user = mapper.Map(Model, user);
                 string uploads = Path.Combine(hostingEnvironment.WebRootPath, "images", "UserProfile");
                 user.Avatar = await imageHandler.UploadImageAsync(Model.FormFile, uploads, cancellationToken);

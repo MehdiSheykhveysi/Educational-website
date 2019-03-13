@@ -9,7 +9,7 @@ namespace Site.Web.Infrastructures
 {
     public class FileUploadHelper
     {
-        public async Task<string> SaveFileAsync(IFormFile file, string pathToUplaod,CancellationToken cancellationToken, string OldProfileImagePath = null)
+        public async Task<string> SaveFileAsync(IFormFile file, string pathToUplaod, CancellationToken cancellationToken, string OldProfileImagePath = null)
         {
             string imageUrl = string.Empty;
             if (!Directory.Exists(pathToUplaod))
@@ -20,12 +20,14 @@ namespace Site.Web.Infrastructures
             {
                 if (Assert.NotNull(OldProfileImagePath))
                 {
-                    string FileName = GetFileNameFromPath(OldProfileImagePath);
-                    DeleteOldFile(OldProfileImagePath, FileName);
-                    if (FileName != "index.png")
-                    {
-                        await file.CopyToAsync(fileStream,cancellationToken);
-                    }
+                    string OldFileName = GetFileNameFromPath(OldProfileImagePath);
+                    DeleteOldFile(OldProfileImagePath, OldFileName);
+                }
+
+                string FileName = GetFileNameFromPath(pathwithfileName);
+                if (FileName != "index.png")
+                {
+                    await file.CopyToAsync(fileStream, cancellationToken);
                 }
             }
             imageUrl = pathwithfileName;
@@ -38,11 +40,16 @@ namespace Site.Web.Infrastructures
             string pathwithfileName = pathToUplaod + "\\" + SetFileName(file);
             using (FileStream fileStream = new FileStream(pathwithfileName, FileMode.Create))
             {
-                string FileName = GetFileNameFromPath(OldProfileImagePath);
-                DeleteOldFile(OldProfileImagePath, FileName);
+                if (Assert.NotNull(OldProfileImagePath))
+                {
+                    string OldFileName = GetFileNameFromPath(OldProfileImagePath);
+                    DeleteOldFile(OldProfileImagePath, OldFileName);
+                }
+
+                string FileName = GetFileNameFromPath(pathwithfileName);
                 if (FileName != "index.png")
                 {
-                    file.CopyToAsync(fileStream);
+                     file.CopyTo(fileStream);
                 }
             }
             imageUrl = pathwithfileName;

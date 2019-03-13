@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" >
+    <meta name="description">
     <meta name="author">
     <title>پنل ادمین</title>
     <partial name="_StylesPartialView" />
@@ -78,7 +78,7 @@
                             {
                                 <div class="alert alert-danger"><h3>@TempData["Error"]</h3></div>
                             }
-                            
+
                         }
                         @RenderBody()
                     </div>
@@ -98,5 +98,6 @@
     <script src="~/AdminStaticFiles/lib/metisMenu/metisMenu.js"></script>
 
     <script src="~/AdminStaticFiles/js/sb-admin-2.js"></script>
+    @RenderSection("Scripts", false)
 </body>
 </html>

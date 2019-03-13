@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Site.Core.Infrastructures.Utilities;
 using Site.Web.Infrastructures.Interfaces;
 
 namespace Site.Web.Infrastructures.ImplementationInterfaces
@@ -16,6 +15,14 @@ namespace Site.Web.Infrastructures.ImplementationInterfaces
         {
             _hostingEnvironment = hostingEnvironment;
         }
+        /// <summary>
+        /// Copy Image In Your specified Path By Using File 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="PathToUploadFile">New Path For Upload File in </param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="OldProfileImagePath">Old Path For Delete Old File . Default Id Null</param>
+        /// <returns></returns>
         public async Task<string> UploadImageAsync(IFormFile file, string PathToUploadFile, CancellationToken cancellationToken, string OldProfileImagePath = null)
         {
             if (CheckIfImageFile(file))

@@ -17,6 +17,7 @@ using Site.Web.Infrastructures.ImplementationInterfaces;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Core.ApplicationService.SiteSettings;
 using Site.Web.Infrastructures.PaymentsImplimentation;
+using Site.Web.Infrastructures.Filters;
 
 namespace Site.Web
 {
@@ -44,7 +45,11 @@ namespace Site.Web
             }).AddEntityFrameworkStores<LearningSiteDbContext>().AddDefaultTokenProviders();
             services.AddDbContext<LearningSiteDbContext>(options => options.UseSqlServer(siteSetting.DefaultConnection));
             services.AddTransient<GetUser, GetUser>();
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(GlobalMvcValidateModelStateAttribute));
+                options.Filters.Add(typeof(GolbalPageModelValidation));
+            });
             services.AddAutoMapper(cfg => cfg.ValidateInlineMaps = false);
             services.AddTransient<IEmailHandler, EmailHandler>();
             services.AddTransient<IEmailSender, EmailSender>();

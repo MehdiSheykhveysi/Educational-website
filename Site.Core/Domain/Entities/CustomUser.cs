@@ -10,10 +10,9 @@ namespace Site.Core.Domain.Entities
         {
 
         }
-        public CustomUser(DateTime TimeCreated, bool IsActive = false)
+        public CustomUser(DateTime TimeCreated)
         {
             RegisterDate = TimeCreated;
-            EmailConfirmed = IsActive;
         }
         public string Avatar { get; set; }
         public DateTime RegisterDate { get; set; }

@@ -16,7 +16,7 @@ namespace Site.Web.Pages.Admin
         public IUserRepository userRepository { get; set; }
         public AdminIndexModel Model { get; set; } = new AdminIndexModel();
 
-        public async Task OnGet(CancellationToken cancellationToken,int PageNumber = 1, string UserName = null)
+        public async Task OnGetAsync(CancellationToken cancellationToken,int PageNumber = 1, string UserName = null)
         {
             Model.List = await userRepository.GetPagedUserAsync(UserName, 3, PageNumber, cancellationToken);
             Model.Username = UserName;

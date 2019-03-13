@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Site.Core.Domain.Entities;
 using Site.Web.Areas.User.Models.HomeModels;
 using Site.Web.Infrastructures;
+using Site.Web.Infrastructures.Attributes;
 using Site.Web.Infrastructures.Interfaces;
 using System.IO;
 using System.Linq;
@@ -64,33 +65,34 @@ namespace Site.Web.Areas.User.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProfile(UserProfileViewModel model)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            CustomUser user = await _getUser.GetloggedUser(User);
+            user.UserName = model.UserName;
+            user.PhoneNumber = model.PhoneNumber;
+            user.EmailConfirmed = user.Email == model.Email;
+            user.Email = model.Email;
+            IdentityResult result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded && !user.EmailConfirmed)
             {
-                CustomUser user = await _getUser.GetloggedUser(User);
-                user.UserName = model.UserName;
-                user.PhoneNumber = model.PhoneNumber;
-                user.EmailConfirmed = user.Email == model.Email;
-                user.Email = model.Email;
-                IdentityResult result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded && !user.EmailConfirmed)
+                return Redirect("/Account/LogOut");
+            }
+            else if (!result.Succeeded)
+            {
+                foreach (IdentityError Error in result.Errors)
                 {
-                    return Redirect("/Account/LogOut");
-                }
-                else if (!result.Succeeded)
-                {
-                    foreach (IdentityError Error in result.Errors)
-                    {
-                        ModelState.AddModelError(Error.Code, Error.Description);
-                    }
-                }
-                else
-                {
-                    return Redirect(nameof(Index));
+                    ModelState.AddModelError(Error.Code, Error.Description);
                 }
             }
-            return View(model);
+            //else
+            //{
+            return Redirect(nameof(Index));
+            //}
+            //}
+            //return View(model);
         }
 
+        [AjaxOnly]
         public IActionResult EditProfileImage()
         {
 
@@ -98,6 +100,7 @@ namespace Site.Web.Areas.User.Controllers
         }
 
         [HttpPost]
+        [AjaxOnly]
         public async Task<IActionResult> EditProfileImage(AjaxUserEditProfileImage model, CancellationToken cancellationToken)
         {
             ValidationErrorViewModel result = new ValidationErrorViewModel();
@@ -107,7 +110,7 @@ namespace Site.Web.Areas.User.Controllers
                 CustomUser user = await _getUser.GetloggedUser(User);
                 string uploads = Path.Combine(_hostingEnvironment.WebRootPath, "images", "UserProfile");
                 string OldProfileImagePath = $"{_hostingEnvironment.WebRootPath}\\images\\UserProfile\\{user.Avatar}";
-                string strFilePath = await _imageHandler.UploadImageAsync(model.FormFile, uploads,cancellationToken, OldProfileImagePath);
+                string strFilePath = await _imageHandler.UploadImageAsync(model.FormFile, uploads, cancellationToken, OldProfileImagePath);
 
                 user.Avatar = strFilePath;
                 IdentityResult Result = await _userManager.UpdateAsync(user);

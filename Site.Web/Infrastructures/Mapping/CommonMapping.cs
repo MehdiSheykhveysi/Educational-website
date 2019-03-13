@@ -12,9 +12,9 @@ namespace Site.Web.Infrastructures.Mapping
         public CommonMapping()
         {
             CreateMap<VerifyResponse, VerifyViewModel>();
-            CreateMap<AdminCreateModel, CustomUser>().ForMember(c => c.Avatar, a => a.MapFrom(m => m.FormFile.FileName));
+            CreateMap<AdminCreateModel, CustomUser>().ForMember(c => c.Avatar, a => a.MapFrom(m => m.FormFile.FileName)).ForMember(c => c.EmailConfirmed, a => a.MapFrom(m => m.IsActive));
             CreateMap<List<RoleModel>, List<Role>>();
-            //CreateMap<List<Role>, List<RoleModel>>();
+            CreateMap< AdminEditModel, CustomUser>().ForMember(u => u.EmailConfirmed, a => a.MapFrom(m => m.IsActive)).ReverseMap();
         }
     }
 }
