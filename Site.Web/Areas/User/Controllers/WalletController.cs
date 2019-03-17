@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Site.Web.Infrastructures.Attributes;
+using Site.Core.DataBase.Repositories.CustomizeIdentity;
 
 namespace Site.Web.Areas.User.Controllers
 {
@@ -26,30 +27,30 @@ namespace Site.Web.Areas.User.Controllers
     [Authorize]
     public class WalletController : Controller
     {
-        private readonly UserManager<CustomUser> _userManager;
-        private readonly GetUser _getUser;
-        private readonly IWalletRepository _walletRepository;
-        private readonly IMapper _mapper;
-        private readonly IPayment payment;
-        private readonly SiteSetting siteSetting;
+        private readonly CustomUserManager UserManager;
+        private readonly GetUser GetUser;
+        private readonly ITransactRepository TransactRepository;
+        private readonly IMapper Mapper;
+        private readonly IPayment Payment;
+        private readonly SiteSetting SiteSetting;
 
-        public WalletController(UserManager<CustomUser> userManager, GetUser getUser, IWalletRepository walletRepository, IMapper mapper, IPayment Payment, IOptionsSnapshot<SiteSetting> SiteSetting)
+        public WalletController(CustomUserManager userManager, GetUser getUser, ITransactRepository transactRepository, IMapper mapper, IPayment payment, IOptionsSnapshot<SiteSetting> siteSetting)
         {
-            _userManager = userManager;
-            _getUser = getUser;
-            _walletRepository = walletRepository;
-            _mapper = mapper;
-            payment = Payment;
-            siteSetting = SiteSetting.Value;
+            this.UserManager = userManager;
+            this.GetUser = getUser;
+            this.TransactRepository = transactRepository;
+            this.Mapper = mapper;
+            this.Payment = payment;
+            this.SiteSetting = siteSetting.Value;
         }
 
         public int VerifyVieModel { get; private set; }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            Guid UserID = await _getUser.GetloggedUserID<Guid>(User);
+            Guid UserID = await GetUser.GetloggedUserID<Guid>(User);
 
-            List<Transact> wallets = await _walletRepository.GetWalletByUserId(UserID, cancellationToken);
+            List<Transact> wallets = await TransactRepository.GetWalletByUserIdAsync(UserID, cancellationToken);
 
             WalletTransactViewModel model = new WalletTransactViewModel
             {
@@ -61,23 +62,23 @@ namespace Site.Web.Areas.User.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AjaxOnly]
-        public async Task<IActionResult> Payment(WalletTransactViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> SendPayment(WalletTransactViewModel model, CancellationToken cancellationToken)
         {
 
             ValidationErrorViewModel result = new ValidationErrorViewModel();
             if (ModelState.IsValid)
             {
                 PayInput input = new PayInput();
-                CustomUser user = await _getUser.GetloggedUser(User);
+                CustomUser user = await GetUser.GetloggedUser(User);
                 input.Deposits = model.Deposits;
                 input.Description = "شارژ حساب";
                 input.Redirect = "https://localhost:5001/User/Wallet/Verify";
                 input.PhoneNumber = user.PhoneNumber;
-                PaymentRequest response = await payment.PayAsync(input, cancellationToken); ;
+                PaymentRequest response = await Payment.PayAsync(input, cancellationToken); ;
                 if (Assert.NotNull(response) && response.Status == 1 && Assert.NotNull(response.Token))
                 {
                     result.Status = "Success";
-                    result.RedirectUrl = siteSetting.RedirectUrl + response.Token;
+                    result.RedirectUrl = SiteSetting.RedirectUrl + response.Token;
                     return new JsonResult(result);
                 }
                 else
@@ -100,13 +101,13 @@ namespace Site.Web.Areas.User.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Verify(VerifyInput verifyInput, CancellationToken cancellationToken)
         {
-            VerifyResponse verifyResponse = await payment.VerifyAsync(verifyInput.Token, cancellationToken);
-            VerifyViewModel model = _mapper.Map<VerifyViewModel>(verifyResponse);
+            VerifyResponse verifyResponse = await Payment.VerifyAsync(verifyInput.Token, cancellationToken);
+            VerifyViewModel model = Mapper.Map<VerifyViewModel>(verifyResponse);
             model.Message = "عملیات شارژ انجام نشد";
             if (verifyResponse.Status == "1" && verifyResponse.Message == "OK")
             {
                 model.Message = "عملیات شارژ با موفقیت انجام شد";
-                CustomUser user = await _getUser.GetloggedUser(User);
+                CustomUser user = await GetUser.GetloggedUser(User);
                 user.Transactions = new List<Transact> {
                         new Transact
                     {
@@ -119,7 +120,7 @@ namespace Site.Web.Areas.User.Controllers
                     }
                 };
                 user.AccountBalance += verifyResponse.Amount.ToDecimal();
-                await _userManager.UpdateAsync(user);
+                await UserManager.UpdateAsync(user);
             }
             return View(model);
         }

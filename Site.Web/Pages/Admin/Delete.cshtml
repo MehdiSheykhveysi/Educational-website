@@ -1,0 +1,46 @@
+﻿@page
+@model DeleteModel
+
+
+<div class="row">
+
+    <div class="dl-horizontal text-right col-md-4 col-sm-4">
+        <div class="form-group" style="margin-top:20px">
+            <form method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div asp-validation-summary="All" class="text-danger glyphicon glyphicon-warning-sign" hidden></div>
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <input asp-for="@Model.Model.Id" type="hidden" />
+                    <input asp-for="@Model.Model.Avatar" type="hidden" />
+                    <label asp-for="@Model.Model.UserName" class="control-label text-right"></label>
+                    <input asp-for="@Model.Model.UserName" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.Email" class="control-label text-right"></label>
+                    <input asp-for="@Model.Model.Email" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.PhoneNumber" class="control-label text-right"></label>
+                    <input asp-for="@Model.Model.PhoneNumber" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.IsActive" class="control-label text-right"></label>
+                    <input asp-for="@Model.Model.IsActive" type="hidden" />
+                    <input value="@Model.Model.IsActive.ToMessageString("فعال است", "غیر فعال است")" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.AccountBalance" class="control-label text-right"></label>
+                    <input asp-for="@Model.Model.AccountBalance" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.RegisterDate" class="control-label text-right"></label>
+                    <input asp-for="@Model.Model.RegisterDate" value="@Model.Model.RegisterDate.ToShamsi()" readonly class="form-control text-right" />
+
+                </div>
+
+
+                <div class="form-group">
+                    @*<input asp-for="@Model.Model.Id" type="hidden" />*@
+                    <input type="submit" value="حذف" class="btn btn-default text-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="form-group text-left dl-horizontal col-md-4 col-sm-4" style="margin-top:20px">
+        <img src="@Url.Content("~/images/UserProfile/"+Model.Model.Avatar)" alt="@Model.Model.UserName" class="img-responsive img-rounded">
+    </div>
+</div>

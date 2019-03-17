@@ -16,20 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\bootstrap\dist\css\bootstrap-theme.css.map" />
-    <None Include="wwwroot\bootstrap\dist\css\bootstrap-theme.min.css.map" />
-    <None Include="wwwroot\bootstrap\dist\css\bootstrap.css.map" />
-    <None Include="wwwroot\bootstrap\dist\css\bootstrap.min.css.map" />
-    <None Include="wwwroot\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
-    <None Include="wwwroot\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
-    <None Include="wwwroot\bootstrap\dist\js\bootstrap.js" />
-    <None Include="wwwroot\bootstrap\dist\js\bootstrap.min.js" />
-    <None Include="wwwroot\bootstrap\dist\js\npm.js" />
-    <None Include="wwwroot\bootstrap\LICENSE" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.Dependencyinjection" Version="6.0.0" />
+    <PackageReference Include="AutoMapper.Extensions" Version="2.1.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.2" />

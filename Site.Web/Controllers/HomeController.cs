@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Site.Web.Controllers
 {
@@ -10,7 +10,7 @@ namespace Site.Web.Controllers
         }
         public IActionResult Index()
         {
-           
+           // ViewData["test"] = "dhfhf";
             return View();
         }
     }

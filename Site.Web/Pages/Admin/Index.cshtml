@@ -11,10 +11,19 @@
             <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
                 <div class="row">
                     <form method="get">
-                        <div class="col-sm-6 col-md-6">
-                            <input type="text" name="UserName" class="form-control" value=@ViewData["SearchKey"] placeholder="نام کاربری" />
-                            <button type="submit" class="btn btn-info">جست و جو</button>
-                            <button class="btn btn-default" type="reset">پاک کردن</button>
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group col-sm-4 col-md-4">
+                                <input type="text" name="UserName" class="form-control" value=@ViewData["SearchKey"] placeholder="نام کاربری"/>
+                            </div>
+                            <div class="form-group col-sm-2 col-md-2">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="IsDeleted" asp-for="@Model.Model.IsDeleted"> فیلتر حذف شده ها
+                                </label>
+                            </div>
+                            <div class="form-group col-sm-3 col-md-3">
+                                <button type="submit" class="btn btn-info">جست و جو</button>
+                                <button class="btn btn-default" type="reset">پاک کردن</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -60,8 +69,8 @@
                                 </td>
                                 <td>
                                     <a asp-page="/Admin/Edit" asp-route-Id="@item.Id" class="btn btn-success">ویرایش</a>
-                                    <a href="#" class="btn btn-default">جزئیات</a>
-                                    <a href="#" class="btn btn-danger">حذف</a>
+                                    <a asp-page="/Admin/Detail" asp-route-Id="@item.Id" class="btn btn-default">جزئیات</a>
+                                    <a asp-page="/Admin/Delete" asp-route-Id="@item.Id" class="btn btn-danger">حذف</a>
                                 </td>
                             </tr>
                         }
@@ -69,8 +78,8 @@
                 </table>
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
-                            <nav Page-data="@Model.Model.List.PageData" page-name="/Admin/Index" page-username="@Model.Model.Username"></nav>
+                        <div class="form-group" id="dataTables-example_paginate">
+                            <nav Page-data="@Model.Model.List.PageData" page-name="/Admin/Index" page-username="@Model.Model.Username" page-isdeleted="@Model.Model.IsDeleted"></nav>
                         </div>
                     </div>
                 </div>

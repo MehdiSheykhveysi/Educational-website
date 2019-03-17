@@ -13,8 +13,10 @@ namespace Site.Web.Infrastructures.Mapping
         {
             CreateMap<VerifyResponse, VerifyViewModel>();
             CreateMap<AdminCreateModel, CustomUser>().ForMember(c => c.Avatar, a => a.MapFrom(m => m.FormFile.FileName)).ForMember(c => c.EmailConfirmed, a => a.MapFrom(m => m.IsActive));
-            CreateMap<List<RoleModel>, List<Role>>();
-            CreateMap< AdminEditModel, CustomUser>().ForMember(u => u.EmailConfirmed, a => a.MapFrom(m => m.IsActive)).ReverseMap();
+            CreateMap<AdminEditModel, CustomUser>().ForMember(u => u.EmailConfirmed, a => a.MapFrom(m => m.IsActive)).ReverseMap();
+            CreateMap<AdminDeleteModel, CustomUser>().ReverseMap();
+            CreateMap<AdminDetailModel, CustomUser>().ReverseMap();
+            CreateMap<List<TransactModel>, List<Transact>>();
         }
     }
 }

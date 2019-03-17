@@ -8,11 +8,9 @@
     <meta name="author">
     <title>پنل ادمین</title>
     <partial name="_StylesPartialView" />
-    <link href="~/AdminStaticFiles/lib/metisMenu/metisMenu.css" rel="stylesheet" />
+    <link href="~/lib/metisMenu/metisMenu.css" rel="stylesheet" />
     <link href="~/AdminStaticFiles/css/sb-admin-2.css" rel="stylesheet" />
     <link href="~/AdminStaticFiles/css/main.css" rel="stylesheet" />
-    <link href="~/AdminStaticFiles/lib/font-awesome/css/font-awesome.css" type="text/css" rel="stylesheet" />
-    <link />
 </head>
 <body>
     <div id="wrapper">
@@ -44,13 +42,13 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> داشبورد</a>
+                            <a asp-page="/Admin/Index"><i class="glyphicon glyphicon-dashboard"></i> داشبورد</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> مدیریت اخبار<span class="fa arrow"></span></a>
+                            <a href="#"><i class="glyphicon glyphicon-magnet"></i> مدیریت کاربران<span class="glyphicon glyphicon-arrow-down"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">فلوچارت</a>
+                                    <a asp-page="/Admin/Index">لیست کاربران</a>
                                 </li>
                                 <li>
                                     <a href="morris.html"> نمودار های Morris.js</a>
@@ -91,11 +89,11 @@
     <!-- /#page-wrapper -->
     <!-- /#wrapper -->
     <!-- jQuery -->
-    <script src="~/js/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
 
-    <script src="~/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 
-    <script src="~/AdminStaticFiles/lib/metisMenu/metisMenu.js"></script>
+    <script src="~/lib/metisMenu/metisMenu.js"></script>
 
     <script src="~/AdminStaticFiles/js/sb-admin-2.js"></script>
     @RenderSection("Scripts", false)

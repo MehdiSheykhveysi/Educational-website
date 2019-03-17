@@ -15,7 +15,9 @@ namespace Site.Core.Infrastructures.DTO
         public int CurentItem { get; set; }
         public int TotalPages()
         {
-            int x = (int)(Math.Ceiling((TotalItem / ItemPerPage)));
+            int x = 0;
+            if (TotalItem > 0)
+                x = (int)(Math.Ceiling((TotalItem / ItemPerPage)));
             return x;
         }
 

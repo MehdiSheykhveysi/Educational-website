@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Site.Core.DataBase.Repositories.CustomizeIdentity;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Interfaces;
 using Site.Web.Models.AccountModels;
@@ -11,14 +12,14 @@ namespace Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<CustomUser> _userManager;
-        private readonly SignInManager<CustomUser> _signInManager;
-        public IEmailHandler _emailHandler { get; set; }
-        public AccountController(UserManager<CustomUser> userManager, SignInManager<CustomUser> signInManager, IEmailHandler emailHandler)
+        private readonly CustomUserManager UserManager;
+        private readonly SignInManager<CustomUser> SignInManager;
+        public IEmailHandler EmailHandler { get; set; }
+        public AccountController(CustomUserManager userManager, SignInManager<CustomUser> signInManager, IEmailHandler emailHandler)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _emailHandler = emailHandler;
+            this.UserManager = userManager;
+            this.SignInManager = signInManager;
+            this.EmailHandler = emailHandler;
         }
 
         public IActionResult Register(string ReturnUrl = "/")
@@ -40,14 +41,15 @@ namespace Web.Controllers
                 PhoneNumber = model.PhoneNumber,
                 Avatar = "index.png",
                 RegisterDate = DateTime.Now,
-                AccountBalance = 0
+                AccountBalance = 0,
+                IsDeleted = false
             };
-            var Result = await _userManager.CreateAsync(user, model.Password);
+            var Result = await UserManager.CreateAsync(user, model.Password);
             if (Result.Succeeded)
             {
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, Code = code }, protocol: Request.Scheme);
-                await _emailHandler.SendEmailAsync(model.Username, "Confirm your email",
+                await EmailHandler.SendEmailAsync(model.Username, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                 ViewBag.IsRegister = true;
                 ViewBag.returnUrl = returnUrl;
@@ -72,7 +74,7 @@ namespace Web.Controllers
                 return View("ConfirmEmail");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await UserManager.FindByIdAsync(userId);
             if (user == null)
             {
                 ViewData["Title"] = "فعال سازی اکانت";
@@ -81,7 +83,7 @@ namespace Web.Controllers
                 return View("ConfirmEmail");
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, Code);
+            var result = await UserManager.ConfirmEmailAsync(user, Code);
             if (!result.Succeeded)
             {
                 return NotFound($"Error confirming email for user with ID '{userId}':");
@@ -105,7 +107,7 @@ namespace Web.Controllers
         {
             //if (ModelState.IsValid)
             //{
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await UserManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
                 //if (user.LockoutEnabled)
@@ -122,8 +124,8 @@ namespace Web.Controllers
                     ViewBag.DoActive = true;
                     return View("ConfirmEmail");
                 }
-                await _signInManager.SignOutAsync();
-                var SignInResult = await _signInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: false);
+                await SignInManager.SignOutAsync();
+                var SignInResult = await SignInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: false);
                 if (SignInResult.Succeeded)
                 {
                     return Redirect(returnUrl);
@@ -149,7 +151,7 @@ namespace Web.Controllers
         public async Task<IActionResult> LogOut(string returnUrl = "/")
         {
             returnUrl = returnUrl ?? "/";
-            await _signInManager.SignOutAsync();
+            await SignInManager.SignOutAsync();
             return Redirect(returnUrl);
 
         }
@@ -165,7 +167,7 @@ namespace Web.Controllers
         {
             //if (ModelState.IsValid)
             //{
-            CustomUser user = await _userManager.FindByEmailAsync(model.Email);
+            CustomUser user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 ViewData["ErrorMessage"] = "متاسفانه کاربری با چنین ایمیلی وجود ندارد";
@@ -180,12 +182,12 @@ namespace Web.Controllers
                 ViewBag.DoActive = true;
                 return View("ConfirmEmail");
             }
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
 
             var resetLink = Url.Action("ResetPassword",
                             "Account", new { userId = user.Id, Code = token },
                              protocol: Request.Scheme);
-            await _emailHandler.SendEmailAsync(user.Email, "Change Password",
+            await EmailHandler.SendEmailAsync(user.Email, "Change Password",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(resetLink)}'>clicking here</a>.");
             ViewData["Title"] = "تغییر پسوورد";
             ViewData["ConfirmMessage"] = "لینک تغیر پسوورد به ایمیل شما فرستاده شد";
@@ -217,7 +219,7 @@ namespace Web.Controllers
                 ViewBag.IsSuccess = false;
                 return View("ConfirmEmail");
             }
-            var user = await _userManager.FindByIdAsync(model.UserId);
+            var user = await UserManager.FindByIdAsync(model.UserId);
             if (user == null)
             {
                 ViewData["Title"] = "تغییر پسوورد";
@@ -225,7 +227,7 @@ namespace Web.Controllers
                 ViewBag.IsSuccess = false;
                 return View("ConfirmEmail");
             }
-            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            var result = await UserManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
             if (result.Succeeded)
             {
                 ViewBag.IsSuccess = true;
@@ -247,19 +249,19 @@ namespace Web.Controllers
         {
             //if (ModelState.IsValid)
             //{
-            CustomUser user = await _userManager.FindByEmailAsync(model.Email);
+            CustomUser user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 ViewData["ErrorMessage"] = "متاسفانه کاربری با چنین ایمیلی وجود ندارد";
                 ViewBag.Issuccess = false;
                 return View();
             }
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
 
             var resetLink = Url.Action("ConfirmEmail",
                             "Account", new { userId = user.Id, Code = token },
                              protocol: Request.Scheme);
-            await _emailHandler.SendEmailAsync(model.Email, "Change Password",
+            await EmailHandler.SendEmailAsync(model.Email, "Change Password",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(resetLink)}'>clicking here</a>.");
             ViewBag.IsSuccess = true;
             @ViewData["EmailAddress"] = model.Email;

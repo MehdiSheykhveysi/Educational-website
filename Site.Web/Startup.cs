@@ -18,6 +18,7 @@ using Site.Web.Infrastructures.Interfaces;
 using Site.Core.ApplicationService.SiteSettings;
 using Site.Web.Infrastructures.PaymentsImplimentation;
 using Site.Web.Infrastructures.Filters;
+using Site.Core.DataBase.Repositories.CustomizeIdentity;
 
 namespace Site.Web
 {
@@ -42,7 +43,7 @@ namespace Site.Web
                 Options.Password.RequiredUniqueChars = 2;
                 Options.Password.RequireDigit = false;
                 Options.SignIn.RequireConfirmedEmail = true;
-            }).AddEntityFrameworkStores<LearningSiteDbContext>().AddDefaultTokenProviders();
+            }).AddEntityFrameworkStores<LearningSiteDbContext>().AddUserManager<CustomUserManager>().AddDefaultTokenProviders();
             services.AddDbContext<LearningSiteDbContext>(options => options.UseSqlServer(siteSetting.DefaultConnection));
             services.AddTransient<GetUser, GetUser>();
             services.AddMvc(options =>
@@ -51,12 +52,13 @@ namespace Site.Web
                 options.Filters.Add(typeof(GolbalPageModelValidation));
             });
             services.AddAutoMapper(cfg => cfg.ValidateInlineMaps = false);
+
+            services.AddScoped<CustomUserManager>();
             services.AddTransient<IEmailHandler, EmailHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();
-            services.AddTransient<IWalletRepository, WalletRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ITransactRepository, TransactRepository>();
             services.AddTransient<IPayment, PaymnetPayIr>();
         }
 

@@ -1,0 +1,90 @@
+﻿@page "{Id}"
+@model DetailModel
+
+<div class="row">
+
+    <div class="dl-horizontal text-right col-md-4 col-sm-4">
+        <div class="form-group" style="margin-top:20px">
+            <div class="form-group">
+
+                <div class="form-group">
+                    <label asp-for="@Model.Model.UserName" class="control-label text-right"></label>
+                    <input value="@Model.Model.UserName" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.Email" class="control-label text-right"></label>
+                    <input value="@Model.Model.Email" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.PhoneNumber" class="control-label text-right"></label>
+                    <input value="@Model.Model.PhoneNumber" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.IsActive" class="control-label text-right"></label>
+                    <input id="IsActive" value="@Model.Model.IsActive.ToMessageString("فعال است", "غیر فعال است")" readonly />
+                    <label asp-for="@Model.Model.AccountBalance" class="control-label text-right"></label>
+                    <input value="@Model.Model.AccountBalance" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.RegisterDate" class="control-label text-right"></label>
+                    <input value="@Model.Model.RegisterDate.ToShamsi()" readonly class="form-control text-right" />
+
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.Model.SelectedRoles" class="control-label text-right"></label>
+
+                    @if (Model.Model.SelectedRoles?.Count <= 0)
+                    {
+                        <br />
+                        <label class="text-danger"> &nbsp&nbsp کاربر نقشی ندارد &nbsp&nbsp</label>
+                    }
+                    else
+                    {
+                        foreach (RoleModel item in Model.Model.SelectedRoles)
+                        {
+                            <label class="text-success">&nbsp&nbsp @item.Name &nbsp&nbsp</label>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <a asp-page="/Admin/Edit" asp-route-Id="@Model.Model.Id" class="btn btn-info text-right">ویرایش</a>
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-left dl-horizontal col-md-2 col-sm-2" style="margin-top:20px">
+        <img src="@Url.Content("~/images/UserProfile/"+Model.Model.Avatar)" alt="@Model.Model.UserName" class="img-responsive img-rounded">
+    </div>
+    <div class="table-responsive form-group text-left dl-horizontal col-md-6 col-sm-6" style="margin-top:20px">
+        <table class="table table-striped table-bordered table-hover dataTable no-footer text-right">
+            <thead>
+                <tr>
+                    <th>نوع تراکنش</th>
+                    <th>مبلغ </th>
+                    <th>توضیحات </th>
+                    <th>تاریخ </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Model.Transactions)
+                {
+                    <tr>
+                        <td>@item.TransactType.ToDisplay()</td>
+                        <td>@item.Balance</td>
+                        <td>@item.Description</td>
+                        <td>@item.TransactDate.ToShamsi()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#IsActive").html(function () {
+
+                if (this.innerHTML == "فعال است") {
+                    $("#IsActive").attr("class", "form-control text-right text-success");
+                } else {
+                    $("#IsActive").attr("class", "form-control text-right text-danger");
+                }
+            });
+
+        });
+    </script>
+}

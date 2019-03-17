@@ -13,10 +13,12 @@ namespace Site.Core.Domain.Entities
         public CustomUser(DateTime TimeCreated)
         {
             RegisterDate = TimeCreated;
+            IsDeleted = false;
         }
         public string Avatar { get; set; }
         public DateTime RegisterDate { get; set; }
         public decimal AccountBalance { get; set; }
+        public bool IsDeleted { get; set; }
 
         //Navigation Peroperties
         public ICollection<Transact> Transactions { get; set; }

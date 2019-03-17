@@ -8,6 +8,7 @@ namespace Site.Web.Areas.User.Models.HomeModels
     {
         [Display(Name = "آواتار")]
         [FileVerifyExtensions(fileExtensions: "jpg,jpeg,png,gif", ErrorMessage = "لطفا یک فایل با فرمت صحیح انتخاب کنید")]
+        [Required(ErrorMessage ="لطفا یک عکس انتخاب کنید")]
         public IFormFile FormFile { get; set; }
     }
 }

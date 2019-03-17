@@ -7,5 +7,6 @@ namespace Site.Web.Models.PagesModels
     {
         public PagedResult<CustomUser> List { get; set; } = new PagedResult<CustomUser>();
         public string Username { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
