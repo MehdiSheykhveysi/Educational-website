@@ -20,7 +20,7 @@ namespace Site.Web.TagHelpers
         public ViewContext ViewContext { get; set; }
         public PageData PageData { get; set; }
         public string PageName { get; set; }
-        public string PageUsername { get; set; }
+        public string PageSearchkeyValue { get; set; }
         public string PageAction { get; set; }
         public string PageController { get; set; }
         public bool PageIsdeleted { get; set; }
@@ -37,12 +37,12 @@ namespace Site.Web.TagHelpers
                 if (string.IsNullOrEmpty(PageName) || !string.IsNullOrEmpty(PageAction))
                 {
                     a.Attributes["class"] = (i == PageData.CurentItem) ? "paginate_button active" : "paginate_button";
-                    a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new { PageNumber = i, UserName = PageUsername, IsDeleted = PageIsdeleted });
+                    a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new { PageNumber = i, UserName = PageSearchkeyValue, IsDeleted = PageIsdeleted });
                 }
                 else
                 {
                     a.Attributes["class"] = (i == PageData.CurentItem) ? "paginate_button active" : "paginate_button";
-                    a.Attributes["href"] = urlHelper.Page(PageName, new { PageNumber = i, UserName = PageUsername, IsDeleted = PageIsdeleted });
+                    a.Attributes["href"] = urlHelper.Page(PageName, new { PageNumber = i, UserName = PageSearchkeyValue, IsDeleted = PageIsdeleted });
                 }
                 a.InnerHtml.Append(i.ToString());
                 li.InnerHtml.AppendHtml(a);

@@ -6,7 +6,7 @@ using System;
 
 namespace Site.Core.DataBase.Context
 {
-    public class LearningSiteDbContext : IdentityDbContext<CustomUser, Role,Guid>
+    public class LearningSiteDbContext : IdentityDbContext<CustomUser, Role, Guid>
     {
         public LearningSiteDbContext(DbContextOptions options) : base(options)
         {

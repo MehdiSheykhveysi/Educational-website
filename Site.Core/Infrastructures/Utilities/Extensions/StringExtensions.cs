@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Site.Core.Infrastructures.Utilities.Enums;
 using System;
+using System.Linq;
 
 namespace Site.Core.Infrastructures.Utilities.Extensions
 {
@@ -20,6 +22,11 @@ namespace Site.Core.Infrastructures.Utilities.Extensions
         public static decimal ToDecimal(this string value)
         {
             return Convert.ToDecimal(value);
+        }
+        public static string ToPersionDisplayEnum(this string value)
+        {
+            CustomClaimTypes[] list = (CustomClaimTypes[])Enum.GetValues(typeof(CustomClaimTypes));
+            return list.SingleOrDefault(c => c.ToString().Equals(value, StringComparison.CurrentCultureIgnoreCase)).ToDisplay();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Web.Controllers
         private readonly CustomUserManager UserManager;
         private readonly SignInManager<CustomUser> SignInManager;
         public IEmailHandler EmailHandler { get; set; }
+
         public AccountController(CustomUserManager userManager, SignInManager<CustomUser> signInManager, IEmailHandler emailHandler)
         {
             this.UserManager = userManager;
@@ -125,7 +126,7 @@ namespace Web.Controllers
                     return View("ConfirmEmail");
                 }
                 await SignInManager.SignOutAsync();
-                var SignInResult = await SignInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: false);
+                var SignInResult = await SignInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: true);
                 if (SignInResult.Succeeded)
                 {
                     return Redirect(returnUrl);
@@ -194,7 +195,7 @@ namespace Web.Controllers
             ViewBag.IsSuccess = true;
             return View("ConfirmEmail");
             //}
-            return View(model);
+            //return View(model);
         }
 
 

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Site.Web.Pages.Admin
+namespace Site.Web.Pages.Admin.UserManagment
 {
     public class DetailModel : PageModel
     {
@@ -32,7 +32,7 @@ namespace Site.Web.Pages.Admin
         {
             if (string.IsNullOrEmpty(Id))
             {
-                TempData["Error"] = "شناسه نا معتبر";
+                ViewData["Error"] = "شناسه نا معتبر";
                 return Page();
             }
             CustomUser user = await CustomUserManager.FindByIdAsync(Id);

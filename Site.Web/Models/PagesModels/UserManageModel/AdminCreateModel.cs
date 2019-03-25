@@ -11,7 +11,6 @@ namespace Site.Web.Models.PagesModels
         public virtual string PassWord { get; set; }
 
         [Display(Name = "آواتار")]
-        [Required(ErrorMessage = "انتخاب عکس الزامیست")]
         [FileVerifyExtensions(fileExtensions: "jpg,jpeg,png,gif", ErrorMessage = "لطفا یک فایل با فرمت صحیح انتخاب کنید")]
         public override IFormFile FormFile { get => base.FormFile; set => base.FormFile = value; }
     }

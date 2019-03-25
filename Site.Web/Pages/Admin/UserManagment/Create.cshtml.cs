@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Site.Web.Pages.Admin
+namespace Site.Web.Pages.Admin.UserManagment
 {
     public class CreateModel : PageModel
     {
@@ -53,7 +53,7 @@ namespace Site.Web.Pages.Admin
                 IdentityResult identityResult = await UserManager.AddToRolesAsync(user, Model.SelectedRoles.Where(r => r.Checked).Select(c => c.Name));
                 if (result.Succeeded)
                 {
-                    return RedirectToPage("/Admin/index");
+                    return RedirectToPage("/Admin/UserManagment/index");
                 }
                 else
                 {

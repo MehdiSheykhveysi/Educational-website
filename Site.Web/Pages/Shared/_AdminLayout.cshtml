@@ -42,16 +42,16 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a asp-page="/Admin/Index"><i class="glyphicon glyphicon-dashboard"></i> داشبورد</a>
+                            <a asp-page="/Admin/UserManagemnet/Index"><i class="glyphicon glyphicon-dashboard"></i> داشبورد</a>
                         </li>
                         <li>
-                            <a href="#"><i class="glyphicon glyphicon-magnet"></i> مدیریت کاربران<span class="glyphicon glyphicon-arrow-down"></span></a>
+                            <a href="#"><i class="glyphicon glyphicon-cog"></i> مدیریت کاربران<span class="glyphicon glyphicon-arrow-down"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a asp-page="/Admin/Index">لیست کاربران</a>
+                                    <a asp-page="/Admin/UserManagment/Index">لیست کاربران</a>
                                 </li>
                                 <li>
-                                    <a href="morris.html"> نمودار های Morris.js</a>
+                                    <a asp-page="/Admin/RoleManagement/Index"> مدیریت نقش ها</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -68,13 +68,13 @@
                 <div class="row">
                     <div class="col-lg-12">
                         @{
-                            if (TempData["Massege"] != null)
+                            if (ViewData["Massege"] != null)
                             {
-                                <div class="alert alert-success"><h3>@TempData["Massege"]</h3></div>
+                                <div class="alert alert-success"><h3>@ViewData["Massege"]</h3></div>
                             }
-                            else if (TempData["Error"] != null)
+                            else if (ViewData["Error"] != null)
                             {
-                                <div class="alert alert-danger"><h3>@TempData["Error"]</h3></div>
+                                <div class="alert alert-danger"><h3>@ViewData["Error"]</h3></div>
                             }
 
                         }

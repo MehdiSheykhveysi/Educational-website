@@ -10,7 +10,6 @@ namespace Site.Web.Controllers
         }
         public IActionResult Index()
         {
-           // ViewData["test"] = "dhfhf";
             return View();
         }
     }

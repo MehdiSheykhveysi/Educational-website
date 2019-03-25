@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Site.Core.DataBase.Repositories.CustomizeIdentity;
 using Site.Web.Models.PagesModels;
 
-namespace Site.Web.Pages.Admin
+namespace Site.Web.Pages.Admin.UserManagment
 {
     public class IndexModel : PageModel
     {

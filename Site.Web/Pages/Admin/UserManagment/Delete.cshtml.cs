@@ -7,7 +7,7 @@ using Site.Core.Domain.Entities;
 using Site.Web.Models.PagesModels;
 using System.Threading.Tasks;
 
-namespace Site.Web.Pages.Admin
+namespace Site.Web.Pages.Admin.UserManagment
 {
     public class DeleteModel : PageModel
     {
@@ -40,15 +40,16 @@ namespace Site.Web.Pages.Admin
         public async Task<IActionResult> OnPostAsync()
         {
             CustomUser user = await CustomUserManager.FindByIdAsync(Model.Id.ToString());
-            IdentityResult result = await CustomUserManager.DeleteAsync(user);
+            user.IsDeleted = true;
+            IdentityResult result = await CustomUserManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                TempData["Massege"] = "کاربر با موفقیت حذف شد";
-                return RedirectToPage("/Admin/Index");
+                ViewData["Massege"] = "کاربر با موفقیت حذف شد";
+                return RedirectToPage("/Admin/UserManagment/Index");
             }
             else
             {
-                TempData["Error"] = "مشکلی پیش آمده است لطفا دوباره امتحان کنید یا اطلاعات را دوباره چک کنید";
+                ViewData["Error"] = "مشکلی پیش آمده است لطفا دوباره امتحان کنید یا اطلاعات را دوباره چک کنید";
                 return Page();
             }
         }

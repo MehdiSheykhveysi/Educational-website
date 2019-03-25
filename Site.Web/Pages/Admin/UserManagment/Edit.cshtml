@@ -72,14 +72,13 @@
             <div class="col-md-4 ">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
-                    @for (int i = 0; i < Model.Model.SelectedRoles.Count; i++)
+                    @for (int i = 0; i < Model.Model.SelectedRoles?.Count; i++)
                     {
                         <div class="checkbox">
                             <div class="form-inline col-md-offset-2">
                                 <input type="hidden" asp-for="@Model.Model.SelectedRoles[i].Name" />
                                 <input type="checkbox" asp-for="@Model.Model.SelectedRoles[i].Checked" />
                                 <label asp-for="@Model.Model.SelectedRoles[i].Name">@Model.Model.SelectedRoles[i].Name</label>
-                                &nbsp;|&nbsp;
                             </div>
                         </div>
                     }
