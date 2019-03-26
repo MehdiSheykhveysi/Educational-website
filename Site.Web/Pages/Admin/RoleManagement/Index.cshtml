@@ -15,7 +15,7 @@
                     <form method="get">
                         <div class="col-sm-12 col-md-12">
                             <div class="form-group col-sm-4 col-md-4">
-                                <input type="text" name="UserName" class="form-control" value=@ViewData["SearchKey"] placeholder="نام نقش" />
+                                <input type="text" name="RoleName" class="form-control" value=@ViewData["SearchKey"] placeholder="نام نقش" />
                             </div>
                             <div class="form-group col-sm-2 col-md-2">
                                 <label class="checkbox-inline">
@@ -65,7 +65,10 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            $('table tr td:first-child').html($(this).index('table tr') * -1);
+            var index = 0;
+            $('table tr td:first-child').each(function (i) {
+                $(this).text(i + 1);
+            });
         });
     </script>
 }

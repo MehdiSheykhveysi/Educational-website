@@ -23,10 +23,11 @@ namespace Site.Web.Infrastructures.Mapping
             CreateMap<List<TransactModel>, List<Transact>>();
 
 
-            //RoleManagement Mapping
+            //RoleManagement Mapping 
             CreateMap<List<RoleManageModel>, List<Role>>();
             CreateMap<Role, RoleDetailModel>();
-            CreateMap<List<ClaimDTO>, IList<Claim>>();
+            CreateMap<Role, RoleEditModel>();
+            CreateMap<Role, RoleDeleteModel>().ReverseMap() ;
         }
     }
 }

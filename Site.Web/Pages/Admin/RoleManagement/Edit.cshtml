@@ -1,5 +1,5 @@
 ﻿@page
-@model Site.Web.Pages.Admin.RoleManagement.CreateModel
+@model Site.Web.Pages.Admin.RoleManagement.EditModel
 
 <form class="form-horizontal" method="post">
     <div class="well col-sm-7 col-md-7 ">
@@ -8,7 +8,7 @@
 
             <!-- Form Name -->
             <div class="text-center">
-                <h2><b>ساخت نقش جدید</b></h2><br>
+                <h2><b>ویرایش نقش </b></h2><br>
             </div>
             <!-- Text input-->
 
@@ -25,6 +25,8 @@
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-certificate"></i></span>
                         <input asp-for="@Model.Model.Name" placeholder="نام نقش" class="form-control" type="text" required>
+                        <input asp-for="@Model.Model.IsDeleted" type="hidden">
+                        <input asp-for="@Model.Model.Id" type="hidden">
                         <span asp-validation-for="@Model.Model.Name" class="text-danger "></span>
                     </div>
                 </div>
@@ -41,19 +43,30 @@
 
     </div>
     <div class="well col-sm-4 col-md-4" style="margin-right:5px;">
-        @for (int item = 0; item < Model.Model.CustomClaims?.Count; item++)
+        @for (int item = 0; item < Model.Model.Claims?.Count; item++)
         {
             <div class="checkbox text-right">
 
-                <label asp-for="@Model.Model.CustomClaims[item].Name" id="Flag" class="control-label text-center">
-                    <input asp-for="@Model.Model.CustomClaims[item].Checked" id="Check" type="checkbox" />
+                <label asp-for="@Model.Model.Claims[item].Value" id="Flag" class="control-label text-center">
+
+                    <input asp-for="@Model.Model.Claims[item].Checked" id="Check" type="checkbox" />
                     <i class="glyphicon glyphicon-chevron-left"></i>
-                    @Model.Model.CustomClaims[item].Name
+                    @Model.Model.Claims[item].Value.ToPersionDisplayEnum()
+
                 </label>
 
-                <input type="hidden" asp-for="@Model.Model.CustomClaims[item].Name" />
-                <input type="hidden" asp-for="@Model.Model.CustomClaims[item].CustomClaim" />
+                <input type="hidden" asp-for="@Model.Model.Claims[item].Value" />
             </div>
         }
     </div>
 </form>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var index = 0;
+            $('table tr td:first-child').each(function (i) {
+                $(this).text(i + 1);
+            });
+        });
+    </script>
+}

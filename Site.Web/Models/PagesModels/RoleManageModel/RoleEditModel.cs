@@ -5,19 +5,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Site.Web.Models.PagesModels.RoleManageModel
 {
-    public class RoleDetailModel : BaseRoleModel
+    public class RoleEditModel : BaseRoleModel
     {
         [Display(Name = "نام نقش")]
+        [Required(ErrorMessage ="{0} را وارد کنید")]
         public override string Name { get => base.Name; set => base.Name = value; }
 
         [HiddenInput(DisplayValue = false)]
         [ReadOnly(true)]
         public string Id { get; set; }
+
         public List<ClaimDTO> Claims { get; set; } = new List<ClaimDTO>();
-    }
-    public class ClaimDTO
-    {
-        public string Value { get; set; }
-        public bool Checked { get; set; }
     }
 }

@@ -1,0 +1,47 @@
+﻿@page "{Id}"
+@model Site.Web.Pages.Admin.RoleManagement.DeleteModel
+
+
+<form class="form-horizontal" method="post">
+    <div class="well col-sm-7 col-md-7 ">
+
+        <fieldset>
+
+            <!-- Form Name -->
+            <div class="text-center">
+                <h2><b>حذف نقش </b></h2><br>
+            </div>
+            <!-- Text input-->
+
+            <div class="form-group">
+                <div class="text-right col-md-8 ">
+                    <div class="input-group">
+                        <div asp-validation-summary="All" class="text-danger glyphicon glyphicon-warning-sign" hidden></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10 text-right">
+                    <label class="control-label text-right">نام دسترسی</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-certificate"></i></span>
+                        <input asp-for="@Model.Model.Id" type="hidden" />
+                        <input asp-for="@Model.Model.IsDeleted" type="hidden" />
+                        <input asp-for="@Model.Model.Name" value="@Model.Model.Name" readonly class="form-control text-right" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10 text-right">
+                    <div class="input-group">
+                        <input type="submit" class="btn btn-info text-danger" value="حذف" />
+                        <a asp-page="/Admin/RoleManagement/Index" class="btn btn-info text-info">انصراف</a>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+</form>

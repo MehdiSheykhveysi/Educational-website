@@ -49,33 +49,15 @@ namespace Site.Web.Pages.Admin.UserManagment
             CustomUser user = await UserManager.FindByIdAsync(Id);
             Model = Mapper.Map(user, Model);
             List<string> Roles = UserManager.GetRolesAsync(user).GetAwaiter().GetResult().ToList();
-            //var RolesModel = Roles.Select(c => new RoleModel { Checked = true, Name = c });
             List<string> AllRole = await RoleManager.Roles.Select(c => c.Name).AsNoTracking().ToListAsync();
             AllRole.Union(Roles);
             Model.SelectedRoles = AllRole.Select(c => new RoleModel { Name = c, Checked = false }).ToList();
-            //AllRole.AddRange(Roles.Select(c => new Role { Name = c }));
-            //var d = AllRole.Select(c => new RoleModel { Name = c.Name }).Distinct();
-            //Model.SelectedRoles.AddRange(d);
-            //List<RoleModel> RolesWithoutDuplicate = new List<RoleModel>();
-            //RolesWithoutDuplicate.AddRange(AllRole.Where(rs => Roles.All(r => r != rs.Name)).Select(c => new RoleModel { Name = c.Name, Checked = false }));
-            Model.SelectedRoles.ForEach(c => Roles.ForEach(u =>
+            Model.SelectedRoles.ForEach(c =>
             {
-                if (u == c.Name)
-                {
+                if (Roles.Contains(c.Name))
                     c.Checked = true;
-                }
-            }));
 
-            //foreach (var SystemRole in Model.SelectedRoles)
-            //{
-            //    foreach (var UserRole in Roles)
-            //    {
-            //        if (SystemRole.Name == UserRole)
-            //        {
-            //            SystemRole.Checked = true;
-            //        }
-            //    }
-            //}
+            });
         }
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)

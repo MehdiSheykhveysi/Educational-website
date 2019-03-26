@@ -21,6 +21,7 @@ namespace Site.Core.Infrastructures.Utilities.Extensions
             return value.ToString();
         }
     }
+
     public enum DisplayProperty
     {
         Description,

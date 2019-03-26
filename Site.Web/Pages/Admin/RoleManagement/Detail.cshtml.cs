@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Site.Core.Domain.Entities;
 using Site.Web.Models.PagesModels.RoleManageModel;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -17,17 +19,27 @@ namespace Site.Web.Pages.Admin.RoleManagement
             this.Mapper = mapper;
         }
 
-        public RoleManager<Role> RoleManager{ get; set; }
-        public IMapper Mapper { get; set; }
+        private readonly RoleManager<Role> RoleManager;
+        private readonly IMapper Mapper;
 
+        [BindProperty]
         public RoleDetailModel Model { get; set; } = new RoleDetailModel();
 
-        public async Task OnGet(string Id)
+        public async Task<IActionResult> OnGet(string Id)
         {
+            if (string.IsNullOrEmpty(Id))
+                return BadRequest();
+
             Role selectedRole = await RoleManager.FindByIdAsync(Id);
+
+            if (selectedRole == null)
+                return NotFound();
+
             Model = Mapper.Map<RoleDetailModel>(selectedRole);
             IList<Claim> claims = await RoleManager.GetClaimsAsync(selectedRole);
-            Model.Claims = Mapper.Map<List<ClaimDTO>>(claims);
+            Model.Claims = claims.Select(c => new ClaimDTO { Value = c.Value, Checked = true }).ToList();
+
+            return Page();
         }
     }
 }

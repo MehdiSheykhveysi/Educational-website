@@ -28,7 +28,13 @@ namespace Site.Web.Pages.Admin.RoleManagement
         public async Task OnGetAsync(CancellationToken cancellationToken, bool IsDeleted = false, string RoleName = null)
         {
             @ViewData["SearchKey"] = RoleName;
-            List<Role> Roles = await RoleManager.Roles.Where(c => string.IsNullOrEmpty(RoleName) || c.Name.IndexOf(RoleName, StringComparison.CurrentCultureIgnoreCase) != -1 && c.IsDeleted == IsDeleted).AsNoTracking().ToListAsync(cancellationToken);
+            List<Role> Roles =
+               (IsDeleted || !string.IsNullOrEmpty(RoleName)) ?
+
+                (await RoleManager.Roles.Where(c => c.Name.Contains(RoleName, StringComparison.CurrentCultureIgnoreCase) && c.IsDeleted == IsDeleted).AsNoTracking().ToListAsync(cancellationToken)) :
+
+                (await RoleManager.Roles.Where(c => string.IsNullOrEmpty(RoleName) || c.Name.IndexOf(RoleName, StringComparison.CurrentCultureIgnoreCase) != -1).AsNoTracking().ToListAsync(cancellationToken));
+
             Model.Roles = Mapper.Map<List<RoleManageModel>>(Roles);
             Model.IsDeleted = IsDeleted;
         }

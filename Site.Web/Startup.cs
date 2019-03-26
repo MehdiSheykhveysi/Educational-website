@@ -64,7 +64,7 @@ namespace Site.Web
             services.ConfigureApplicationCookie(options =>
             {
                 // add TimeSpan with 5 minutes plus timezone difference from Utc time
-                options.Cookie.Expiration = DateTime.Now.Subtract(DateTime.UtcNow).Add(TimeSpan.FromMinutes(15));
+                options.Cookie.Expiration = DateTime.Now.Subtract(DateTime.UtcNow).Add(TimeSpan.FromMinutes(2));
 
             });
 

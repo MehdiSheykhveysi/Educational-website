@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Site.Web.Infrastructures.CustomValidationAttribute;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Site.Web.Models.PagesModels
@@ -8,6 +9,7 @@ namespace Site.Web.Models.PagesModels
     public class AdminEditModel : FullBaseViewModel
     {
         [HiddenInput(DisplayValue = false)]
+        [ReadOnly(true)]
         public string Id { get; set; }
 
         public string Avatar { get; set; }
