@@ -106,8 +106,6 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogIn(LogInViewModel model, string returnUrl = "/")
         {
-            //if (ModelState.IsValid)
-            //{
             var user = await UserManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
@@ -140,11 +138,6 @@ namespace Web.Controllers
             {
                 ModelState.AddModelError("", "پسوورد یا ایمیلتان اشتباه است");
             }
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError("", "اطلاعات وارد شده صحیح است");
-            //}
             ViewBag.returnUrl = "/";
             return View(model);
         }
@@ -166,8 +159,6 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckEmail(CheckEmailViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
             CustomUser user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
@@ -183,9 +174,9 @@ namespace Web.Controllers
                 ViewBag.DoActive = true;
                 return View("ConfirmEmail");
             }
-            var token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+            string token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
 
-            var resetLink = Url.Action("ResetPassword",
+            string resetLink = Url.Action("ResetPassword",
                             "Account", new { userId = user.Id, Code = token },
                              protocol: Request.Scheme);
             await EmailHandler.SendEmailAsync(user.Email, "Change Password",
@@ -194,8 +185,6 @@ namespace Web.Controllers
             ViewData["ConfirmMessage"] = "لینک تغیر پسوورد به ایمیل شما فرستاده شد";
             ViewBag.IsSuccess = true;
             return View("ConfirmEmail");
-            //}
-            //return View(model);
         }
 
 
@@ -236,6 +225,10 @@ namespace Web.Controllers
                 ViewData["ConfirmMessage"] = "شما با موفقیت پسوورد خورد را عوض کردید";
                 return View("ConfirmEmail");
             }
+            else
+            {
+                ModelState.AddModelError("1","اطلاعات ارسالی صحیح نیس");
+            }
             return View(model);
         }
 
@@ -248,8 +241,6 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActiveAccount(CheckEmailViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
             CustomUser user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
@@ -268,9 +259,6 @@ namespace Web.Controllers
             @ViewData["EmailAddress"] = model.Email;
             ViewBag.IsSuccess = true;
             return View();
-            //}
-            ////ModelState.AddModelError("Email", "فرمت ایمیل وارد شده صحیح نیست ");
-            //return View(model);
         }
 
     }

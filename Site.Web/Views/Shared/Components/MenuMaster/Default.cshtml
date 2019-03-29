@@ -1,0 +1,28 @@
+﻿@model List<Menu>
+
+<div class="main-menu">
+    <div class="container">
+        <nav>
+            <span class="responsive-sign"><i class="zmdi zmdi-menu"></i></span>
+            <ul>
+                @foreach (var group in @Model.Where(g => g.ParentMenuId == null))
+                {
+                    <li>
+                        <a href=""> @group.Content </a>
+
+                        @if (@Model.Any(g => g.ParentMenuId == group.Id))
+                        {
+                            <ul>
+                                @foreach (var sub in @Model.Where(g => g.ParentMenuId == group.Id))
+                                {
+                                    <li><a href=""> @sub.Content </a></li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+
+            </ul>
+        </nav>
+    </div>
+</div>

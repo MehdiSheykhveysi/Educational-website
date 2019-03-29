@@ -6,12 +6,13 @@
             <div id="ShowError" class="text-danger" hidden></div>
             <div class="form-group">
                 <label asp-for="FormFile" class="control-label"></label>
-                <input asp-for="FormFile" type="file" id="fileUpload" required /><img src="~/images/ajax-loader.gif" id="loader" hidden />
+                <input asp-for="FormFile" type="file" id="fileUpload" required />
+                <input type="hidden" asp-for="Id" />
             </div>
 
         </form>
         <div lass="form-group">
-            <input class="btn btn-success" type="button" id="Submit" value="save" />
+            <input class="btn btn-success" type="button" id="Submit" value="save" /><img src="~/images/ajax-loader.gif" id="loader" hidden />
         </div>
     </div>
 </div>
@@ -19,14 +20,19 @@
     $(document).ready(function () {
 
         $("#Submit").click(function (e) {
-            
+
             var formData = new FormData();
             formData.append("FormFile", $('#fileUpload')[0].files[0]);
+            var token = $('input[name=__RequestVerificationToken]').val();
+            formData.append("__RequestVerificationToken", token);
+            var Id = $('input[name=Id]').val();
+            formData.append("Id", Id);
+
             $("#loader").show();
 
             $.ajax({
                 url: '/User/Home/EditProfileImage',
-                type: 'POST',
+                method: 'POST',
                 dataType: "json",
                 processData: false,
                 contentType: false,
@@ -34,12 +40,15 @@
 
                 success: function (result) {
                     if (result.status == "Success") {
-                        setTimeout(function () { window.location = "/User/Home/Index"; }, 500);
+                        $("#loader").hide();
+                        $("#ShowError").show().empty();
+                        $("#ShowError").attr("class", "text-success").text(result.messageWhenSuccessed);
+                        setTimeout(function () { window.location = result.redirectUrl; }, 12500);
                     } else if (result.status == "Error") {
                         $("#ShowError").show();
                         $("#loader").hide();
                         $.each(result.errors, function (index, value) {
-                            $("#ShowError").append("- " + index + " - " + value); 
+                            $("#ShowError").append("- " + index + " - " + value);
                         });
                     }
                 },

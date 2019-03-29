@@ -40,6 +40,15 @@ namespace Site.Web.Pages.Admin.RoleManagement
 
         public async Task<IActionResult> OnPostAsync()
         {
+            bool roleCheck = await RoleManager.RoleExistsAsync(Model.Name);
+            if (!roleCheck)
+            {
+                ModelState.AddModelError("1", "نقش وارد شده تکراری است");
+
+                return Page();
+            }
+
+
             Role role = new Role()
             {
                 Name = Model.Name,
@@ -58,7 +67,7 @@ namespace Site.Web.Pages.Admin.RoleManagement
             }
             else
             {
-                ModelState.AddModelError( "1", "نقش وارد شده تکراری است");
+                ModelState.AddModelError("1", "خطایی رخ داده است بعدا امتحان کنید");
             }
             return Page();
         }

@@ -141,6 +141,7 @@ namespace Site.Web
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();
             services.AddTransient<ITransactRepository, TransactRepository>();
+            services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IPayment, PaymnetPayIr>();
         }
 

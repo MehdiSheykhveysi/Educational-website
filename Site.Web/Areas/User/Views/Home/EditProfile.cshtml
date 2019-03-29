@@ -11,9 +11,10 @@
                             <div class="account-information" id="Changable">
                                 <div class="row">
                                     <div class="col-md-9">
-                                        <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                                        <form asp-action="EditProfile" method="post">
                                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                             <div class="form-group">
+                                                <input asp-for="Id" type="hidden" />
                                                 <label asp-for="UserName" class="control-label"></label>
                                                 <input asp-for="UserName" type="text" class="form-control" />
                                                 <span asp-validation-for="UserName" class="text-danger"></span>

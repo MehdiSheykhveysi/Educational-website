@@ -1,7 +1,6 @@
 @font-face {
     font-family: 'fontawesome';
-    src: url('../AdminStaticFiles/lib/font-awesome/fonts/fontawesome-webfont.eot') format('eot'), 
-    url('../AdminStaticFiles/lib/font-awesome/fonts/fontawesome-webfont.woff') format('woff');
+    src: url('../AdminStaticFiles/lib/font-awesome/fonts/fontawesome-webfont.eot') format('eot'), url('../AdminStaticFiles/lib/font-awesome/fonts/fontawesome-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -208,7 +207,7 @@ a, i, input[type="submit"], form button {
         .main-menu nav > span {
             font-size: 36px;
             color: #fff;
-            display: none
+            display: none;
         }
 
             .main-menu nav > span:hover {
@@ -224,7 +223,11 @@ a, i, input[type="submit"], form button {
         }
 
         .main-menu nav > ul > li:last-child > a {
-            border-left: 0
+            border-left: 0;
+        }
+
+        .main-menu nav ul li:hover > ul {
+            display: block;
         }
 
         .main-menu nav > ul > li > ul {
@@ -252,7 +255,8 @@ a, i, input[type="submit"], form button {
 
                     .main-menu nav > ul > li:hover > a:hover,
                     .main-menu nav > ul > li > ul > li > a:hover {
-                        color: #0c740a
+                        color: #0c740a;
+                       
                     }
 
 .sidebar {

@@ -3,12 +3,18 @@
     <div class="search-form ">
         <form>
             <input type="text" name="" placeholder="چی دوست داری یاد بگیری ؟">
-            <button><i class="glyphicon glyphicon-book"></i></button>
+            <button><i class="glyphicon glyphicon-search"></i></button>
         </form>
     </div>
-       
 }
-    <div> @ViewData["test"]</div>
+<button class="btn btn-info" id="Redirect">Click Me To Go User Panel</button>
+<script>
+    $(document).ready(function () {
+        $("#Redirect").click(function () {
+            window.location.href = "/";
+        });
+    });
+</script>
 @*<main id="home-page">
         <div class="container">
             <section class="terms-items">

@@ -1,9 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Site.Web.Areas.User.Models.HomeModels
 {
     public class UserProfileViewModel
     {
+        [ReadOnly(true)]
+        [HiddenInput(DisplayValue = false)]
+        public string Id { get; set; }
+
         [Display(Name = "نام کاربری")]
         [Required(ErrorMessage = "لطفا{0} را وارد کنید")]
         [MinLength(4, ErrorMessage = "نام کاربری حداقل باید چهار حرف باشد")]

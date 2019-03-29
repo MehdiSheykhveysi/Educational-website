@@ -20,7 +20,7 @@ namespace Site.Core.DataBase.Configurations
 
             //Relations
 
-            builder.HasMany(u => u.Transactions).WithOne(t =>t.CustomUser).HasForeignKey(u => u.CustomUserId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(u => u.Transactions).WithOne(t =>t.CustomUser).HasForeignKey(u => u.CustomUserId);
 
         }
     }

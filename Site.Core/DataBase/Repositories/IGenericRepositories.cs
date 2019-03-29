@@ -11,7 +11,7 @@ namespace Site.Core.DataBase.Repositories
         DbSet<TEntity> Entities { get; set; }
         IQueryable<TEntity> NoTrackEntities { get; }
         IQueryable<TEntity> TrackEntities { get; }
-
+        
         Task AddAsync(TEntity entity, CancellationToken cancellationToken);
         Task DeleteAsync(TEntity entity, CancellationToken cancellationToken);
         Task<TEntity> GetByIdAsync(object ID, CancellationToken CancellationToken);
