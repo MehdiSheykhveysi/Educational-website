@@ -11,15 +11,15 @@ namespace Site.Web.ViewComponents
     [ViewComponent]
     public class MenuMasterViewComponent : ViewComponent
     {
-        public MenuMasterViewComponent(IMenuRepository MenuRepository)
+        public MenuMasterViewComponent(ICourseGroupRepository CourseGroupRepository)
         {
-            this.menuRepository = MenuRepository;
+            this.courseGroupRepository = CourseGroupRepository;
         }
-        private readonly IMenuRepository menuRepository;
+        private readonly ICourseGroupRepository courseGroupRepository;
 
         public async Task<IViewComponentResult> InvokeAsync(CancellationToken cancellationToken)
         {
-            List<Menu> menuList = await menuRepository.Entities.Include(c=>c.MenuItems).ToListAsync(cancellationToken);
+            List<CourseGroup> menuList = await courseGroupRepository.Entities.Include(c=>c.ParentCourseGroup).ToListAsync(cancellationToken);
             
             return View("Default", menuList);
         }

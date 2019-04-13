@@ -15,7 +15,7 @@ using System;
 namespace Site.Web.Pages.Admin.RoleManagement
 {
 
-    [Authorize(Policy = nameof(CustomClaimTypes.AddRole))]
+   // [Authorize(Policy = nameof(CustomClaimTypes.AddRole))]
     public class CreateModel : PageModel
     {
         public CreateModel(RoleManager<Role> roleManager)
@@ -41,7 +41,7 @@ namespace Site.Web.Pages.Admin.RoleManagement
         public async Task<IActionResult> OnPostAsync()
         {
             bool roleCheck = await RoleManager.RoleExistsAsync(Model.Name);
-            if (!roleCheck)
+            if (roleCheck)
             {
                 ModelState.AddModelError("1", "نقش وارد شده تکراری است");
 

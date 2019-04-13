@@ -2,13 +2,12 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Site.Core.Domain.Entities;
 using Site.Web.Areas.User.Models.HomeModels;
 using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Attributes;
+using Site.Web.Infrastructures.BusinessObjects;
 using Site.Web.Infrastructures.Interfaces;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -37,7 +36,7 @@ namespace Site.Web.Areas.User.Controllers
             CustomUser LoggedUser = await _userManager.GetUserAsync(User);
             UserProfileViewModel model = new UserProfileViewModel
             {
-                UserName = LoggedUser.UserName,
+                UserName = LoggedUser.ShowUserName,
                 Email = LoggedUser.Email,
                 PhoneNumber = LoggedUser.PhoneNumber,
                 RegisterDate = LoggedUser.RegisterDate.ToShamsi(),
@@ -56,7 +55,7 @@ namespace Site.Web.Areas.User.Controllers
                 Id = loggeduser.Id.ToString(),
                 Email = loggeduser.Email,
                 PhoneNumber = loggeduser.PhoneNumber,
-                UserName = loggeduser.UserName,
+                UserName = loggeduser.ShowUserName,
                 UserProfileUrl = loggeduser.Avatar,
                 RegisterDate = loggeduser.RegisterDate.ToShamsi()
             };
@@ -68,7 +67,7 @@ namespace Site.Web.Areas.User.Controllers
         public async Task<IActionResult> EditProfile(UserProfileViewModel model)
         {
             CustomUser user = await _userManager.GetUserAsync(User);
-            user.UserName = model.UserName;
+            user.ShowUserName = model.UserName;
             user.PhoneNumber = model.PhoneNumber;
             user.EmailConfirmed = user.Email == model.Email;
             user.Email = model.Email;
@@ -79,7 +78,7 @@ namespace Site.Web.Areas.User.Controllers
             }
             else
             {
-                AddModelStateError(ModelState, result.Errors.Select(c => c.Description));
+                ModelState.AddModelStateError(result.Errors.Select(c => c.Description));
             }
             return View(model);
         }
@@ -99,7 +98,7 @@ namespace Site.Web.Areas.User.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProfileImage(AjaxUserEditProfileImage model, CancellationToken cancellationToken)
         {
-            ValidationErrorViewModel result = new ValidationErrorViewModel("Error");
+            AjaxResult result = new AjaxResult("Error");
 
             CustomUser user = await _userManager.FindByIdAsync(model.Id);
             if (user != null)
@@ -118,7 +117,7 @@ namespace Site.Web.Areas.User.Controllers
                 }
                 else
                 {
-                    AddModelStateError(ModelState, Result.Errors.Select(c => c.Description));
+                    ModelState.AddModelStateError(Result.Errors.Select(c => c.Description));
                 }
             }
             ModelState.AddModelError("", "کاربر یافت نشد");
@@ -142,7 +141,7 @@ namespace Site.Web.Areas.User.Controllers
         public async Task<IActionResult> ChangePassword(AjaxUserChangrPassword model, CancellationToken cancellationToken)
         {
             CustomUser user = await _userManager.FindByIdAsync(model.Id);
-            ValidationErrorViewModel result = new ValidationErrorViewModel("Error");
+            AjaxResult result = new AjaxResult("Error");
             if (user != null)
             {
                 IdentityResult changeResult = await _userManager.ChangePasswordAsync(user, model.OldPassWord, model.NewPassWords);
@@ -155,7 +154,7 @@ namespace Site.Web.Areas.User.Controllers
                 }
                 else
                 {
-                    AddModelStateError(ModelState, changeResult.Errors.Select(c => c.Description));
+                    ModelState.AddModelStateError(changeResult.Errors.Select(c => c.Description));
                 }
                 result.AddErrrs(ModelState);
                 return new JsonResult(result);
@@ -164,13 +163,6 @@ namespace Site.Web.Areas.User.Controllers
             result.AddErrrs(ModelState);
             return new JsonResult(result);
         }
-
-        private void AddModelStateError<TErrorType>(ModelStateDictionary ModelState, TErrorType Errors) where TErrorType : IEnumerable<string>
-        {
-            foreach (var item in Errors)
-            {
-                ModelState.AddModelError("-", item);
-            }
-        }
+        
     }
 }

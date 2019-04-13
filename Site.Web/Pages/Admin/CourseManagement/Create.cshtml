@@ -1,0 +1,180 @@
+﻿@page
+@model Site.Web.Pages.Admin.CourseManagement.CreateModel
+@{
+    ViewData["Title"] = "افزودن دوره آموزشی";
+}
+<div class="row">
+    <form method="post" enctype="multipart/form-data">
+        <div class="well col-md-7 col-sm-7">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CourseTitle" class="control-label"></label>&nbsp;:&nbsp;
+                    <input asp-for="@Model.Model.CourseTitle" type="text" class="form-control" required/>
+                    <span asp-validation-for="@Model.Model.CourseTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CourseGroupId" class="control-label"></label>
+                    <select asp-for="@Model.Model.CourseGroupId" class="form-control" asp-items="@(new SelectList(Model.Model.CourseGroups, "Id", "Title"))" required><option class="text-danger">لطفا انتخاب کنید</option></select>
+                    <span asp-validation-for="@Model.Model.CourseGroupId" class="text-danger"></span>
+                </div>
+                <div hidden>
+                    @for (int i = 0; i < Model.Model?.CourseGroups?.Count; i++)
+                    {
+                        <input asp-for="@Model.Model.CourseGroups[i].Id" hidden />
+                        <input asp-for="@Model.Model.CourseGroups[i].Title" hidden />
+                    }
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CustomUserId" class="control-label"></label>
+                    <select asp-for="@Model.Model.CustomUserId" class="form-control" asp-items="@(new SelectList(Model.Model.CustomUsers,"Id","ShowUserName"))" required><option class="text-danger">لطفا انتخاب کنید</option></select>
+                    <span asp-validation-for="@Model.Model.CustomUserId" class="text-danger"></span>
+                </div>
+                <div hidden>
+                    @for (int i = 0; i < Model.Model?.CustomUsers?.Count; i++)
+                    {
+                        <input asp-for="@Model.Model.CustomUsers[i].Id" hidden />
+                        <input asp-for="@Model.Model.CustomUsers[i].ShowUserName" hidden />
+                    }
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CoursePrice" class="control-label"></label>&nbsp;:&nbsp;
+                    <input asp-for="@Model.Model.CoursePrice" class="form-control" min="1000" value="1000" placeholder="قیمت به ریال" type="number" required/>
+                    <span asp-validation-for="@Model.Model.CoursePrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.DemoFileName" class="control-label"></label>
+                    <input asp-for="@Model.Model.DemoFileName" type="file" class="btn glyphicon glyphicon-open-file" required />
+                    <span asp-validation-for="@Model.Model.DemoFileName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CourseDescription" class="control-label"></label>&nbsp;:&nbsp;
+                    <textarea asp-for="@Model.Model.CourseDescription" class="form-control total_area" type="text" required></textarea>
+                    <span asp-validation-for="@Model.Model.CourseDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <span class="form-group glyphicon glyphicon-tags"> </span>
+                    <input asp-for="@Model.Model.Keywordkeys" class="form-control " id="basic" data-role="tagsinput" placeholder="جداسازی تگ ها با کاما(,)" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn glyphicon glyphicon-send" value="ذخیره اطلاعات" />
+            </div>
+        </div>
+
+        <div class="well col-md-5 col-sm-5">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="@Model.Model.UploadedImage" class="control-label"></label>
+                    <div class="form-group">
+                        <img class="img-responsive img-rounded" id="imgAvatar" src="~/images/UserProfile/index.png" />
+                    </div>
+                    <input asp-for="@Model.Model.UploadedImage" type="file" class="btn glyphicon glyphicon-open-file"  required/>
+                    <span asp-validation-for="@Model.Model.UploadedImage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CourseLevelId" class="control-label"></label>
+                    <select class="form-control" asp-for="@Model.Model.CourseLevelId" asp-items="@(new SelectList(Model.Model.CourseLevels, "Id", "Title"))"><option class="text-danger">لطفا انتخاب کنید</option></select>
+                    <span asp-validation-for="@Model.Model.CourseLevelId"></span>
+                </div>
+                <div hidden>
+                    @for (int i = 0; i < Model.Model?.CourseLevels?.Count; i++)
+                    {
+                        <input asp-for="@Model.Model.CourseLevels[i].Id" hidden />
+                        <input asp-for="@Model.Model.CourseLevels[i].Title" hidden />
+                    }                                              
+                    </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CourseStatusId" class="control-label"></label>
+                    <select class="form-control" asp-for="@Model.Model.CourseStatusId" asp-items="@(new SelectList(Model.Model.CourseStatuses, "Id", "Title"))" required><option class="text-danger">لطفا انتخاب کنید</option></select>
+                    <span asp-validation-for="@Model.Model.CourseStatusId"></span>
+                </div>
+                <div hidden>
+                    @for (int i = 0; i < Model.Model?.CourseStatuses?.Count; i++)
+                    {
+                        <input asp-for="@Model.Model.CourseStatuses[i].Id" hidden />
+                        <input asp-for="@Model.Model.CourseStatuses[i].Title" hidden />
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+
+            //Upload Image
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#imgAvatar').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#Model_UploadedImage").change(function () {
+                readURL(this);
+            });
+
+            $('#basic').tagInput();
+            $('#basic').tagInput({ labelClass: "label-warning" });
+
+
+            //Ajax Load Tags
+            //it's work
+            //var JustDoOnce = true;
+            //var dataSource = [];
+            //$("#basic").keyup(function (e) {
+            //    if (e.keyCode == 8)
+            //        return;
+            //    else if (e.keyCode == 13)
+            //        return;
+            //    else if (e.keyCode == 16)
+            //        return;
+            //    if (e.keyCode == 18)
+            //        return;
+            //    if (e.keyCode == 32)
+            //        return;
+            //    $("#loader").show();
+            //    if (JustDoOnce)
+            //        $.ajax({
+            //            type: "GET",
+            //            url: "/Admin/CourseManagement/Create?handler=Keywordlist",
+            //            beforeSend: function (xhr) {
+            //                xhr.setRequestHeader("XSRF-TOKEN",
+            //                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            //            },
+            //            contentType: "application/text; charset=utf-8",
+            //            dataType: "json",
+            //            success: function (result) {
+            //                $("#loader").hide();
+            //                dataSource = result.successedResultList;
+            //                JustDoOnce = false;
+            //            },
+            //        }).done(function () {
+            //            $('#basic').magicsearch({
+            //                dataSource: dataSource,
+            //                fields: ['title'],
+            //                id: 'id',
+            //                format: '%title%',
+            //                multiple: true,
+            //                multiField: 'title',
+            //                noResult: "Not Found",
+            //                multiStyle: {
+            //                    space: 5,
+            //                    width: 80
+            //                },
+            //            });
+            //            });
+            //    $("#loader").hide();
+            //});
+            //tags
+
+
+        });
+    </script>
+}

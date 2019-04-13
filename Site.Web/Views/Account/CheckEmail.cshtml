@@ -7,13 +7,13 @@
             @if (ViewBag.Issuccess)
             {
                 <div class="alert alert-success">
-                    <p class="help-block">کاربر گرامی ما ایمیلی را به @ViewData["EmailAddress"] فرستادیم جهت تغییر پسوورد ایمیل خود را چک کنید</p>
+                    <p class="help-block text-success">کاربر گرامی ما ایمیلی را به @ViewData["EmailAddress"] فرستادیم جهت تغییر پسوورد ایمیل خود را چک کنید</p>
                 </div>
             }
             else
             {
                 <div class="alert text-danger">
-                    <p class="help-block">@ViewData["ErrorMessage"]</p>
+                    <p class="help-block text-danger">@ViewData["ErrorMessage"]</p>
                 </div>
             }
         }

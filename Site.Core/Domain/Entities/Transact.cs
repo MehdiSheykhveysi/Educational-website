@@ -9,6 +9,8 @@ namespace Site.Core.Domain.Entities
         public decimal Balance { get; set; }
         public string Description { get; set; }
         public DateTime TransactDate { get; set; }
+
+        //Foreign key
         public string TransactId { get; set; }
 
         //Navigation Peroperties

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Site.Core.Infrastructures.Utilities.Extensions;
@@ -10,16 +9,15 @@ using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Utilities;
 using Site.Web.Areas.User.Models.HomeModels;
 using Site.Web.Areas.User.Models.WalletModels;
-using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.BusinessObjects;
 using Site.Web.Infrastructures.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Site.Web.Infrastructures.Attributes;
 using Site.Core.DataBase.Repositories.CustomizeIdentity;
+using System.Security.Claims;
 
 namespace Site.Web.Areas.User.Controllers
 {
@@ -28,16 +26,14 @@ namespace Site.Web.Areas.User.Controllers
     public class WalletController : Controller
     {
         private readonly CustomUserManager UserManager;
-        private readonly GetUser GetUser;
         private readonly ITransactRepository TransactRepository;
         private readonly IMapper Mapper;
         private readonly IPayment Payment;
         private readonly SiteSetting SiteSetting;
 
-        public WalletController(CustomUserManager userManager, GetUser getUser, ITransactRepository transactRepository, IMapper mapper, IPayment payment, IOptionsSnapshot<SiteSetting> siteSetting)
+        public WalletController(CustomUserManager userManager, ITransactRepository transactRepository, IMapper mapper, IPayment payment, IOptionsSnapshot<SiteSetting> siteSetting)
         {
             this.UserManager = userManager;
-            this.GetUser = getUser;
             this.TransactRepository = transactRepository;
             this.Mapper = mapper;
             this.Payment = payment;
@@ -48,7 +44,7 @@ namespace Site.Web.Areas.User.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            Guid UserID = await GetUser.GetloggedUserID<Guid>(User);
+            Guid UserID = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             List<Transact> wallets = await TransactRepository.GetWalletByUserIdAsync(UserID, cancellationToken);
 
@@ -65,14 +61,14 @@ namespace Site.Web.Areas.User.Controllers
         public async Task<IActionResult> SendPayment(WalletTransactViewModel model, CancellationToken cancellationToken)
         {
 
-            ValidationErrorViewModel result = new ValidationErrorViewModel();
+            AjaxResult result = new AjaxResult("Error");
             if (ModelState.IsValid)
             {
                 PayInput input = new PayInput();
-                CustomUser user = await GetUser.GetloggedUser(User);
+                CustomUser user = await UserManager.GetUserAsync(User);
                 input.Deposits = model.Deposits;
                 input.Description = "شارژ حساب";
-                input.Redirect = "https://localhost:5001/User/Wallet/Verify";
+                input.Redirect = SiteSetting.CallBackUrl;
                 input.PhoneNumber = user.PhoneNumber;
                 PaymentRequest response = await Payment.PayAsync(input, cancellationToken); ;
                 if (Assert.NotNull(response) && response.Status == 1 && Assert.NotNull(response.Token))
@@ -83,17 +79,12 @@ namespace Site.Web.Areas.User.Controllers
                 }
                 else
                 {
-                    result.Status = "Error";
                     result.Errors.Add(response.ErrorMessage);
                 }
 
                 return new JsonResult(result);
             }
-            result.Status = "Error";
-            foreach (var modelStateVal in ViewData.ModelState.Values)
-            {
-                result.Errors.AddRange(modelStateVal.Errors.Select(error => error.ErrorMessage));
-            }
+            result.AddErrrs(ModelState);
             return new JsonResult(result);
         }
 
@@ -107,7 +98,7 @@ namespace Site.Web.Areas.User.Controllers
             if (verifyResponse.Status == "1" && verifyResponse.Message == "OK")
             {
                 model.Message = "عملیات شارژ با موفقیت انجام شد";
-                CustomUser user = await GetUser.GetloggedUser(User);
+                CustomUser user = await UserManager.GetUserAsync(User);
                 user.Transactions = new List<Transact> {
                         new Transact
                     {

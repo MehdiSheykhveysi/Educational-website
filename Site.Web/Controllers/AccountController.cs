@@ -12,14 +12,14 @@ namespace Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly CustomUserManager UserManager;
-        private readonly SignInManager<CustomUser> SignInManager;
+        private readonly CustomUserManager _userManager;
+        private readonly SignInManager<CustomUser> _signInManager;
         public IEmailHandler EmailHandler { get; set; }
 
         public AccountController(CustomUserManager userManager, SignInManager<CustomUser> signInManager, IEmailHandler emailHandler)
         {
-            this.UserManager = userManager;
-            this.SignInManager = signInManager;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
             this.EmailHandler = emailHandler;
         }
 
@@ -45,10 +45,10 @@ namespace Web.Controllers
                 AccountBalance = 0,
                 IsDeleted = false
             };
-            var Result = await UserManager.CreateAsync(user, model.Password);
+            var Result = await _userManager.CreateAsync(user, model.Password);
             if (Result.Succeeded)
             {
-                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, Code = code }, protocol: Request.Scheme);
                 await EmailHandler.SendEmailAsync(model.Username, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -75,7 +75,7 @@ namespace Web.Controllers
                 return View("ConfirmEmail");
             }
 
-            var user = await UserManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 ViewData["Title"] = "فعال سازی اکانت";
@@ -84,7 +84,7 @@ namespace Web.Controllers
                 return View("ConfirmEmail");
             }
 
-            var result = await UserManager.ConfirmEmailAsync(user, Code);
+            var result = await _userManager.ConfirmEmailAsync(user, Code);
             if (!result.Succeeded)
             {
                 return NotFound($"Error confirming email for user with ID '{userId}':");
@@ -106,7 +106,7 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogIn(LogInViewModel model, string returnUrl = "/")
         {
-            var user = await UserManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
                 //if (user.LockoutEnabled)
@@ -123,8 +123,8 @@ namespace Web.Controllers
                     ViewBag.DoActive = true;
                     return View("ConfirmEmail");
                 }
-                await SignInManager.SignOutAsync();
-                var SignInResult = await SignInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: true);
+                await _signInManager.SignOutAsync();
+                var SignInResult = await _signInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: true);
                 if (SignInResult.Succeeded)
                 {
                     return Redirect(returnUrl);
@@ -145,7 +145,7 @@ namespace Web.Controllers
         public async Task<IActionResult> LogOut(string returnUrl = "/")
         {
             returnUrl = returnUrl ?? "/";
-            await SignInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return Redirect(returnUrl);
 
         }
@@ -159,12 +159,12 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckEmail(CheckEmailViewModel model)
         {
-            CustomUser user = await UserManager.FindByEmailAsync(model.Email);
+            CustomUser user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 ViewData["ErrorMessage"] = "متاسفانه کاربری با چنین ایمیلی وجود ندارد";
                 ViewBag.Issuccess = false;
-                return View("ResetPassword");
+                return View("CheckEmail");
             }
             if (!user.EmailConfirmed)
             {
@@ -174,7 +174,7 @@ namespace Web.Controllers
                 ViewBag.DoActive = true;
                 return View("ConfirmEmail");
             }
-            string token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
             string resetLink = Url.Action("ResetPassword",
                             "Account", new { userId = user.Id, Code = token },
@@ -209,7 +209,7 @@ namespace Web.Controllers
                 ViewBag.IsSuccess = false;
                 return View("ConfirmEmail");
             }
-            var user = await UserManager.FindByIdAsync(model.UserId);
+            var user = await _userManager.FindByIdAsync(model.UserId);
             if (user == null)
             {
                 ViewData["Title"] = "تغییر پسوورد";
@@ -217,7 +217,7 @@ namespace Web.Controllers
                 ViewBag.IsSuccess = false;
                 return View("ConfirmEmail");
             }
-            var result = await UserManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
             if (result.Succeeded)
             {
                 ViewBag.IsSuccess = true;
@@ -241,14 +241,14 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActiveAccount(CheckEmailViewModel model)
         {
-            CustomUser user = await UserManager.FindByEmailAsync(model.Email);
+            CustomUser user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 ViewData["ErrorMessage"] = "متاسفانه کاربری با چنین ایمیلی وجود ندارد";
                 ViewBag.Issuccess = false;
                 return View();
             }
-            var token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
             var resetLink = Url.Action("ConfirmEmail",
                             "Account", new { userId = user.Id, Code = token },

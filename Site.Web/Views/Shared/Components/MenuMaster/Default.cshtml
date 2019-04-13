@@ -1,21 +1,21 @@
-﻿@model List<Menu>
+﻿@model List<CourseGroup>
 
 <div class="main-menu">
     <div class="container">
         <nav>
-            <span class="responsive-sign"><i class="zmdi zmdi-menu"></i></span>
+            <span class="responsive-sign"><i class="glyphicon glyphicon-menu-down"></i></span>
             <ul>
-                @foreach (var group in @Model.Where(g => g.ParentMenuId == null))
+                @foreach (var group in @Model.Where(g => g.ParentId == null))
                 {
                     <li>
-                        <a href=""> @group.Content </a>
+                        <a href=""> @group.Title </a>
 
-                        @if (@Model.Any(g => g.ParentMenuId == group.Id))
+                        @if (@Model.Any(g => g.ParentId == group.Id))
                         {
                             <ul>
-                                @foreach (var sub in @Model.Where(g => g.ParentMenuId == group.Id))
+                                @foreach (var sub in @Model.Where(g => g.ParentId == group.Id))
                                 {
-                                    <li><a href=""> @sub.Content </a></li>
+                                    <li><a href=""> @sub.Title </a></li>
                                 }
                             </ul>
                         }

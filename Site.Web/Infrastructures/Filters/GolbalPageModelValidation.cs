@@ -9,14 +9,16 @@ namespace Site.Web.Infrastructures.Filters
     {
         public async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
-            if (!context.ModelState.IsValid)
+            if (context.ModelState.IsValid)
+            {
+                await next.Invoke();
+            }
+            else
             {
                 PageModel page = context.HandlerInstance as PageModel;
                 context.Result = (IActionResult)page?.Page()
                    ?? new BadRequestResult();
             }
-            else
-                await next.Invoke();
         }
 
         public async Task OnPageHandlerSelectionAsync(PageHandlerSelectedContext context)

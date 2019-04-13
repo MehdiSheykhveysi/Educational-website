@@ -74,19 +74,6 @@ namespace Site.Core.DataBase.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId");
-
-                    b.Property<Guid>("RoleId");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId");
@@ -100,6 +87,124 @@ namespace Site.Core.DataBase.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CourseDescription")
+                        .HasMaxLength(400);
+
+                    b.Property<int?>("CourseGroupId");
+
+                    b.Property<int?>("CourseLevelId");
+
+                    b.Property<decimal>("CoursePrice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<int?>("CourseStatusId");
+
+                    b.Property<string>("CourseTitle")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<Guid?>("CustomUserId");
+
+                    b.Property<string>("DemoFileName")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("ImageName")
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime?>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseGroupId");
+
+                    b.HasIndex("CourseLevelId");
+
+                    b.HasIndex("CourseStatusId");
+
+                    b.HasIndex("CustomUserId");
+
+                    b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.CourseEpisod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CourseId");
+
+                    b.Property<DateTime>("EpisodeTime");
+
+                    b.Property<string>("FileName");
+
+                    b.Property<bool>("IsFree");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(60);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseEpisod");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.CourseGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<int?>("ParentId");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(60);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("CourseGroup");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.CourseLevel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CourseLevel");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.CourseStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(60);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CourseStatus");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.CustomUser", b =>
@@ -120,7 +225,8 @@ namespace Site.Core.DataBase.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256);
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -137,7 +243,8 @@ namespace Site.Core.DataBase.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(11);
@@ -149,11 +256,15 @@ namespace Site.Core.DataBase.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<string>("ShowUserName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -168,27 +279,26 @@ namespace Site.Core.DataBase.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Site.Core.Domain.Entities.Menu", b =>
+            modelBuilder.Entity("Site.Core.Domain.Entities.Keywordkey", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Content")
-                        .HasMaxLength(60);
+                    b.Property<int?>("CourseId");
 
-                    b.Property<bool>("IsDelete");
+                    b.Property<int?>("ParentKeywordkeyId");
 
-                    b.Property<int?>("ParentMenuId");
-
-                    b.Property<string>("Url")
-                        .HasMaxLength(300);
+                    b.Property<string>("Title")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentMenuId");
+                    b.HasIndex("CourseId");
 
-                    b.ToTable("Menu");
+                    b.HasIndex("ParentKeywordkeyId");
+
+                    b.ToTable("Keywordkey");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.Role", b =>
@@ -203,7 +313,8 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256);
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256);
@@ -246,6 +357,23 @@ namespace Site.Core.DataBase.Migrations
                     b.ToTable("Transact");
                 });
 
+            modelBuilder.Entity("Site.Core.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<Guid>("UserId");
+
+                    b.Property<Guid>("RoleId");
+
+                    b.Property<Guid?>("RoleId1");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("RoleId1");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Site.Core.Domain.Entities.Role")
@@ -270,19 +398,6 @@ namespace Site.Core.DataBase.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("Site.Core.Domain.Entities.Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Site.Core.Domain.Entities.CustomUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Site.Core.Domain.Entities.CustomUser")
@@ -291,11 +406,48 @@ namespace Site.Core.DataBase.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Site.Core.Domain.Entities.Menu", b =>
+            modelBuilder.Entity("Site.Core.Domain.Entities.Course", b =>
                 {
-                    b.HasOne("Site.Core.Domain.Entities.Menu", "ParentMenu")
-                        .WithMany("MenuItems")
-                        .HasForeignKey("ParentMenuId");
+                    b.HasOne("Site.Core.Domain.Entities.CourseGroup", "CourseGroup")
+                        .WithMany("Courses")
+                        .HasForeignKey("CourseGroupId");
+
+                    b.HasOne("Site.Core.Domain.Entities.CourseLevel", "CourseLevel")
+                        .WithMany("Courses")
+                        .HasForeignKey("CourseLevelId");
+
+                    b.HasOne("Site.Core.Domain.Entities.CourseStatus", "CourseStatus")
+                        .WithMany("Courses")
+                        .HasForeignKey("CourseStatusId");
+
+                    b.HasOne("Site.Core.Domain.Entities.CustomUser", "CustomUser")
+                        .WithMany("Courses")
+                        .HasForeignKey("CustomUserId");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.CourseEpisod", b =>
+                {
+                    b.HasOne("Site.Core.Domain.Entities.Course", "Course")
+                        .WithMany("CourseEpisods")
+                        .HasForeignKey("CourseId");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.CourseGroup", b =>
+                {
+                    b.HasOne("Site.Core.Domain.Entities.CourseGroup", "ParentCourseGroup")
+                        .WithMany("Groups")
+                        .HasForeignKey("ParentId");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.Keywordkey", b =>
+                {
+                    b.HasOne("Site.Core.Domain.Entities.Course", "Course")
+                        .WithMany("Keywordkeys")
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("Site.Core.Domain.Entities.Keywordkey", "ParentKeywordkey")
+                        .WithMany("Keywordkeys")
+                        .HasForeignKey("ParentKeywordkeyId");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.Transact", b =>
@@ -303,6 +455,23 @@ namespace Site.Core.DataBase.Migrations
                     b.HasOne("Site.Core.Domain.Entities.CustomUser", "CustomUser")
                         .WithMany("Transactions")
                         .HasForeignKey("CustomUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.UserRole", b =>
+                {
+                    b.HasOne("Site.Core.Domain.Entities.Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Site.Core.Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId1");
+
+                    b.HasOne("Site.Core.Domain.Entities.CustomUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -8,8 +8,8 @@
             <div class="form-group">
 
                 <div class="form-group">
-                    <label asp-for="@Model.Model.UserName" class="control-label text-right"></label>
-                    <input value="@Model.Model.UserName" readonly class="form-control text-right" />
+                    <label asp-for="@Model.Model.ShowUserName" class="control-label text-right"></label>
+                    <input value="@Model.Model.ShowUserName" readonly class="form-control text-right" />
                     <label asp-for="@Model.Model.Email" class="control-label text-right"></label>
                     <input value="@Model.Model.Email" readonly class="form-control text-right" />
                     <label asp-for="@Model.Model.PhoneNumber" class="control-label text-right"></label>
@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="form-group text-left dl-horizontal col-md-2 col-sm-2" style="margin-top:20px">
-        <img src="@Url.Content("~/images/UserProfile/"+Model.Model.Avatar)" alt="@Model.Model.UserName" class="img-responsive img-rounded">
+        <img src="@Url.Content("~/images/UserProfile/"+Model.Model.Avatar)" alt="@Model.Model.ShowUserName" class="img-responsive img-rounded">
     </div>
     <div class="table-responsive form-group text-left dl-horizontal col-md-6 col-sm-6" style="margin-top:20px">
         <table class="table table-striped table-bordered table-hover dataTable no-footer text-right">

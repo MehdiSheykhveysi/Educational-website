@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Site.Core.Domain.Entities;
@@ -6,7 +7,9 @@ using System;
 
 namespace Site.Core.DataBase.Context
 {
-    public class LearningSiteDbContext : IdentityDbContext<CustomUser, Role, Guid>
+    public class LearningSiteDbContext : IdentityDbContext<CustomUser, Role, Guid, IdentityUserClaim<Guid>,
+    UserRole, IdentityUserLogin<Guid>,
+    IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         public LearningSiteDbContext(DbContextOptions options) : base(options)
         {

@@ -7,5 +7,6 @@
         public string GatewaySend { get; set; }
         public string GatewayResult { get; set; }
         public string RedirectUrl { get; set; }
+        public string CallBackUrl { get; set; }
     }
 }

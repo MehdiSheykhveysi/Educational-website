@@ -85,7 +85,7 @@ namespace Site.Web.Pages.Admin.UserManagment
             IdentityResult result = await UserManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                if (user.Id.ToString() == User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                if (user.Id.ToString() == User?.FindFirst(ClaimTypes.NameIdentifier)?.Value)
                 {
                     await SignInManager.RefreshSignInAsync(user);
                 }

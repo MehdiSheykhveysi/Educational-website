@@ -10,6 +10,7 @@ namespace Site.Core.DataBase.Configurations
         {
             builder.HasKey(r => r.Id);
             builder.Property(r=>r.Id).HasDefaultValueSql("newsequentialid()"); //Use Sequential Guid In SqlServer For Generate Key
+            builder.Property(r => r.Name).HasMaxLength(50).IsRequired();
         }
     }
 }

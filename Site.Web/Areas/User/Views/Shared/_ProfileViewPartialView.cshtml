@@ -6,7 +6,7 @@
             <div class="img-layer">
                 <a class="change-image" id="ClickToEdit"><i class="glyphicon glyphicon-pencil"></i></a>
                 <img src="~/images/ajax-loader(2).gif" class="loader change-image" id="ajaxloader" hidden />
-                <img src="@Url.Content("~/Images/UserProfile/"+ Model.UserProfileUrl)" />
+                <img src="@Url.Content("~/Images/UserProfile/"+ Model.UserProfileUrl)" id="profileView"/>
             </div>
             <div class="detail">
                 <span> @Model.UserName </span>
@@ -28,7 +28,6 @@
     </aside>
 </div>
 <script>
-
     jQuery(document).ready(function () {
 
         $("#ClickToEdit").click(function (e) {

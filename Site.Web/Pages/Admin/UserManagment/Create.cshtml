@@ -1,4 +1,5 @@
-﻿@page 
+﻿@page
+
 @model CreateModel
 
 <form class="well form-horizontal" method="post" enctype="multipart/form-data">
@@ -19,12 +20,12 @@
         </div>
 
         <div class="form-group">
-            <label class="col-md-4 control-label" asp-for="@Model.Model.UserName"> </label>
+            <label class="col-md-4 control-label" asp-for="@Model.Model.ShowUserName"> </label>
             <div class="col-md-4 inputGroupContainer">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                    <input asp-for="@Model.Model.UserName" placeholder="نام کاربری" class="form-control" type="text" required>
-                    <span asp-validation-for="@Model.Model.UserName" class="text-danger"></span>
+                    <input asp-for="@Model.Model.ShowUserName" placeholder="نام کاربری" class="form-control" type="text" required>
+                    <span asp-validation-for="@Model.Model.ShowUserName" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -74,6 +75,7 @@
                     <span class="input-group-addon def"><i class="glyphicon glyphicon-upload"></i></span>
                     <input asp-for="@Model.Model.FormFile" class="btn" type="file">
                 </div>
+                <img id="imgAvatar" class="img-responsive img-rounded" src="~/images/UserProfile/index.png" style="width:100px;height:100px;" />
                 <span asp-validation-for="@Model.Model.FormFile" class="text-danger"></span>
             </div>
         </div>
@@ -123,3 +125,23 @@
 
     </fieldset>
 </form>
+@section Scripts{
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgAvatar').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#Model_FormFile").change(function () {
+            readURL(this);
+        });
+    </script>
+}

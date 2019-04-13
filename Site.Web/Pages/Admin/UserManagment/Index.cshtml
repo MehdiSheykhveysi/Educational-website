@@ -1,4 +1,5 @@
-﻿@page  
+﻿@page
+
 @model IndexModel
 
 <div class="panel panel-info">
@@ -35,6 +36,7 @@
                         <tr>
                             <th>تصویر کاربر</th>
                             <th>نام کاربری</th>
+                            <th>ایمیل</th>
                             <th>میزان شارژ حساب</th>
                             <th>تاریخ عضویت </th>
                             <th>وضعیت عضویت</th>
@@ -49,7 +51,10 @@
                                     <img src="@Url.Content("~/images/UserProfile/"+@item.Avatar)" style="width:20px;height:20px;" />
                                 </td>
                                 <td>
-                                    @item.UserName
+                                    @item.ShowUserName
+                                </td>
+                                <td>
+                                    @item.Email
                                 </td>
                                 <td>
                                     @item.AccountBalance

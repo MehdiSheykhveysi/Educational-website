@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
-using Site.Web.Infrastructures.CustomValidationAttribute;
 
 namespace Site.Web.Models.PagesModels
 {
@@ -19,7 +18,7 @@ namespace Site.Web.Models.PagesModels
 
         [Display(Name = "نام کاربری")]
         [Required(ErrorMessage = "{0}الزامی است")]
-        public string UserName { get; set; }
+        public string ShowUserName { get; set; }
     }
 
     public class WithFileBaseViewModel : BaseViewModel

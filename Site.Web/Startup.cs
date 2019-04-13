@@ -12,7 +12,6 @@ using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures;
 using Site.Core.Infrastructures.Implimentation;
 using Site.Core.Infrastructures.Interfaces;
-using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.ImplementationInterfaces;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Core.ApplicationService.SiteSettings;
@@ -49,12 +48,12 @@ namespace Site.Web
                 Options.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<LearningSiteDbContext>().AddUserManager<CustomUserManager>().AddDefaultTokenProviders();
             services.AddDbContext<LearningSiteDbContext>(options => options.UseSqlServer(siteSetting.DefaultConnection));
-            services.AddTransient<GetUser, GetUser>();
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(GlobalMvcValidateModelStateAttribute));
                 options.Filters.Add(typeof(GolbalPageModelValidation));
             });
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -131,7 +130,7 @@ namespace Site.Web
 
             });
 
-            services.AddTransient<IAuthorizationHandler, TypeHandler>();
+            services.AddSingleton<IAuthorizationHandler, TypeHandler>();
 
             services.AddAutoMapper(cfg => cfg.ValidateInlineMaps = false);
 
@@ -141,7 +140,12 @@ namespace Site.Web
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();
             services.AddTransient<ITransactRepository, TransactRepository>();
-            services.AddTransient<IMenuRepository, MenuRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<ICourseStatusRepositoty, CourseeStatusRepositoty>();
+            services.AddTransient<ICourseLevelRepository, CourseLevelRepository>();
+            services.AddTransient<ICourseGroupRepository, CourseGroupRepository>();
+            services.AddTransient<ICourseEpisodRepository, CourseEpisodRepository>();
+            services.AddTransient<IKeywordRepository, KeywordRepository>();
             services.AddTransient<IPayment, PaymnetPayIr>();
         }
 

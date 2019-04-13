@@ -2,7 +2,7 @@
 
 namespace Site.Core.DataBase.Repositories
 {
-    public interface IMenuRepository:IGenericRepositories<Menu>
+    public interface ICourseStatusRepositoty : IGenericRepositories<CourseStatus>
     {
     }
 }

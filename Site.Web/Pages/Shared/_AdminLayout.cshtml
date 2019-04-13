@@ -11,6 +11,8 @@
     <link href="~/lib/metisMenu/metisMenu.css" rel="stylesheet" />
     <link href="~/AdminStaticFiles/css/sb-admin-2.css" rel="stylesheet" />
     <link href="~/AdminStaticFiles/css/main.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery-2.2.3.min.js"></script>
+    <link href="~/AdminStaticFiles/css/bootstrap-tagsinput.css" rel="stylesheet" />
 </head>
 <body>
     <div id="wrapper">
@@ -51,7 +53,31 @@
                                     <a asp-page="/Admin/UserManagment/Index">لیست کاربران</a>
                                 </li>
                                 <li>
-                                    <a asp-page="/Admin/RoleManagement/Index"> مدیریت نقش ها</a>
+                                    <a asp-page="/Admin/UserManagment/Create">افزودن کاربر</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-cog"></i> مدیریت نقش ها<span class="glyphicon glyphicon-arrow-down"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-page="/Admin/RoleManagement/Index"> لیست نقش ها</a>
+                                </li>
+                                <li>
+                                    <a asp-page="/Admin/RoleManagement/Create"> افزودن نقش </a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-cog"></i> مدیریت دورها<span class="glyphicon glyphicon-arrow-down"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-page="/Admin/CourseManagement/Index"> لیست دورها</a>
+                                </li>
+                                <li>
+                                    <a asp-page="/Admin/CourseManagement/Create"> افزودن دوره جدید</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -70,11 +96,11 @@
                         @{
                             if (ViewData["Massege"] != null)
                             {
-                                <div class="alert alert-success"><h3>@ViewData["Massege"]</h3></div>
+                            <div class="alert alert-success"><h3>@ViewData["Massege"]</h3></div>
                             }
                             else if (ViewData["Error"] != null)
                             {
-                                <div class="alert alert-danger"><h3>@ViewData["Error"]</h3></div>
+                            <div class="alert alert-danger"><h3>@ViewData["Error"]</h3></div>
                             }
 
                         }
@@ -89,13 +115,17 @@
     <!-- /#page-wrapper -->
     <!-- /#wrapper -->
     <!-- jQuery -->
-    <script src="~/lib/jquery/dist/jquery.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 
     <script src="~/lib/metisMenu/metisMenu.js"></script>
 
     <script src="~/AdminStaticFiles/js/sb-admin-2.js"></script>
+
+    <script src="~/AdminStaticFiles/js/bootstrap-tagsinput.js"></script>
+
+    <script src="~/AdminStaticFiles/js/typeahead.js"></script>
+
     @RenderSection("Scripts", false)
 </body>
 </html>
