@@ -120,6 +120,8 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<string>("ImageName")
                         .HasMaxLength(255);
 
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<DateTime?>("UpdateDate");
 
                     b.HasKey("Id");
@@ -279,15 +281,13 @@ namespace Site.Core.DataBase.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Site.Core.Domain.Entities.Keywordkey", b =>
+            modelBuilder.Entity("Site.Core.Domain.Entities.Keyword", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CourseId");
-
-                    b.Property<int?>("ParentKeywordkeyId");
 
                     b.Property<string>("Title")
                         .HasMaxLength(50);
@@ -296,9 +296,7 @@ namespace Site.Core.DataBase.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("ParentKeywordkeyId");
-
-                    b.ToTable("Keywordkey");
+                    b.ToTable("Keyword");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.Role", b =>
@@ -439,15 +437,11 @@ namespace Site.Core.DataBase.Migrations
                         .HasForeignKey("ParentId");
                 });
 
-            modelBuilder.Entity("Site.Core.Domain.Entities.Keywordkey", b =>
+            modelBuilder.Entity("Site.Core.Domain.Entities.Keyword", b =>
                 {
                     b.HasOne("Site.Core.Domain.Entities.Course", "Course")
                         .WithMany("Keywordkeys")
                         .HasForeignKey("CourseId");
-
-                    b.HasOne("Site.Core.Domain.Entities.Keywordkey", "ParentKeywordkey")
-                        .WithMany("Keywordkeys")
-                        .HasForeignKey("ParentKeywordkeyId");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.Transact", b =>

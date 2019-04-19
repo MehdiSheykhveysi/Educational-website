@@ -1,75 +1,63 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Repositories;
-using Site.Core.DataBase.Repositories.CustomizeIdentity;
 using Site.Core.Domain.Entities;
+using Site.Web.Infrastructures;
+using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels.CourseManageModel;
 
 namespace Site.Web.Pages.Admin.CourseManagement
 {
     public class CreateModel : PageModel
     {
-        public CreateModel(ICourseRepository CourseRepository,
-            ICourseGroupRepository CourseGroupRepository,
-            ICourseLevelRepository CourseLevelRepository,
-            ICourseStatusRepositoty CourseStatusRepositoty,
-            IKeywordRepository KeywordRepository,
-            IMapper Mapper,
-            CustomUserManager CustomUserManager)
+        public CreateModel(IMapper Mapper, IFileHandler FileHandler, IHostingEnvironment HostingEnvironment, ICourseRepository CourseRepository)
         {
-            this.courseRepository = CourseRepository;
-            this.courseGroupRepository = CourseGroupRepository;
-            this.courseLevelRepository = CourseLevelRepository;
-            this.courseStatusRepositoty = CourseStatusRepositoty;
-            this.keywordRepository = KeywordRepository;
-            this.customUserManager = CustomUserManager;
             this.mapper = Mapper;
+            this.fileHandler = FileHandler;
+            this.hostingEnvironment = HostingEnvironment;
+            this.courseRepository = CourseRepository;
         }
-
-        private readonly ICourseStatusRepositoty courseStatusRepositoty;
-        private readonly ICourseRepository courseRepository;
-        private readonly ICourseGroupRepository courseGroupRepository;
-        private readonly ICourseLevelRepository courseLevelRepository;
-        private readonly IKeywordRepository keywordRepository;
-        private readonly CustomUserManager customUserManager;
         private readonly IMapper mapper;
+        private readonly IFileHandler fileHandler;
+        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ICourseRepository courseRepository;
 
         [BindProperty]
         public CourseCreateVm Model { get; set; } = new CourseCreateVm();
 
-        public async Task OnGetAsync(CancellationToken cancellationToken)
+        public void OnGet()
         {
-            List<CourseGroup> groups = await courseGroupRepository.NoTrackEntities.ToListAsync(cancellationToken);
-            Model.CourseGroups = mapper.Map<List<CourseGroupVm>>(groups);
-
-            List<CourseStatus> Status = await courseStatusRepositoty.NoTrackEntities.ToListAsync(cancellationToken);
-            Model.CourseStatuses = mapper.Map<List<CourseStatusVm>>(Status);
-
-            List<CourseLevel> levels = await courseLevelRepository.NoTrackEntities.ToListAsync(cancellationToken);
-            Model.CourseLevels = mapper.Map<List<CourseLevelVm>>(levels);
-
-            IList<CustomUser> Masters = await customUserManager.GetUsersInRoleAsync("Master");
-            Model.CustomUsers = mapper.Map<List<CustomUserVm>>(Masters);
         }
-
-        //public async Task<IActionResult> OnGetKeywordlistAsync(CancellationToken cancellationToken)
-        //{
-        //    AjaxResult<KeywordkeyVm> result = new AjaxResult<KeywordkeyVm>("Success");
-
-        //    List<Keywordkey> keywords = await keywordRepository.GetKeywordkeys(cancellationToken, null);
-        //    result.SuccessedResultList = mapper.Map<List<KeywordkeyVm>>(keywords);
-
-        //    return new JsonResult(result);
-        //}
-
-        public async Task<IActionResult> OnPostAsync()
+        
+        public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
-            return Page();
+            Course course = new Course();
+            course = mapper.Map(Model,course);
+            course.CreateDate = DateTime.Now;
+            string imageUploadpath = Path.Combine(hostingEnvironment.WebRootPath, "images", "CourseImages");
+            string imgNewFileName = await fileHandler.UploadImageAsync(Model.UploadedImage, imageUploadpath, "\\images\\CourseImages\\", FileUploadedType.Image, cancellationToken);
+
+            fileHandler.CreateImageThumb(Path.Combine(imageUploadpath, imgNewFileName), Path.Combine(imageUploadpath, "CourseImageThumb", imgNewFileName), 120);
+
+            string videoUploadPath = Path.Combine(hostingEnvironment.WebRootPath, "CourseDemo");
+            string videoNewFileName = await fileHandler.UploadImageAsync(Model.DemoFile, videoUploadPath, "\\CourseDemo\\", FileUploadedType.Video, cancellationToken);
+
+            course.ImageName = imgNewFileName;
+            course.DemoFileName = videoNewFileName;
+
+            course.Keywordkeys = Model.Keywords.Select(k => new Keyword
+            {
+                Title = k
+            }).ToList();
+            await courseRepository.AddAsync(course, cancellationToken);
+            return RedirectToPage("/Admin/CourseManagement/Index");
         }
     }
 }

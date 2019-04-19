@@ -22,6 +22,7 @@ using Site.Core.Infrastructures.Utilities.Enums;
 using Site.Web.Infrastructures.IdentityTypePolicyImpelimentaion;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Site.Web
 {
@@ -53,6 +54,7 @@ namespace Site.Web
                 options.Filters.Add(typeof(GlobalMvcValidateModelStateAttribute));
                 options.Filters.Add(typeof(GolbalPageModelValidation));
             });
+            services.Configure<FormOptions>(options => { options.MultipartBodyLengthLimit = 6000000; });
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
             services.ConfigureApplicationCookie(options =>
@@ -137,8 +139,8 @@ namespace Site.Web
             services.AddScoped<CustomUserManager>();
             services.AddTransient<IEmailHandler, EmailHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IImageHandler, ImageHandler>();
-            services.AddTransient<IImageWriter, ImageWriter>();
+            services.AddTransient<IFileHandler, FileHandler>();
+            services.AddTransient<IFileWriter, FileWriter>();
             services.AddTransient<ITransactRepository, TransactRepository>();
             services.AddTransient<ICourseRepository, CourseRepository>();
             services.AddTransient<ICourseStatusRepositoty, CourseeStatusRepositoty>();
@@ -146,6 +148,7 @@ namespace Site.Web
             services.AddTransient<ICourseGroupRepository, CourseGroupRepository>();
             services.AddTransient<ICourseEpisodRepository, CourseEpisodRepository>();
             services.AddTransient<IKeywordRepository, KeywordRepository>();
+            services.AddTransient<IImageResizer, ImageResizer>();
             services.AddTransient<IPayment, PaymnetPayIr>();
         }
 

@@ -1,0 +1,98 @@
+﻿@page
+@model Site.Web.Pages.Admin.CourseManagement.EditModel
+@{
+    ViewData["Title"] = "ویرایش دوره";
+}
+
+<div class="row">
+    <form method="post" asp-page="/Admin/CourseManagement/Edit" enctype="multipart/form-data">
+        <div class="well col-md-7 col-sm-7">
+            <div class="form-group">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <input asp-for="@Model.Model.Id" hidden />
+                    <label asp-for="@Model.Model.CourseTitle" class="control-label"></label>&nbsp;:&nbsp;
+                    <input asp-for="@Model.Model.CourseTitle" type="text" class="form-control" required />
+                    <span asp-validation-for="@Model.Model.CourseTitle" class="text-danger"></span>
+                </div>
+
+                @await Component.InvokeAsync("FillCourseDetail", new { CourseGroupId = Model.Model.CourseGroupId, CourseLevelId = Model.Model.CourseLevelId, CourseStatusId = Model.Model.CourseStatusId, CustomUserId = Model.Model.CustomUserId })
+
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CoursePrice" class="control-label"></label>&nbsp;:&nbsp;
+                    <input asp-for="@Model.Model.CoursePrice" type="number" class="form-control" min="1000" placeholder="قیمت به ریال" required />
+                    <span asp-validation-for="@Model.Model.CoursePrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <span class="form-group glyphicon glyphicon-tags"></span>
+                    <input asp-for="@Model.Model.Tags" hidden />
+                    @if (Model.Model.Keywords == null)
+                    {
+                        <input asp-for="@Model.Model.Keywords" value="@Model.Model.Tags" class="form-control " id="basic" data-role="tagsinput" placeholder="جداسازی تگ ها با کاما(,)" required>
+                    }
+                    else
+                    {
+                        <input asp-for="@Model.Model.Keywords" class="form-control " id="basic" data-role="tagsinput" placeholder="جداسازی تگ ها با کاما(,)" required>
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn glyphicon glyphicon-send" value="ذخیره اطلاعات" />
+            </div>
+        </div>
+
+        <div class="well col-md-5 col-sm-5">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="@Model.Model.UploadedImage" class="control-label"></label>
+                    <input asp-for="@Model.Model.ImageName" hidden />
+                    <div class="form-group">
+                        <img class="img-responsive img-rounded" id="imgAvatar" src="@Url.Content("~/images/CourseImages/"+Model.Model.ImageName)" />
+                    </div>
+                    <p></p>
+                    <input asp-for="@Model.Model.UploadedImage" type="file" class="btn glyphicon glyphicon-open-file" />
+                    <span asp-validation-for="@Model.Model.UploadedImage" class="text-danger"></span>
+                </div>
+                <div class="form-group text-primary"><p>درصورت انتخاب نکردن تصویر و فایل دمو همون فایل های قبلی خواهد ماند.</p></div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.DemoFile" class="control-label"></label>
+                    <input asp-for="@Model.Model.DemoFile" type="file" class="btn glyphicon glyphicon-open-file" />
+                    <span asp-validation-for="@Model.Model.DemoFile" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.CourseDescription" class="control-label"></label>&nbsp;:&nbsp;
+                    <textarea asp-for="@Model.Model.CourseDescription" class="form-control total_area" type="text" required></textarea>
+                    <span asp-validation-for="@Model.Model.CourseDescription" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+
+            //Upload Image
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#imgAvatar').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#Model_UploadedImage").change(function () {
+                readURL(this);
+            });
+
+            $('#basic').tagInput();
+            $('#basic').tagInput({ labelClass: "label-warning" });
+        });
+    </script>
+}

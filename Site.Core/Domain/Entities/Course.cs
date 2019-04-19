@@ -5,6 +5,15 @@ namespace Site.Core.Domain.Entities
 {
     public class Course : BaseEntity
     {
+        public Course()
+        {
+
+        }
+        public Course(DateTime CreateDate)
+        {
+            this.CreateDate = CreateDate;
+        }
+
         public string CourseTitle { get; set; }
 
         public string CourseDescription { get; set; }
@@ -18,6 +27,7 @@ namespace Site.Core.Domain.Entities
         public DateTime CreateDate { get; set; }
 
         public DateTime? UpdateDate { get; set; }
+        public bool IsDeleted { get; set; }
 
         //Foreign key
         public int? CourseStatusId { get; set; }
@@ -31,6 +41,6 @@ namespace Site.Core.Domain.Entities
         public CustomUser CustomUser { get; set; }
         public CourseGroup CourseGroup { get; set; }
         public ICollection<CourseEpisod> CourseEpisods { get; set; }
-        public ICollection<Keywordkey> Keywordkeys { get; set; }
+        public ICollection<Keyword> Keywordkeys { get; set; }
     }
 }

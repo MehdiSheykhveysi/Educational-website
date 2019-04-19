@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Repositories.CustomizeIdentity;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Utilities;
+using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Site.Web.Pages.Admin.UserManagment
 {
     public class EditModel : PageModel
     {
-        public EditModel(CustomUserManager userManager, RoleManager<Role> roleManager, IHostingEnvironment hostingEnvironment, IImageHandler imageHandler, IMapper mapper, SignInManager<CustomUser> signInManager)
+        public EditModel(CustomUserManager userManager, RoleManager<Role> roleManager, IHostingEnvironment hostingEnvironment, IFileHandler imageHandler, IMapper mapper, SignInManager<CustomUser> signInManager)
         {
             this.UserManager = userManager;
             this.RoleManager = roleManager;
@@ -35,7 +36,7 @@ namespace Site.Web.Pages.Admin.UserManagment
         private readonly CustomUserManager UserManager;
         private readonly RoleManager<Role> RoleManager;
         private readonly IHostingEnvironment HostingEnvironment;
-        private readonly IImageHandler ImageHandler;
+        private readonly IFileHandler ImageHandler;
         private readonly SignInManager<CustomUser> SignInManager;
 
         [BindProperty]
@@ -50,7 +51,7 @@ namespace Site.Web.Pages.Admin.UserManagment
             Model = Mapper.Map(user, Model);
             List<string> Roles = UserManager.GetRolesAsync(user).GetAwaiter().GetResult().ToList();
             List<string> AllRole = await RoleManager.Roles.Select(c => c.Name).AsNoTracking().ToListAsync();
-            AllRole.Union(Roles);
+            // AllRole.Union(Roles);
             Model.SelectedRoles = AllRole.Select(c => new RoleModel { Name = c, Checked = false }).ToList();
             Model.SelectedRoles.ForEach(c =>
             {
@@ -69,7 +70,7 @@ namespace Site.Web.Pages.Admin.UserManagment
             {
                 string uploads = Path.Combine(HostingEnvironment.WebRootPath, "images", "UserProfile");
                 string OldProfileImagePath = $"{HostingEnvironment.WebRootPath}\\images\\UserProfile\\{Model.Avatar}";
-                user.Avatar = await ImageHandler.UploadImageAsync(Model.FormFile, uploads, cancellationToken, OldProfileImagePath);
+                user.Avatar = await ImageHandler.UploadImageAsync(Model.FormFile, uploads, "\\images\\UserProfile\\", FileUploadedType.Image, cancellationToken, OldProfileImagePath);
             }
 
             IEnumerable<string> SelectedRoles = Model.SelectedRoles.Where(r => r.Checked).Select(c => c.Name);

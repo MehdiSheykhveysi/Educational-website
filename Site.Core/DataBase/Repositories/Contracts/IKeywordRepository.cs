@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Site.Core.DataBase.Repositories
 {
-    public interface IKeywordRepository : IGenericRepositories<Keywordkey>
+    public interface IKeywordRepository : IGenericRepositories<Keyword>
     {
-        Task<List<Keywordkey>> GetKeywordkeys(CancellationToken cancellationToken, string Keyword = null);
+        Task<List<Keyword>> GetKeywordkeys(CancellationToken cancellationToken, string Keyword = null);
     }
 }

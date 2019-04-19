@@ -124,7 +124,7 @@ namespace Web.Controllers
                     return View("ConfirmEmail");
                 }
                 await _signInManager.SignOutAsync();
-                var SignInResult = await _signInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: true);
+                Microsoft.AspNetCore.Identity.SignInResult SignInResult = await _signInManager.PasswordSignInAsync(user, model.PassWord, isPersistent: model.RememberMe, lockoutOnFailure: true);
                 if (SignInResult.Succeeded)
                 {
                     return Redirect(returnUrl);

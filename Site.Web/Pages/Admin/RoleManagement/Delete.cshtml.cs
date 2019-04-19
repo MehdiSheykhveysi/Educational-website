@@ -30,7 +30,7 @@ namespace Site.Web.Pages.Admin.RoleManagement
             if (selectedRole == null)
                 return NotFound();
 
-            Model = Mapper.Map<RoleDeleteModel>(selectedRole);
+            Model = Mapper.Map(selectedRole,Model);
             return Page();
         }
 

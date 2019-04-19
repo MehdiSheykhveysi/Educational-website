@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Repositories.CustomizeIdentity;
 using Site.Core.Domain.Entities;
+using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels;
 using System;
@@ -18,7 +19,7 @@ namespace Site.Web.Pages.Admin.UserManagment
 {
     public class CreateModel : PageModel
     {
-        public CreateModel(CustomUserManager userManager, RoleManager<Role> roleManager, IHostingEnvironment hostingEnvironment, IImageHandler imageHandler, IMapper mapper)
+        public CreateModel(CustomUserManager userManager, RoleManager<Role> roleManager, IHostingEnvironment hostingEnvironment, IFileHandler imageHandler, IMapper mapper)
         {
             this.UserManager = userManager;
             this.RoleManager = roleManager;
@@ -28,11 +29,11 @@ namespace Site.Web.Pages.Admin.UserManagment
         }
 
         private readonly IMapper Mapper;
-        private readonly IImageHandler ImageHandler;
+        private readonly IFileHandler ImageHandler;
         private readonly IHostingEnvironment HostingEnvironment;
         private readonly CustomUserManager UserManager;
         private readonly RoleManager<Role> RoleManager;
-        
+
         [BindProperty]
         public AdminCreateModel Model { get; set; } = new AdminCreateModel();
 
@@ -43,24 +44,21 @@ namespace Site.Web.Pages.Admin.UserManagment
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            CustomUser user = new CustomUser(DateTime.Now);
+            user = Mapper.Map(Model, user);
+            string uploads = Path.Combine(HostingEnvironment.WebRootPath, "images", "UserProfile");
+            user.Avatar = await ImageHandler.UploadImageAsync(Model.FormFile, uploads, "\\images\\CourseImages\\", FileUploadedType.Image, cancellationToken);
+            IdentityResult result = await UserManager.CreateAsync(user, Model.PassWord);
+            IdentityResult identityResult = await UserManager.AddToRolesAsync(user, Model.SelectedRoles.Where(r => r.Checked).Select(c => c.Name));
+            if (result.Succeeded)
             {
-                CustomUser user = new CustomUser(DateTime.Now);
-                user = Mapper.Map(Model, user);
-                string uploads = Path.Combine(HostingEnvironment.WebRootPath, "images", "UserProfile");
-                user.Avatar = await ImageHandler.UploadImageAsync(Model.FormFile, uploads, cancellationToken);
-                IdentityResult result = await UserManager.CreateAsync(user, Model.PassWord);
-                IdentityResult identityResult = await UserManager.AddToRolesAsync(user, Model.SelectedRoles.Where(r => r.Checked).Select(c => c.Name));
-                if (result.Succeeded)
+                return RedirectToPage("/Admin/UserManagment/index");
+            }
+            else
+            {
+                foreach (IdentityError item in result.Errors)
                 {
-                    return RedirectToPage("/Admin/UserManagment/index");
-                }
-                else
-                {
-                    foreach (IdentityError item in result.Errors)
-                    {
-                        ModelState.TryAddModelError(item.Code, item.Description);
-                    }
+                    ModelState.TryAddModelError(item.Code, item.Description);
                 }
             }
             return Page();

@@ -22,9 +22,9 @@ namespace Site.Web.Areas.User.Controllers
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly UserManager<CustomUser> _userManager;
-        private readonly IImageHandler _imageHandler;
+        private readonly IFileHandler _imageHandler;
 
-        public HomeController(IHostingEnvironment hostingEnvironment, UserManager<CustomUser> userManager, IImageHandler imageHandler)
+        public HomeController(IHostingEnvironment hostingEnvironment, UserManager<CustomUser> userManager, IFileHandler imageHandler)
         {
             _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
@@ -90,7 +90,7 @@ namespace Site.Web.Areas.User.Controllers
             {
                 Id = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value
             };
-            return PartialView("EditUserProfileIamgePartialView",model);
+            return PartialView("EditUserProfileIamgePartialView", model);
         }
 
         [HttpPost]
@@ -105,7 +105,7 @@ namespace Site.Web.Areas.User.Controllers
             {
                 string uploads = Path.Combine(_hostingEnvironment.WebRootPath, "images", "UserProfile");
                 string OldProfileImagePath = $"{_hostingEnvironment.WebRootPath}\\images\\UserProfile\\{user.Avatar}";
-                string strFilePath = await _imageHandler.UploadImageAsync(model.FormFile, uploads, cancellationToken, OldProfileImagePath);
+                string strFilePath = await _imageHandler.UploadImageAsync(model.FormFile, uploads, "\\images\\UserProfile\\", FileUploadedType.Image, cancellationToken, OldProfileImagePath);
                 user.Avatar = strFilePath;
                 IdentityResult Result = await _userManager.UpdateAsync(user);
                 if (Result.Succeeded)
@@ -163,6 +163,6 @@ namespace Site.Web.Areas.User.Controllers
             result.AddErrrs(ModelState);
             return new JsonResult(result);
         }
-        
+
     }
 }

@@ -37,12 +37,12 @@ namespace Site.Web.TagHelpers
                 if (string.IsNullOrEmpty(PageName) || !string.IsNullOrEmpty(PageAction))
                 {
                     a.Attributes["class"] = (i == PageData.CurentItem) ? "paginate_button active" : "paginate_button";
-                    a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new { PageNumber = i, UserName = PageSearchkeyValue, IsDeleted = PageIsdeleted });
+                    a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new { PageNumber = i, Searckkeyvalue = PageSearchkeyValue, IsDeleted = PageIsdeleted });
                 }
                 else
                 {
                     a.Attributes["class"] = (i == PageData.CurentItem) ? "paginate_button active" : "paginate_button";
-                    a.Attributes["href"] = urlHelper.Page(PageName, new { PageNumber = i, UserName = PageSearchkeyValue, IsDeleted = PageIsdeleted });
+                    a.Attributes["href"] = urlHelper.Page(PageName, new { PageNumber = i, Searckkeyvalue = PageSearchkeyValue, IsDeleted = PageIsdeleted });
                 }
                 a.InnerHtml.Append(i.ToString());
                 li.InnerHtml.AppendHtml(a);

@@ -18,11 +18,12 @@ namespace Site.Web.Pages.Admin.RoleManagement
         {
             RoleManager = roleManager;
             Mapper = mapper;
+            this.Model = new RoleIndexModel();
         }
         private readonly RoleManager<Role> RoleManager;
         private readonly IMapper Mapper;
 
-        public RoleIndexModel Model { get; set; } = new RoleIndexModel();
+        public RoleIndexModel Model { get; set; }
 
 
         public async Task OnGetAsync(CancellationToken cancellationToken, bool IsDeleted = false, string RoleName = null)

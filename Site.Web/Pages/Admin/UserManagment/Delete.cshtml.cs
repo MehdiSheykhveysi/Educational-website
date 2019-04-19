@@ -16,13 +16,14 @@ namespace Site.Web.Pages.Admin.UserManagment
         {
             this.CustomUserManager = customUserManager;
             this.Mapper = mapper;
+            this.Model = new AdminDeleteModel();
         }
 
         private readonly IMapper Mapper;
         private readonly CustomUserManager CustomUserManager;
 
         [BindProperty]
-        public AdminDeleteModel Model { get; set; } = new AdminDeleteModel();
+        public AdminDeleteModel Model { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string Id)
         {
@@ -32,7 +33,7 @@ namespace Site.Web.Pages.Admin.UserManagment
                 return Page();
             }
             CustomUser user = await CustomUserManager.FindByIdAsync(Id);
-            Model = Mapper.Map<AdminDeleteModel>(user);
+            Model = Mapper.Map(user, Model);
             return Page();
         }
 

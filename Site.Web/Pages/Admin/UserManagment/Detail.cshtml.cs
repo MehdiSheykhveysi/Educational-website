@@ -20,13 +20,14 @@ namespace Site.Web.Pages.Admin.UserManagment
             this.CustomUserManager = customUserManager;
             this.Mapper = mapper;
             this.TransactRepository = transactRepository;
+            this.Model = new AdminDetailModel();
         }
 
         private readonly CustomUserManager CustomUserManager;
         private readonly IMapper Mapper;
         private readonly ITransactRepository TransactRepository;
 
-        public AdminDetailModel Model { get; set; } = new AdminDetailModel();
+        public AdminDetailModel Model { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string Id, CancellationToken cancellationToken)
         {
@@ -36,7 +37,7 @@ namespace Site.Web.Pages.Admin.UserManagment
                 return Page();
             }
             CustomUser user = await CustomUserManager.FindByIdAsync(Id);
-            Model = Mapper.Map<AdminDetailModel>(user);
+            Model = Mapper.Map(user, Model);
             List<string> roles = CustomUserManager.GetRolesAsync(user).GetAwaiter().GetResult().ToList();
             Model.SelectedRoles = roles.Select(c => new RoleModel { Name = c, Checked = true }).ToList();
             List<Transact> transactList = await TransactRepository.GetWalletByUserIdAsync(user.Id, cancellationToken);

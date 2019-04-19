@@ -1,0 +1,18 @@
+﻿@model FillCourseDetaliVm
+
+<div class="form-group">
+    <label asp-for="@Model.CourseGroupId" class="control-label"></label>
+    <select id="Model_CourseGroupId" name="Model.CourseGroupId" class="form-control" asp-items="@(new SelectList(Model.CourseGroups, "Id", "Title",Model.CourseGroupId))" required></select>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.CustomUserId" class="control-label"></label>
+    <select id="Model_CustomUserId" name="Model.CustomUserId" class="form-control" asp-items="@(new SelectList(Model.CustomUsers,"Id","ShowUserName",Model.CustomUserId))" required></select>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.CourseLevelId" class="control-label"></label>
+    <select id="Model_CourseLevelId" name="Model.CourseLevelId" class="form-control" asp-items="@(new SelectList(Model.CourseLevels, "Id", "Title",Model.CourseLevelId))"></select>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.CourseStatusId" class="control-label"></label>
+    <select id="Model_CourseStatusId" name="Model.CourseStatusId"  class="form-control" asp-items="@(new SelectList(Model.CourseStatuses, "Id", "Title",Model.CourseStatusId))" required></select>
+</div>

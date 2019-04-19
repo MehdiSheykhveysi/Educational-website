@@ -17,13 +17,14 @@ namespace Site.Web.Pages.Admin.RoleManagement
         {
             this.RoleManager = roleManager;
             this.Mapper = mapper;
+            this.Model = new RoleDetailModel();
         }
 
         private readonly RoleManager<Role> RoleManager;
         private readonly IMapper Mapper;
 
         [BindProperty]
-        public RoleDetailModel Model { get; set; } = new RoleDetailModel();
+        public RoleDetailModel Model { get; set; }
 
         public async Task<IActionResult> OnGet(string Id)
         {
@@ -35,7 +36,7 @@ namespace Site.Web.Pages.Admin.RoleManagement
             if (selectedRole == null)
                 return NotFound();
 
-            Model = Mapper.Map<RoleDetailModel>(selectedRole);
+            Model = Mapper.Map(selectedRole, Model);
             IList<Claim> claims = await RoleManager.GetClaimsAsync(selectedRole);
             Model.Claims = claims.Select(c => new ClaimDTO { Value = c.Value, Checked = true }).ToList();
 

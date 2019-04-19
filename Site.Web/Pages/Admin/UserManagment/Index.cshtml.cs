@@ -17,12 +17,12 @@ namespace Site.Web.Pages.Admin.UserManagment
 
         public AdminIndexModel Model { get; set; } = new AdminIndexModel();
 
-        public async Task OnGetAsync(CancellationToken cancellationToken, int PageNumber = 1, bool IsDeleted = false, string UserName = null)
+        public async Task OnGetAsync(CancellationToken cancellationToken, int PageNumber = 1, bool IsDeleted = false, string Searckkeyvalue = null)
         {
-            Model.List = await UserManager.GetPagedUserAsync(UserName, IsDeleted, 3, PageNumber, cancellationToken);
-            Model.Username = UserName;
+            Model.List = await UserManager.GetPagedUserAsync(Searckkeyvalue, IsDeleted, 3, PageNumber, cancellationToken);
+            Model.Searckkeyvalue = Searckkeyvalue;
             Model.IsDeleted = IsDeleted;
-            ViewData["SearchKey"] = UserName;
+            ViewData["SearchKey"] = Searckkeyvalue;
         }
     }
 }

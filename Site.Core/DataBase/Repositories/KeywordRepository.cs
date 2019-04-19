@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Site.Core.DataBase.Repositories
 {
-    public class KeywordRepository : GenericRepositories<Keywordkey>, IKeywordRepository
+    public class KeywordRepository : GenericRepositories<Keyword>, IKeywordRepository
     {
         public KeywordRepository(LearningSiteDbContext context) : base(context)
         {
 
         }
 
-        public async Task<List<Keywordkey>> GetKeywordkeys(CancellationToken cancellationToken, string Keyword = null)
+        public async Task<List<Keyword>> GetKeywordkeys(CancellationToken cancellationToken, string Keyword = null)
         {
             return await NoTrackEntities.Where(k => string.IsNullOrEmpty(Keyword) || k.Title.Equals(Keyword, StringComparison.CurrentCultureIgnoreCase)).ToListAsync(cancellationToken);
         }

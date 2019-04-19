@@ -6,6 +6,7 @@ using Site.Web.Models.PagesModels;
 using Site.Web.Models.PagesModels.CourseManageModel;
 using Site.Web.Models.PagesModels.RoleManageModel;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Site.Web.Infrastructures.Mapping
 {
@@ -35,6 +36,8 @@ namespace Site.Web.Infrastructures.Mapping
             CreateMap<List<CourseGroupVm>, List<CourseGroup>>();
             CreateMap<List<CourseLevelVm>, List<CourseLevel>>();
             CreateMap<List<CourseLevelVm>, IList<CustomUser>>();
+            CreateMap<List<CourseVm>, List<Course>>();
+            CreateMap<Course, CourseEditVm>().ReverseMap();//.ForMember(c => c.Keywords, a => a.MapFrom(m => m.Keywordkeys.Select(k => k.Title)));
         }
     }
 }

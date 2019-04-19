@@ -1,5 +1,79 @@
 ﻿@page
 @model Site.Web.Pages.Admin.CourseManagement.IndexModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "لیست دوره های آموزشی";
 }
+<div class="panel panel-info">
+    <div class="panel-heading">
+        @ViewData["Title"]
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+        <div class="table-responsive">
+            <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                <div class="row">
+                    <form method="get">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group col-sm-4 col-md-4">
+                                <input type="text" name="Searckkeyvalue" class="form-control" value=@ViewData["SearchKey"] placeholder="نام کاربری" />
+                            </div>
+                            <div class="form-group col-sm-2 col-md-2">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="IsDeleted" asp-for="@Model.Model.IsDeleted"> فیلتر حذف شده ها
+                                </label>
+                            </div>
+                            <div class="form-group col-sm-3 col-md-3">
+                                <button type="submit" class="btn btn-info">جست و جو</button>
+                                <button class="btn btn-default" type="reset">پاک کردن</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12" style="margin: 10px 0;">
+                    <a class="btn btn-outline btn-success" asp-page="/Admin/CourseManagement/Create">افزودن دوره جدید</a>
+                </div>
+                <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" aria-describedby="dataTables-example_info">
+                    <thead>
+                        <tr>
+                            <th>تصویر دوره</th>
+                            <th>عنوان دوره</th>
+                            <th>تاریخ شروع دوره</th>
+                            <th>قیمت دوره</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Model.PagedResult.ListItem)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@Url.Content("~/images/CourseImages/CourseImageThumb/"+@item.ImageName)" />
+                                </td>
+                                <td>
+                                    @item.CourseTitle
+                                </td>
+                                <td>
+                                    @item.CreateDate.ToShamsi()
+                                </td>
+                                <td>
+                                    @item.CoursePrice
+                                </td>
+                                <td>
+                                    <a asp-page="/Admin/CourseManagement/Edit" asp-route-Id="@item.Id" class="btn btn-success">ویرایش</a>
+                                    <a asp-page="/Admin/CourseManagement/Detail" asp-route-Id="@item.Id" class="btn btn-default">جزئیات</a>
+                                    <a asp-page="/Admin/CourseManagement/Delete" asp-route-Id="@item.Id" class="btn btn-danger">حذف</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group" id="dataTables-example_paginate">
+                            <nav Page-data="@Model.Model.PagedResult.PageData" page-name="/Admin/CourseManagement/Index" page-searchkey-value="@Model.Model.Searckkeyvalue" page-isdeleted="@Model.Model.IsDeleted"></nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

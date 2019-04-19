@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -43,10 +42,10 @@ namespace Site.Web.Pages.Admin.RoleManagement
             if (role == null)
                 return NotFound();
 
-            Model = Mapper.Map<RoleEditModel>(role);
+            Model = Mapper.Map(role, Model);
             List<ClaimDTO> Roleclaims = RoleManager.GetClaimsAsync(role).GetAwaiter().GetResult().Select(c => new ClaimDTO { Value = c.Value, Checked = true }).ToList();
             List<ClaimDTO> AllClaims = Enum.GetNames(typeof(CustomClaimTypes)).Select(c => new ClaimDTO { Value = c, Checked = false }).ToList();
-            AllClaims.Union(Roleclaims);
+            //AllClaims.Union(Roleclaims);
             AllClaims.ForEach(c =>
             {
                 if (Roleclaims.Contains(c, new ClaimDtoCompare()))
