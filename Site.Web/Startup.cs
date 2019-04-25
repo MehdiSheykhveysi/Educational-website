@@ -141,14 +141,15 @@ namespace Site.Web
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IFileHandler, FileHandler>();
             services.AddTransient<IFileWriter, FileWriter>();
-            services.AddTransient<ITransactRepository, TransactRepository>();
-            services.AddTransient<ICourseRepository, CourseRepository>();
-            services.AddTransient<ICourseStatusRepositoty, CourseeStatusRepositoty>();
-            services.AddTransient<ICourseLevelRepository, CourseLevelRepository>();
-            services.AddTransient<ICourseGroupRepository, CourseGroupRepository>();
-            services.AddTransient<ICourseEpisodRepository, CourseEpisodRepository>();
-            services.AddTransient<IKeywordRepository, KeywordRepository>();
-            services.AddTransient<IImageResizer, ImageResizer>();
+            services.AddTransient<IFileHelper, FileHelper>();
+            services.AddScoped<ITransactRepository, TransactRepository>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<ICourseStatusRepositoty, CourseeStatusRepositoty>();
+            services.AddScoped<ICourseLevelRepository, CourseLevelRepository>();
+            services.AddScoped<ICourseGroupRepository, CourseGroupRepository>();
+            services.AddScoped<ICourseEpisodRepository, CourseEpisodRepository>();
+            services.AddScoped<IKeywordRepository, KeywordRepository>();
+            services.AddScoped<IImageResizer, ImageResizer>();
             services.AddTransient<IPayment, PaymnetPayIr>();
         }
 

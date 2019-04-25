@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Repositories.CustomizeIdentity;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Utilities;
-using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels;
 using System.Collections.Generic;
@@ -70,7 +69,7 @@ namespace Site.Web.Pages.Admin.UserManagment
             {
                 string uploads = Path.Combine(HostingEnvironment.WebRootPath, "images", "UserProfile");
                 string OldProfileImagePath = $"{HostingEnvironment.WebRootPath}\\images\\UserProfile\\{Model.Avatar}";
-                user.Avatar = await ImageHandler.UploadImageAsync(Model.FormFile, uploads, "\\images\\UserProfile\\", FileUploadedType.Image, cancellationToken, OldProfileImagePath);
+                user.Avatar = await ImageHandler.UploadFileAsync(Model.FormFile, uploads, cancellationToken, OldProfileImagePath);
             }
 
             IEnumerable<string> SelectedRoles = Model.SelectedRoles.Where(r => r.Checked).Select(c => c.Name);

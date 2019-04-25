@@ -22,13 +22,13 @@ namespace Site.Web.Areas.User.Controllers
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly UserManager<CustomUser> _userManager;
-        private readonly IFileHandler _imageHandler;
+        private readonly IFileHandler fileHandler;
 
-        public HomeController(IHostingEnvironment hostingEnvironment, UserManager<CustomUser> userManager, IFileHandler imageHandler)
+        public HomeController(IHostingEnvironment hostingEnvironment, UserManager<CustomUser> userManager, IFileHandler FileHandler)
         {
             _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
-            _imageHandler = imageHandler;
+            fileHandler = FileHandler;
         }
 
         public async Task<IActionResult> Index()
@@ -105,7 +105,7 @@ namespace Site.Web.Areas.User.Controllers
             {
                 string uploads = Path.Combine(_hostingEnvironment.WebRootPath, "images", "UserProfile");
                 string OldProfileImagePath = $"{_hostingEnvironment.WebRootPath}\\images\\UserProfile\\{user.Avatar}";
-                string strFilePath = await _imageHandler.UploadImageAsync(model.FormFile, uploads, "\\images\\UserProfile\\", FileUploadedType.Image, cancellationToken, OldProfileImagePath);
+                string strFilePath = await fileHandler.UploadFileAsync(model.FormFile, uploads, cancellationToken, OldProfileImagePath);
                 user.Avatar = strFilePath;
                 IdentityResult Result = await _userManager.UpdateAsync(user);
                 if (Result.Succeeded)

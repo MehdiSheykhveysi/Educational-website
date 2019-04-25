@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Repositories.CustomizeIdentity;
 using Site.Core.Domain.Entities;
-using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels;
 using System;
@@ -47,7 +46,7 @@ namespace Site.Web.Pages.Admin.UserManagment
             CustomUser user = new CustomUser(DateTime.Now);
             user = Mapper.Map(Model, user);
             string uploads = Path.Combine(HostingEnvironment.WebRootPath, "images", "UserProfile");
-            user.Avatar = await ImageHandler.UploadImageAsync(Model.FormFile, uploads, "\\images\\CourseImages\\", FileUploadedType.Image, cancellationToken);
+            user.Avatar = await ImageHandler.UploadFileAsync(Model.FormFile, uploads, cancellationToken);
             IdentityResult result = await UserManager.CreateAsync(user, Model.PassWord);
             IdentityResult identityResult = await UserManager.AddToRolesAsync(user, Model.SelectedRoles.Where(r => r.Checked).Select(c => c.Name));
             if (result.Succeeded)

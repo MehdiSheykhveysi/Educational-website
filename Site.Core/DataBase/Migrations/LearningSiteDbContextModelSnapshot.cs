@@ -145,7 +145,7 @@ namespace Site.Core.DataBase.Migrations
 
                     b.Property<int?>("CourseId");
 
-                    b.Property<DateTime>("EpisodeTime");
+                    b.Property<TimeSpan>("EpisodeTime");
 
                     b.Property<string>("FileName");
 

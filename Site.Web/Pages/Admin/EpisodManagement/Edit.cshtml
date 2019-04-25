@@ -1,0 +1,46 @@
+﻿@page
+@model Site.Web.Pages.Admin.EpisodManagement.EditModel
+@{
+    ViewData["Title"] = "ویرایش این قمست";
+}
+
+<div class="row">
+    <form method="post" asp-page="/Admin/EpisodManagement/Edit" enctype="multipart/form-data">
+        <div class="well col-md-6 col-sm-6">
+            <div class="form-group">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <input asp-for="@Model.Model.CourseId" hidden />
+                    <input asp-for="@Model.Model.Id" hidden />
+                    <label asp-for="@Model.Model.Title" class="control-label"></label>&nbsp;:&nbsp;
+                    <input asp-for="@Model.Model.Title" type="text" class="form-control" required />
+                    <span asp-validation-for="@Model.Model.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.IsFree" class="boolean optional"></label>
+                    <input asp-for="@Model.Model.IsFree" class=" glyphicon glyphicon-check" value="@Model.Model.IsFree" type="checkbox" />
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn glyphicon glyphicon-send" value="ذخیره" />
+            </div>
+        </div>
+        <div class="well col-md-6 col-sm-6">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="@Model.Model.FileName" class="control-label"></label>
+                    <input asp-for="@Model.Model.FileName" hidden />
+                    <div class="form-group">
+                        <img class="img-responsive img-rounded" src="@Url.Content("~/images/CourseImages/BigEpisodThump/"+Model.Model.FileName.ChangeExtension(".jpg"))" />
+                    </div>
+                    <label asp-for="@Model.Model.FormFile" class="control-label"></label>
+                    <input asp-for="@Model.Model.FormFile" type="file" class="btn glyphicon glyphicon-open-file" />
+                    <span asp-validation-for="@Model.Model.FormFile" class="text-danger"></span>
+                    <div class="form-group text-primary"><p>درصورت انتخاب نکردن فایلی همان فایل های قبلی خواهد ماند.</p></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

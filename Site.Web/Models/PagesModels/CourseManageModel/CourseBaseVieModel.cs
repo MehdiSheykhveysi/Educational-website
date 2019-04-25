@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.CustomValidationAttribute;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -58,12 +59,12 @@ namespace Site.Web.Models.PagesModels.CourseManageModel
         public decimal CoursePrice { get; set; }
 
         [Display(Name = "عکس دوره")]
-        [FileVerifyExtensions(fileExtensions: "jpg,jpeg,png,gif", ErrorMessage = "لطفا یک فایل با فرمت صحیح انتخاب کنید")]
+        [CheckFile(MimeTypes: "image/jpeg,image/jpeg,image/svg+xml,image/png", UploadedType: FileUploadedType.Image, ErrorMessage = "لطفا یک فایل با فرمت صحیح انتخاب کنید")]
         [Required(ErrorMessage = "وارد کردن {0} اجباری است")]
         public IFormFile UploadedImage { get; set; }
 
         [Display(Name = "فیلم دمو دوره")]
-        [FileVerifyExtensions(fileExtensions: "mp4,mkv", ErrorMessage = "لطفا یک فایل با فرمت صحیح انتخاب کنید")]
+        [CheckFile(MimeTypes: "video/x-matroska,video/mpeg,video/mpeg,video/mp4", UploadedType: FileUploadedType.Video, ErrorMessage = "لطفا یک فایل با فرمت صحیح انتخاب کنید")]
         [Required(ErrorMessage = "وارد کردن {0} اجباری است")]
         public IFormFile DemoFile { get; set; }
 

@@ -3,6 +3,7 @@ using Site.Core.Domain.Entities;
 using Site.Web.Areas.User.Models.WalletModels;
 using Site.Web.Infrastructures.BusinessObjects;
 using Site.Web.Models.PagesModels;
+using Site.Web.Models.PagesModels.CourseEpisodManageModel;
 using Site.Web.Models.PagesModels.CourseManageModel;
 using Site.Web.Models.PagesModels.RoleManageModel;
 using System.Collections.Generic;
@@ -38,6 +39,10 @@ namespace Site.Web.Infrastructures.Mapping
             CreateMap<List<CourseLevelVm>, IList<CustomUser>>();
             CreateMap<List<CourseVm>, List<Course>>();
             CreateMap<Course, CourseEditVm>().ReverseMap();//.ForMember(c => c.Keywords, a => a.MapFrom(m => m.Keywordkeys.Select(k => k.Title)));
+            CreateMap<Course, CourseDeleteVm>();
+
+            //CourseEpisod  Mapping
+            CreateMap<List<EpisodFullBaseVm>, List<CourseEpisod>>();
         }
     }
 }

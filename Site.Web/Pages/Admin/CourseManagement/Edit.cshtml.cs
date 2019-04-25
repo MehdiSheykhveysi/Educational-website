@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Site.Core.DataBase.Repositories;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Utilities;
-using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels.CourseManageModel;
 
@@ -52,7 +50,7 @@ namespace Site.Web.Pages.Admin.CourseManagement
             if (Assert.NotNull(Model.UploadedImage))
             {
                 string imageUploadpath = Path.Combine(hostingEnvironment.WebRootPath, "images", "CourseImages");
-                string imgNewFileName = await fileHandler.UploadImageAsync(Model.UploadedImage, imageUploadpath, "\\images\\CourseImages\\", FileUploadedType.Image, cancellationToken, $"{imageUploadpath}\\{Model.ImageName}");
+                string imgNewFileName = await fileHandler.UploadFileAsync(Model.UploadedImage, imageUploadpath, cancellationToken, $"{imageUploadpath}\\{Model.ImageName}");
 
                 fileHandler.DeleteOldImageThumb($"{imageUploadpath}\\CourseImageThumb\\{Model.ImageName}", Model.ImageName);
                 fileHandler.CreateImageThumb(Path.Combine(imageUploadpath, imgNewFileName), Path.Combine(imageUploadpath, "CourseImageThumb", imgNewFileName), 120);
@@ -63,7 +61,7 @@ namespace Site.Web.Pages.Admin.CourseManagement
             if (Assert.NotNull(Model.DemoFile))
             {
                 string videoUploadPath = Path.Combine(hostingEnvironment.WebRootPath, "CourseDemo");
-                string videoNewFileName = await fileHandler.UploadImageAsync(Model.DemoFile, videoUploadPath, "\\CourseDemo\\", FileUploadedType.Video, cancellationToken, $"{videoUploadPath}\\{Model.ImageName}");
+                string videoNewFileName = await fileHandler.UploadFileAsync(Model.DemoFile, videoUploadPath, cancellationToken, $"{videoUploadPath}\\{Model.ImageName}");
                 course.DemoFileName = videoNewFileName;
             }
 

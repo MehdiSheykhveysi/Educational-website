@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Site.Core.DataBase.Repositories;
 using Site.Core.Domain.Entities;
-using Site.Web.Infrastructures;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Web.Models.PagesModels.CourseManageModel;
 
@@ -42,12 +41,12 @@ namespace Site.Web.Pages.Admin.CourseManagement
             course = mapper.Map(Model,course);
             course.CreateDate = DateTime.Now;
             string imageUploadpath = Path.Combine(hostingEnvironment.WebRootPath, "images", "CourseImages");
-            string imgNewFileName = await fileHandler.UploadImageAsync(Model.UploadedImage, imageUploadpath, "\\images\\CourseImages\\", FileUploadedType.Image, cancellationToken);
+            string imgNewFileName = await fileHandler.UploadFileAsync(Model.UploadedImage, imageUploadpath, cancellationToken);
 
             fileHandler.CreateImageThumb(Path.Combine(imageUploadpath, imgNewFileName), Path.Combine(imageUploadpath, "CourseImageThumb", imgNewFileName), 120);
 
             string videoUploadPath = Path.Combine(hostingEnvironment.WebRootPath, "CourseDemo");
-            string videoNewFileName = await fileHandler.UploadImageAsync(Model.DemoFile, videoUploadPath, "\\CourseDemo\\", FileUploadedType.Video, cancellationToken);
+            string videoNewFileName = await fileHandler.UploadFileAsync(Model.DemoFile, videoUploadPath, cancellationToken);
 
             course.ImageName = imgNewFileName;
             course.DemoFileName = videoNewFileName;

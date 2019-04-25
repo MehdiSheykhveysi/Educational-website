@@ -1,11 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Site.Core.DataBase.Migrations
 {
-    public partial class AddCourseIsDeleted : Migration
+    public partial class DoChanges : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<TimeSpan>(
+                name: "EpisodeTime",
+                table: "CourseEpisod",
+                nullable: false,
+                oldClrType: typeof(DateTime));
+
             migrationBuilder.AddColumn<bool>(
                 name: "IsDeleted",
                 table: "Course",
@@ -18,6 +25,12 @@ namespace Site.Core.DataBase.Migrations
             migrationBuilder.DropColumn(
                 name: "IsDeleted",
                 table: "Course");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "EpisodeTime",
+                table: "CourseEpisod",
+                nullable: false,
+                oldClrType: typeof(TimeSpan));
         }
     }
 }

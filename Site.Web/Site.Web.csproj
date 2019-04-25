@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Content Include="Models\AccountModels\ResetPasswordViewModel.cs" />
+    <Content Include="Pages\Admin\CourseManagement\Create.cshtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +22,8 @@
     <PackageReference Include="CoreCompat.System.Drawing.v2" Version="5.2.0-preview1-r131" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="xFFmpeg.NET" Version="3.1.0" />
     <PackageReference Include="ZarinPalSandBox" Version="2.0.4" />
   </ItemGroup>
 
@@ -30,8 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\CourseDemo\" />
     <Folder Include="wwwroot\images\CourseImages\CourseImageThumb\" />
+    <Folder Include="wwwroot\images\CourseImages\MainEpisodThump\" />
+    <Folder Include="wwwroot\images\CourseImages\BigEpisodThump\" />
+    <Folder Include="wwwroot\CourseDemo\EpisodVideo\" />
   </ItemGroup>
 
 </Project>

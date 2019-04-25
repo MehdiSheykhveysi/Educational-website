@@ -6,7 +6,7 @@ namespace Site.Core.Domain.Entities
     {
         public string Title { get; set; }
 
-        public DateTime EpisodeTime { get; set; }
+        public TimeSpan EpisodeTime { get; set; }
 
         public string FileName { get; set; }
 

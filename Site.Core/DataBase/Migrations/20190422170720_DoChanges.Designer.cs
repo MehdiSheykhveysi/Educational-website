@@ -10,8 +10,8 @@ using Site.Core.DataBase.Context;
 namespace Site.Core.DataBase.Migrations
 {
     [DbContext(typeof(LearningSiteDbContext))]
-    [Migration("20190419050443_test")]
-    partial class test
+    [Migration("20190422170720_DoChanges")]
+    partial class DoChanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,7 +147,7 @@ namespace Site.Core.DataBase.Migrations
 
                     b.Property<int?>("CourseId");
 
-                    b.Property<DateTime>("EpisodeTime");
+                    b.Property<TimeSpan>("EpisodeTime");
 
                     b.Property<string>("FileName");
 

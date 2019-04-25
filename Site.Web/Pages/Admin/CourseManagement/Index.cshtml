@@ -59,7 +59,7 @@
                                 </td>
                                 <td>
                                     <a asp-page="/Admin/CourseManagement/Edit" asp-route-Id="@item.Id" class="btn btn-success">ویرایش</a>
-                                    <a asp-page="/Admin/CourseManagement/Detail" asp-route-Id="@item.Id" class="btn btn-default">جزئیات</a>
+                                    <a asp-page="/Admin/EpisodManagement/Index" asp-route-CourseId="@item.Id" class="btn btn-default">لیست قسمت ها</a>
                                     <a asp-page="/Admin/CourseManagement/Delete" asp-route-Id="@item.Id" class="btn btn-danger">حذف</a>
                                 </td>
                             </tr>
