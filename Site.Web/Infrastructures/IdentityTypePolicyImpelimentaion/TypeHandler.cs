@@ -19,13 +19,13 @@ namespace Site.Web.Infrastructures.IdentityTypePolicyImpelimentaion
                        //.Where(c => c.Type == ClaimTypes.Role);list.Any(i => i.ToString().Equals(c.Type)); CustomClaimTypes[] list = (CustomClaimTypes[])Enum.GetValues(typeof(CustomClaimTypes));
                        .ToList();
 
-            if (!context.User.Claims.Any(c => c.Type.IndexOf(nameof(CustomClaimTypes), StringComparison.CurrentCultureIgnoreCase) > -1))
+            if (!context.User.Claims.Any(c => c.Type.IndexOf(nameof(CustomClaimType), StringComparison.CurrentCultureIgnoreCase) > -1))
             {
                 context.Fail();
                 return Task.CompletedTask;
             }
 
-            if (requirement.CustomClaims.Any(c => userClaims.Any(i => i.Value.Equals(c.ToString(), StringComparison.CurrentCultureIgnoreCase) && i.Type.Equals(typeof(CustomClaimTypes).ToString(), StringComparison.CurrentCultureIgnoreCase))))
+            if (requirement.CustomClaims.Any(c => userClaims.Any(i => i.Value.Equals(c.ToString(), StringComparison.CurrentCultureIgnoreCase) && i.Type.Equals(typeof(CustomClaimType).ToString(), StringComparison.CurrentCultureIgnoreCase))))
             {
                 context.Succeed(requirement);
             }

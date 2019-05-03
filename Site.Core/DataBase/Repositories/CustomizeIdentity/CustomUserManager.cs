@@ -31,7 +31,7 @@ namespace Site.Core.DataBase.Repositories.CustomizeIdentity
 
             int ListCount = await Users.CountAsync();
 
-            paged.ListItem = await base.Users.Where(u => (string.IsNullOrEmpty(Email) || u.Email.IndexOf(Email, StringComparison.CurrentCultureIgnoreCase) != -1) && u.IsDeleted == IsDeleted).OrderBy(u => u.UserName).Skip((CurrentNumber - 1) * Count).Take(Count).AsNoTracking().ToListAsync(cancellationToken);
+            paged.ListItem = await base.Users.Where(u => (string.IsNullOrEmpty(Email) || EF.Functions.Like(u.Email, $"%{Email}%")) && u.IsDeleted == IsDeleted).OrderBy(u => u.UserName).Skip((CurrentNumber - 1) * Count).Take(Count).AsNoTracking().ToListAsync(cancellationToken);
             paged.PageData.CurentItem = CurrentNumber;
             paged.PageData.TotalItem = ListCount;
             paged.PageData.ItemPerPage = Count;

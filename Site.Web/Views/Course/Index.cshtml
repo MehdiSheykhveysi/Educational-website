@@ -1,0 +1,170 @@
+﻿@model Site.Web.Models.CourseViewModel.IndexViewModel
+
+<div class="container">
+    <form id="formFilter" asp-controller="Course" asp-action="Index" method="get">
+        <section class="term-categories">
+
+            <div class="top-bar">
+
+                <header>
+                    <h1> دوره های <span> برنامه نویسی </span> </h1> <span> @Model.PagedResult.PageData.TotalItem دوره </span>
+                </header>
+
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 col-xs-12 pull-right">
+                        <div class="input">
+                            <input class="form-control  col-sm-9" type="text" asp-for="@Model.Searchkeyvalue" value="@Model.Searchkeyvalue" placeholder="موضوع مورد نظر ...">
+                            <button type="submit" class="btn btn-default glyphicon glyphicon-search"></button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12 pull-right">
+                        <div class="switch-field available">
+                            <input id="available-filter-1" name="SearchParameter.PriceStatusType" value="All" checked="" type="radio">
+                            <label for="available-filter-1"> همه </label>
+                            <input id="available-filter-2" name="SearchParameter.PriceStatusType" value="Cash" type="radio">
+                            <label for="available-filter-2" > خریدنی </label>
+                            <input id="available-filter-3" name="SearchParameter.PriceStatusType" value="Free" type="radio">
+                            <label for="available-filter-3" > رایگان </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12 pull-left">
+                        <label class="control-label col-sm-4"> ترتیب براساس</label>
+                        <select class="form-control col-sm-8" asp-for="@Model.SearchParameter.OrderStatusType" asp-items="Html.GetEnumSelectList<OrderStatusType>()"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <aside class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+
+                    <section class="aside-section filter-by-price">
+                        <header>
+                            <h3> فیلتر بر اساس قیمت </h3>
+                        </header>
+                        <div class="price-range">
+                            <input value="1000" type="hidden" asp-for="@Model.SearchParameter.StartingPrice">
+                            <input value="2000" type="hidden" asp-for="@Model.SearchParameter.EndOfPrice">
+                            <div class="price-bar">
+                                <div id="priceFilter"></div>
+                            </div>
+                            <div class="max-price">تا <span id="max-text"></span> تومان</div>
+                            <div class="min-price">از <span id="min-text"></span> تومان</div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </section>
+
+                    <section class="aside-section filter-by-category">
+                        <header>
+                            <h3> دسته بندی موضوعات </h3>
+                        </header>
+                        <div class="inner text-right">
+                            <ul>
+                                @for (int item = 0; item < Model?.SearchParameter?.CourseGroups?.Count; item++)
+                                {
+                                    <li class="checkbox">
+                                        <label id="Flag" class="control-label">
+
+                                            <input asp-for="@Model.SearchParameter.CourseGroups[item].Checked" id="Check" type="checkbox" />
+                                            <i class="glyphicon glyphicon-chevron-left"></i>
+                                            @Model.SearchParameter.CourseGroups[item].Title
+
+                                        </label>
+
+                                        <input type="hidden" asp-for="@Model.SearchParameter.CourseGroups[item].Id" />
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </section>
+
+                </aside>
+
+                <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+
+                    <section class="terms-items">
+                        <div class="row">
+                            <partial name="_PagedCourselistPartialView" model="Model.PagedResult.ListItem" />
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group" id="dataTables-example_paginate">
+                                    <nav Page-data="@Model.PagedResult.PageData" page-action="Index" page-controller="Course" page-search-parameter="@Model.SearchParameter"></nav>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </section>
+    </form>
+</div>
+
+@section Scripts{
+    <script src="~/css/noUiSlider/nouislider.min.js"></script>
+    <script src="~/js/script.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var slider = document.getElementById('priceFilter');
+            noUiSlider.create(slider, {
+                start: [1000, 2000000],
+                step: 5000,
+                connect: true,
+                direction: 'rtl',
+                range: {
+                    'min': 1000,
+                    'max': 2000000
+                }
+            });
+
+            var marginMin = document.getElementById('min-text'),
+                marginMax = document.getElementById('max-text');
+
+            slider.noUiSlider.on('update', function (values, handle) {
+                var xvalue = Math.round(values[handle]);
+                if (handle) {
+                    marginMax.innerHTML = xvalue;
+                } else {
+                    marginMin.innerHTML = xvalue;
+                }
+                //console.log(values[handle]);
+            });
+
+            slider.noUiSlider.on('change', function (values, handle) {
+                var xvalue = Math.round(values[handle]);
+                if (handle) {
+                    // setGetParameter('max_price', xvalue);
+                    $('#SearchParameter_EndOfPrice').val(xvalue);
+                } else {
+                    // setGetParameter('min_price', xvalue);
+                    $('#SearchParameter_StartingPrice').val(xvalue);
+                }
+            });
+
+
+            slider.noUiSlider.on('slide', function (values, handle) {
+
+                console.log(values[0]);
+                console.log(values[1]);
+
+                var xvalue = Math.round(values[handle]);
+                //updateSliderRange( Math.round(values[0]), Math.round(values[1]) );
+            });
+
+
+
+            function updateSliderRange(min, max) {
+                slider.noUiSlider.updateOptions({
+                    range: {
+                        'min': min,
+                        'max': max
+                    }
+                });
+
+            }
+        });
+    </script>
+}

@@ -17,7 +17,7 @@ namespace Site.Core.DataBase.Repositories
 
         public async Task<List<CourseEpisod>> GetCoursesAsync(int CourseId, CancellationToken cancellationToken)
         {
-            return await Entities.Where(e => e.CourseId.Equals(CourseId)).AsNoTracking().ToListAsync(cancellationToken);
+            return await Entities.Where(e => e.CourseId == CourseId).AsNoTracking().ToListAsync(cancellationToken);
         }
     }
 }

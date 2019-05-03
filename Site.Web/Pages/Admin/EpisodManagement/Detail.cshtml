@@ -1,0 +1,36 @@
+﻿@page
+@model Site.Web.Pages.Admin.EpisodManagement.DetailModel
+@{
+    ViewData["Title"] = "جزئیات این قسمت";
+}
+<div class="row">
+    <form>
+        <div class="well col-md-6 col-sm-6">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="@Model.Model.Title" class="control-label"></label>&nbsp;:&nbsp;
+                    <input asp-for="@Model.Model.Title" type="text" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Model.IsFree" class="boolean optional"></label>
+                    <input asp-for="@Model.Model.IsFree" class=" glyphicon glyphicon-check" value="@Model.Model.IsFree" type="checkbox" />
+                </div>
+            </div>
+            <div class="form-group">
+                <a asp-page="/Admin/EpisodManagement/Index" asp-route-CourseId="@Model.Model.CourseId" class="btn btn-default">انصراف</a>
+                <a asp-page="/Admin/EpisodManagement/Delete" asp-route-Id="@Model.Model.Id" asp-route-CourseId="@Model.Model.CourseId" class="btn btn-danger">حذف</a>
+            </div>
+        </div>
+        <div class="well col-md-6 col-sm-6">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="@Model.Model.FileName" class="control-label"></label>
+                    <input asp-for="@Model.Model.FileName" hidden />
+                    <div class="form-group">
+                        <img class="img-responsive img-rounded" src="@Url.Content("~/images/CourseImages/BigEpisodThump/"+Model.Model.FileName.ChangeExtension(".jpg"))" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

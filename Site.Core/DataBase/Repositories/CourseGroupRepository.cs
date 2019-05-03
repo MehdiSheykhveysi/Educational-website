@@ -9,7 +9,5 @@ namespace Site.Core.DataBase.Repositories
         {
 
         }
-
-        public int MyProperty { get; set; }
     }
 }

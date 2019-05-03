@@ -122,6 +122,8 @@ namespace Site.Core.DataBase.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<TimeSpan>("TotalEpisodTime");
+
                     b.Property<DateTime?>("UpdateDate");
 
                     b.HasKey("Id");

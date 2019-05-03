@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Context;
 using Site.Core.Domain.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -18,7 +17,7 @@ namespace Site.Core.DataBase.Repositories
 
         public async Task<List<Keyword>> GetKeywordkeys(CancellationToken cancellationToken, string Keyword = null)
         {
-            return await NoTrackEntities.Where(k => string.IsNullOrEmpty(Keyword) || k.Title.Equals(Keyword, StringComparison.CurrentCultureIgnoreCase)).ToListAsync(cancellationToken);
+            return await NoTrackEntities.Where(k => string.IsNullOrEmpty(Keyword) || EF.Functions.Like(k.Title, $"%{Keyword}%")).ToListAsync(cancellationToken);
         }
     }
 }

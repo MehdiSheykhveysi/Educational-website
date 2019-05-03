@@ -44,7 +44,7 @@ namespace Site.Web.Pages.Admin.RoleManagement
 
             Model = Mapper.Map(role, Model);
             List<ClaimDTO> Roleclaims = RoleManager.GetClaimsAsync(role).GetAwaiter().GetResult().Select(c => new ClaimDTO { Value = c.Value, Checked = true }).ToList();
-            List<ClaimDTO> AllClaims = Enum.GetNames(typeof(CustomClaimTypes)).Select(c => new ClaimDTO { Value = c, Checked = false }).ToList();
+            List<ClaimDTO> AllClaims = Enum.GetNames(typeof(CustomClaimType)).Select(c => new ClaimDTO { Value = c, Checked = false }).ToList();
             //AllClaims.Union(Roleclaims);
             AllClaims.ForEach(c =>
             {
@@ -67,7 +67,7 @@ namespace Site.Web.Pages.Admin.RoleManagement
             if (result.Succeeded)
             {
                 List<Claim> roleClaims = RoleManager.GetClaimsAsync(role).GetAwaiter().GetResult().ToList();
-                List<Claim> selectedRole = Model.Claims.Where(c => c.Checked).Select(c => new Claim(typeof(CustomClaimTypes).ToString(), c.Value)).ToList();
+                List<Claim> selectedRole = Model.Claims.Where(c => c.Checked).Select(c => new Claim(typeof(CustomClaimType).ToString(), c.Value)).ToList();
 
                 if (!roleClaims.SequenceEqual(selectedRole, new ClaimCompare()))
                 {

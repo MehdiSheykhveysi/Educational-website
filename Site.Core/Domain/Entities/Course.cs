@@ -27,6 +27,9 @@ namespace Site.Core.Domain.Entities
         public DateTime CreateDate { get; set; }
 
         public DateTime? UpdateDate { get; set; }
+
+        public TimeSpan TotalEpisodTime { get; set; }
+
         public bool IsDeleted { get; set; }
 
         //Foreign key

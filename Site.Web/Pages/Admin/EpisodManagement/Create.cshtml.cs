@@ -15,14 +15,16 @@ namespace Site.Web.Pages.Admin.EpisodManagement
 {
     public class CreateModel : PageModel
     {
-        public CreateModel(ICourseEpisodRepository CourseEpisodRepository, IHostingEnvironment HostingEnvironment, IFileHandler FileHandler)
+        public CreateModel(ICourseEpisodRepository CourseEpisodRepository, ICourseRepository CourseRepository, IHostingEnvironment HostingEnvironment, IFileHandler FileHandler)
         {
             this.courseEpisodRepository = CourseEpisodRepository;
+            this.courseRepository = CourseRepository;
             this.fileHandler = FileHandler;
             this.hostingEnvironment = HostingEnvironment;
             this.Model = new EpisodCreateVm();
         }
         private readonly ICourseEpisodRepository courseEpisodRepository;
+        private readonly ICourseRepository courseRepository;
         private readonly IFileHandler fileHandler;
         private readonly IHostingEnvironment hostingEnvironment;
 
@@ -38,7 +40,6 @@ namespace Site.Web.Pages.Admin.EpisodManagement
         {
             CourseEpisod episod = new CourseEpisod
             {
-                CourseId = Model.CourseId,
                 IsFree = Model.IsFree,
                 Title = Model.Title
             };
@@ -52,15 +53,19 @@ namespace Site.Web.Pages.Admin.EpisodManagement
 
             //Create Thumbnail Path From Video
             FileInformation fileinfo = await fileHandler.GetThumonailFromVideoAsync(videofilepath, outPutPath, cancellationToken);
-            
+
             string SaveThumnailPath = Path.Combine(hostingEnvironment.WebRootPath, "images", "CourseImages", "MainEpisodThump", videoNewFileName.ChangeExtension(".jpg"));
             fileHandler.CreateImageThumb(outPutPath, SaveThumnailPath, 90);
 
             fileHandler.DeleteOldImageThumb(outPutPath, string.Empty);
 
             episod.EpisodeTime = fileinfo.MetaData.Duration;
+
             episod.FileName = videoNewFileName;
 
+            Course course = await courseRepository.GetByIdAsync(Model.CourseId, cancellationToken);
+            course.TotalEpisodTime += episod.EpisodeTime;
+            episod.Course = course;
             await courseEpisodRepository.AddAsync(episod, cancellationToken);
 
             return RedirectToPage("/Admin/EpisodManagement/Index", new { Model.CourseId });

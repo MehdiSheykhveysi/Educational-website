@@ -51,7 +51,7 @@
 
                     <input asp-for="@Model.Model.Claims[item].Checked" id="Check" type="checkbox" />
                     <i class="glyphicon glyphicon-chevron-left"></i>
-                    @Model.Model.Claims[item].Value.ToPersionDisplayEnum()
+                    @(Model.Model.Claims[item].Value.ToPersionDisplayEnum<CustomClaimType>())
 
                 </label>
 

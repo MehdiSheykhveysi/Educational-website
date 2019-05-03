@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Site.Core.Infrastructures.DTO;
+using Site.Web.Infrastructures;
+using Site.Web.Models.HomeViewModel;
 
 namespace Site.Web.TagHelpers
 {
@@ -24,6 +26,7 @@ namespace Site.Web.TagHelpers
         public string PageAction { get; set; }
         public string PageController { get; set; }
         public bool PageIsdeleted { get; set; }
+        public SearchParameterVm PageSearchParameter { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -37,7 +40,29 @@ namespace Site.Web.TagHelpers
                 if (string.IsNullOrEmpty(PageName) || !string.IsNullOrEmpty(PageAction))
                 {
                     a.Attributes["class"] = (i == PageData.CurentItem) ? "paginate_button active" : "paginate_button";
-                    a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new { PageNumber = i, Searckkeyvalue = PageSearchkeyValue, IsDeleted = PageIsdeleted });
+
+                    if (PageSearchParameter != null)
+                    {
+                        string queryStrings = PageSearchParameter.CourseGroups.ToQueryString();
+
+                        a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new
+                        {
+                            Model_PageNumber = i,
+                            Model_Searckkeyvalue = PageSearchkeyValue,
+                            Model_SearchParameter_PriceStatusType = PageSearchParameter.PriceStatusType,
+                            Model_SearchParameter_OrderStatusType = PageSearchParameter.OrderStatusType,
+                            Model_SearchParameter_StartingPrice = PageSearchParameter.StartingPrice,
+                            Model_SearchParameter_EndOfPrice = PageSearchParameter.EndOfPrice,
+                            Model_SearchParameter_CourseGroups = queryStrings
+                        });
+                    }
+                    else
+                        a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new
+                        {
+                            PageNumber = i,
+                            Searckkeyvalue = PageSearchkeyValue,
+                            IsDeleted = PageIsdeleted
+                        });
                 }
                 else
                 {

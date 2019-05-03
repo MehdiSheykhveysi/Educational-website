@@ -45,7 +45,7 @@ namespace Web.Controllers
                 AccountBalance = 0,
                 IsDeleted = false
             };
-            var Result = await _userManager.CreateAsync(user, model.Password);
+            IdentityResult Result = await _userManager.CreateAsync(user, model.Password);
             if (Result.Succeeded)
             {
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

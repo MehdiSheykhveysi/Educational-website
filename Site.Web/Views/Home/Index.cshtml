@@ -1,12 +1,33 @@
-﻿@section SearchBox
-    {
+﻿@model Site.Web.Models.HomeViewModel.IndexViewModel
+
+
+
+
+@section SearchBox{
     <div class="search-form ">
-        <form>
-            <input type="text" name="" placeholder="چی دوست داری یاد بگیری ؟">
-            <button><i class="glyphicon glyphicon-search"></i></button>
+        <form id="serachFrm" asp-controller="Home" asp-action="Index" method="get">
+            <input type="text" asp-for="@Model.Searchkeyvalue" value="@Model.Searchkeyvalue" placeholder="چی دوست داری یاد بگیری ؟">
+            <button><i class="glyphicon glyphicon-search"></i><img src="~/images/ajax-loader.gif" id="loader" hidden /></button>
         </form>
     </div>
 }
+
+<main id="home-page">
+    <div class="container">
+
+        <partial name="_PagedCourselistPartialView" model="Model.PagedResult.ListItem" />
+        
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group" id="dataTables-example_paginate">
+                    <nav Page-data="@Model.PagedResult.PageData" page-action="Index" page-controller="Home"></nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
 @*<main id="home-page">
         <div class="container">
             <section class="terms-items">

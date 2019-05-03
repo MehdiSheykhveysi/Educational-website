@@ -1,0 +1,12 @@
+﻿@page
+@model Site.Web.Pages.Admin.EpisodManagement.DeleteModel
+@{
+    ViewData["Title"] = "حذف قسمت ها";
+}
+
+<div class="form-group">
+    <p class="alert alert-success">
+        قسمت مربوطه با موفقیت حذف شد
+    </p>
+    <a asp-page="/Admin/EpisodManagement/Index" asp-route-CourseId="@ViewData["CourseId"]" class="btn glyphicon glyphicon-backward">بازگشت</a>
+</div>

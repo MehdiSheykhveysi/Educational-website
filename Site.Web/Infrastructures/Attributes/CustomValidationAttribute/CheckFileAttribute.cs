@@ -21,6 +21,9 @@ namespace Site.Web.Infrastructures.CustomValidationAttribute
         }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            if (value == null)
+                return ValidationResult.Success;
+
             IFormFile file = value as IFormFile;
             fileHelper = (IFileHelper)validationContext.GetService(typeof(IFileHelper));
 

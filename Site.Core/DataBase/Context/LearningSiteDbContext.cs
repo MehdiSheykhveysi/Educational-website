@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Utilities.Extensions;
 using System;
@@ -14,6 +15,13 @@ namespace Site.Core.DataBase.Context
         public LearningSiteDbContext(DbContextOptions options) : base(options)
         {
 
+        }
+
+        //Disable Client Site Evaluation
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

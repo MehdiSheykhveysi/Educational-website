@@ -5,11 +5,11 @@ namespace Site.Web.Infrastructures.IdentityTypePolicyImpelimentaion
 {
     public class TypeRequirement : IAuthorizationRequirement
     {
-        public TypeRequirement(params CustomClaimTypes[] customClaims)
+        public TypeRequirement(params CustomClaimType[] customClaims)
         {
             CustomClaims = customClaims;
         }
 
-        public CustomClaimTypes[] CustomClaims { get; }
+        public CustomClaimType[] CustomClaims { get; }
     }
 }

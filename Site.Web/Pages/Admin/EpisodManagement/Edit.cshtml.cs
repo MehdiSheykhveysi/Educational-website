@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +39,7 @@ namespace Site.Web.Pages.Admin.EpisodManagement
             Model.FileName = result.FileName;
             Model.Id = result.Id;
         }
+
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
             CourseEpisod episod = await courseEpisodRepository.GetByIdAsync(Model.Id, cancellationToken);

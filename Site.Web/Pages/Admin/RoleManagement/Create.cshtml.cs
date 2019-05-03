@@ -29,11 +29,11 @@ namespace Site.Web.Pages.Admin.RoleManagement
 
         public void OnGet()
         {
-            Array EnumValues = Enum.GetValues(typeof(CustomClaimTypes));
+            Array EnumValues = Enum.GetValues(typeof(CustomClaimType));
             Model.CustomClaims = new List<ClaimModel>();
             foreach (object item in EnumValues)
             {
-                CustomClaimTypes CurrentEnum = (CustomClaimTypes)Enum.Parse(typeof(CustomClaimTypes), item.ToString());
+                CustomClaimType CurrentEnum = (CustomClaimType)Enum.Parse(typeof(CustomClaimType), item.ToString());
                 Model.CustomClaims.Add(new ClaimModel(CurrentEnum.ToDisplay(), CurrentEnum));
             }
         }
@@ -59,7 +59,7 @@ namespace Site.Web.Pages.Admin.RoleManagement
                 IEnumerable<ClaimModel> list = Model?.CustomClaims.Where(c => c.Checked);
                 foreach (ClaimModel c in list)
                 {
-                    Claim claim = new Claim(typeof(CustomClaimTypes).ToString(), c.CustomClaim.ToString());
+                    Claim claim = new Claim(typeof(CustomClaimType).ToString(), c.CustomClaim.ToString());
 
                     await RoleManager.AddClaimAsync(role, claim);
                 }

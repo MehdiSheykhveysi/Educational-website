@@ -71,62 +71,62 @@ namespace Site.Web
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(nameof(CustomClaimTypes.None), policy =>
+                options.AddPolicy(nameof(CustomClaimType.None), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement((CustomClaimTypes[])Enum.GetValues(typeof(CustomClaimTypes))));
+                    policy.AddRequirements(new TypeRequirement((CustomClaimType[])Enum.GetValues(typeof(CustomClaimType))));
                     //policy.RequireClaim(CustomClaimTypes.AdminSystem.ToString());
                 });
-                options.AddPolicy(nameof(CustomClaimTypes.AdminSystem), policy =>
+                options.AddPolicy(nameof(CustomClaimType.AdminSystem), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.AdminSystem));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.AdminSystem));
                     //policy.RequireClaim(CustomClaimTypes.AdminSystem.ToString());
                 });
 
-                options.AddPolicy(nameof(CustomClaimTypes.UserManagment), policy =>
+                options.AddPolicy(nameof(CustomClaimType.UserManagment), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.UserManagment, CustomClaimTypes.AdminSystem));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.UserManagment, CustomClaimType.AdminSystem));
                     //policy.RequireClaim(CustomClaimTypes.UserManagment.ToString());
                 });
 
-                options.AddPolicy(nameof(CustomClaimTypes.RoleManagment), policy =>
+                options.AddPolicy(nameof(CustomClaimType.RoleManagment), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.RoleManagment, CustomClaimTypes.AdminSystem));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.RoleManagment, CustomClaimType.AdminSystem));
                     //policy.RequireClaim(CustomClaimTypes.RoleManagment.ToString());
                 });
 
-                options.AddPolicy(nameof(CustomClaimTypes.AddUser), policy =>
+                options.AddPolicy(nameof(CustomClaimType.AddUser), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.AddUser, CustomClaimTypes.AdminSystem, CustomClaimTypes.UserManagment));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.AddUser, CustomClaimType.AdminSystem, CustomClaimType.UserManagment));
                     //policy.RequireClaim(CustomClaimTypes.AddUser.ToString());
                 });
 
-                options.AddPolicy(nameof(CustomClaimTypes.EditUser), policy =>
+                options.AddPolicy(nameof(CustomClaimType.EditUser), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.EditUser, CustomClaimTypes.AdminSystem, CustomClaimTypes.UserManagment));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.EditUser, CustomClaimType.AdminSystem, CustomClaimType.UserManagment));
                     //policy.RequireClaim(CustomClaimTypes.EditUser.ToString());
                 });
 
-                options.AddPolicy(nameof(CustomClaimTypes.DeleteUser), policy =>
+                options.AddPolicy(nameof(CustomClaimType.DeleteUser), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.DeleteUser, CustomClaimTypes.AdminSystem, CustomClaimTypes.UserManagment));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.DeleteUser, CustomClaimType.AdminSystem, CustomClaimType.UserManagment));
                     //policy.RequireClaim(CustomClaimTypes.DeleteUser.ToString());
                 });
 
-                options.AddPolicy(nameof(CustomClaimTypes.AddRole), policy =>
+                options.AddPolicy(nameof(CustomClaimType.AddRole), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.AddRole, CustomClaimTypes.AdminSystem, CustomClaimTypes.RoleManagment));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.AddRole, CustomClaimType.AdminSystem, CustomClaimType.RoleManagment));
                     //policy.RequireClaim(CustomClaimTypes.AddRole.ToString());
                 });
 
-                options.AddPolicy(nameof(CustomClaimTypes.EditRole), policy =>
+                options.AddPolicy(nameof(CustomClaimType.EditRole), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.EditRole, CustomClaimTypes.AdminSystem, CustomClaimTypes.RoleManagment));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.EditRole, CustomClaimType.AdminSystem, CustomClaimType.RoleManagment));
                     //policy.RequireClaim(CustomClaimTypes.EditRole.ToString());
                 });
 
-                options.AddPolicy(nameof(CustomClaimTypes.DeleteRole), policy =>
+                options.AddPolicy(nameof(CustomClaimType.DeleteRole), policy =>
                 {
-                    policy.AddRequirements(new TypeRequirement(CustomClaimTypes.DeleteRole, CustomClaimTypes.AdminSystem, CustomClaimTypes.RoleManagment));
+                    policy.AddRequirements(new TypeRequirement(CustomClaimType.DeleteRole, CustomClaimType.AdminSystem, CustomClaimType.RoleManagment));
                     //policy.RequireClaim(CustomClaimTypes.DeleteRole.ToString());
                 });
 

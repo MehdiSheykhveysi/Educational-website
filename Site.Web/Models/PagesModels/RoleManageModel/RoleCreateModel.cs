@@ -9,7 +9,7 @@ namespace Site.Web.Models.PagesModels.RoleManageModel
     }
     public class ClaimModel
     {
-        public ClaimModel(string name, CustomClaimTypes claimTypes, bool check = false)
+        public ClaimModel(string name, CustomClaimType claimTypes, bool check = false)
         {
             Name = name;
             Checked = check;
@@ -21,6 +21,6 @@ namespace Site.Web.Models.PagesModels.RoleManageModel
         }
         public string Name { get; set; }
         public bool Checked { get; set; } = false;
-        public CustomClaimTypes CustomClaim { get; set; }
+        public CustomClaimType CustomClaim { get; set; }
     }
 }
