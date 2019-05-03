@@ -15,30 +15,26 @@ namespace Site.Core.Infrastructures.Utilities.Extensions
 
         {
             Expression<Func<Course, bool>> expression = c => (string.IsNullOrEmpty(Title) || EF.Functions.Like(c.CourseTitle, $"%{Title}%")
-            && c.IsDeleted == IsDeleted);
-
-            Func<Course, bool> combine = expression.Compile();
+        && c.IsDeleted == IsDeleted);
 
             switch (statusType)
             {
                 case PriceStatusType.All:
                     break;
                 case PriceStatusType.Free:
-                    expression = c => combine(c) && c.CoursePrice < 1000;
+                    queryable = queryable.Where(expression).Where(c => c.CoursePrice < 1000);
                     break;
                 case PriceStatusType.Cash:
-                    expression = c => combine(c) && c.CoursePrice <= MaxPrice && c.CoursePrice >= MinPrice;
+                    queryable = queryable.Where(expression).Where(c => c.CoursePrice <= MaxPrice && c.CoursePrice >= MinPrice);
                     break;
             }
             if (SelectedGroup != null && SelectedGroup.Any())
             {
-                Expression<Func<Course, bool>> e = c => SelectedGroup.Contains(c.CourseGroup.Id);
-                queryable = queryable.Include(c => c.CourseGroup).Where(expression);
+                queryable = queryable.Where(expression);
                 queryable = queryable.Where(c => SelectedGroup.Contains(c.CourseGroup.Id));
-                
-                return queryable;
             }
-            return queryable.Where(expression);
+
+            return queryable;
         }
         public static IQueryable<Course> SmartOrderByStatus(this IQueryable<Course> queryable, OrderStatusType statusType)
         {
