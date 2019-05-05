@@ -26,14 +26,15 @@ namespace Site.Web.TagHelpers
         public string PageAction { get; set; }
         public string PageController { get; set; }
         public bool PageIsdeleted { get; set; }
-        public SearchParameterVm PageSearchParameter { get; set; }
+        public bool PageActiveAjaxSender { get; set; } = false;
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             IUrlHelper urlHelper = _urlHelperFactory.GetUrlHelper(ViewContext);
             TagBuilder ul = new TagBuilder("ul");
             ul.Attributes["class"] = "pagination";
-            for (int i = 1; i <= PageData.TotalPages(); i++)
+
+            for (int i = 1; i <= PageData.TotalPages() && PageData.TotalPages() != 1; i++)
             {
                 TagBuilder li = new TagBuilder("li");
                 TagBuilder a = new TagBuilder("a");
@@ -41,20 +42,11 @@ namespace Site.Web.TagHelpers
                 {
                     a.Attributes["class"] = (i == PageData.CurentItem) ? "paginate_button active" : "paginate_button";
 
-                    if (PageSearchParameter != null)
+                    if (PageActiveAjaxSender)
                     {
-                        string queryStrings = PageSearchParameter.CourseGroups.ToQueryString();
-
-                        a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new
-                        {
-                            Model_PageNumber = i,
-                            Model_Searckkeyvalue = PageSearchkeyValue,
-                            Model_SearchParameter_PriceStatusType = PageSearchParameter.PriceStatusType,
-                            Model_SearchParameter_OrderStatusType = PageSearchParameter.OrderStatusType,
-                            Model_SearchParameter_StartingPrice = PageSearchParameter.StartingPrice,
-                            Model_SearchParameter_EndOfPrice = PageSearchParameter.EndOfPrice,
-                            Model_SearchParameter_CourseGroups = queryStrings
-                        });
+                        a.Attributes["title"] = i.ToString();
+                        a.Attributes["onclick"] = "sendajaxWhenPagenationClick(event);";
+                        a.Attributes["href"] = "#";
                     }
                     else
                         a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new

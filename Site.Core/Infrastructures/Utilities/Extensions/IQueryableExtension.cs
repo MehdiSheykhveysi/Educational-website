@@ -16,10 +16,11 @@ namespace Site.Core.Infrastructures.Utilities.Extensions
         {
             Expression<Func<Course, bool>> expression = c => (string.IsNullOrEmpty(Title) || EF.Functions.Like(c.CourseTitle, $"%{Title}%")
         && c.IsDeleted == IsDeleted);
-
+            
             switch (statusType)
             {
                 case PriceStatusType.All:
+                    queryable = queryable.Where(expression);
                     break;
                 case PriceStatusType.Free:
                     queryable = queryable.Where(expression).Where(c => c.CoursePrice < 1000);
@@ -30,12 +31,12 @@ namespace Site.Core.Infrastructures.Utilities.Extensions
             }
             if (SelectedGroup != null && SelectedGroup.Any())
             {
-                queryable = queryable.Where(expression);
                 queryable = queryable.Where(c => SelectedGroup.Contains(c.CourseGroup.Id));
             }
 
             return queryable;
         }
+
         public static IQueryable<Course> SmartOrderByStatus(this IQueryable<Course> queryable, OrderStatusType statusType)
         {
             switch (statusType)

@@ -8,7 +8,6 @@ namespace Site.Web.Models.HomeViewModel
         public SearchParameterVm()
         {
             this.CourseGroups = new List<CourseGroupVm>();
-
         }
 
         public PriceStatusType PriceStatusType { get; set; }

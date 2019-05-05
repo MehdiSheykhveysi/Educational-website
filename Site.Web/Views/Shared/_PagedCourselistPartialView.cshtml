@@ -1,8 +1,8 @@
-﻿@model IEnumerable<Course>
+﻿@model Site.Core.Infrastructures.DTO.PagedResult<Course>
 
 <section class="terms-items">
     <div class="row">
-        @foreach (var item in Model)
+        @foreach (var item in Model.ListItem)
         {
             <!-- col -->
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
@@ -22,5 +22,12 @@
                 </article>
             </div>
         }
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group" id="dataTables-example_paginate">
+                <nav Page-data="@Model.PageData" page-action="Index" page-controller="Course" page-active-ajax-sender="true"></nav>
+            </div>
+        </div>
     </div>
 </section>

@@ -18,11 +18,13 @@ namespace Site.Core.DataBase.Repositories
 
         }
 
-        public async Task<PagedResult<Course>> GetPagedCourseAsync(string Title, bool IsDeleted, int Count, int CurrentNumber, CancellationToken cancellationToken, PriceStatusType PrisceStatusType = PriceStatusType.All, OrderStatusType orderStatusType = OrderStatusType.Default, int StartingPrice = 0, int EndOfPrice = 0, IEnumerable<int> SelectedGroup = null)
+        public async Task<PagedResult<Course>> GetPagedCourseAsync(string Title, bool IsDeleted, int Count, int CurrentNumber, CancellationToken cancellationToken, 
+            PriceStatusType PrisceStatusType = PriceStatusType.All, OrderStatusType orderStatusType = OrderStatusType.Default, int StartingPrice = 0, int EndOfPrice = 0,
+            IEnumerable<int> SelectedGroup = null)
         {
             PagedResult<Course> paged = new PagedResult<Course>();
 
-            int ListCount = await NoTrackEntities.CountAsync(cancellationToken);
+            int ListCount = await NoTrackEntities.SmartWhere(Title, IsDeleted, SelectedGroup, StartingPrice, EndOfPrice, PrisceStatusType).CountAsync(cancellationToken);
 
             IQueryable<Course> query = NoTrackEntities.SmartWhere(Title, IsDeleted, SelectedGroup, StartingPrice, EndOfPrice, PrisceStatusType).SmartOrderByStatus(orderStatusType);
 

@@ -1,35 +1,35 @@
 ﻿@model Site.Web.Models.CourseViewModel.IndexViewModel
 
 <div class="container">
-    <form id="formFilter" asp-controller="Course" asp-action="Index" method="get">
+    <form id="formFilter" asp-controller="Course" asp-action="LiveSearch" method="get">
         <section class="term-categories">
-
             <div class="top-bar">
-
                 <header>
-                    <h1> دوره های <span> برنامه نویسی </span> </h1> <span> @Model.PagedResult.PageData.TotalItem دوره </span>
+                    <h1> دوره های <span> برنامه نویسی </span> </h1> <span> @Model.Paging.PagedResult.PageData.TotalItem دوره </span>
                 </header>
 
                 <div class="row">
                     <div class="col-md-4 col-sm-12 col-xs-12 pull-right">
                         <div class="input">
-                            <input class="form-control  col-sm-9" type="text" asp-for="@Model.Searchkeyvalue" value="@Model.Searchkeyvalue" placeholder="موضوع مورد نظر ...">
-                            <button type="submit" class="btn btn-default glyphicon glyphicon-search"></button>
+                            <input class="form-control  col-sm-8" type="text" asp-for="@Model.Searchkeyvalue" value="@Model.Searchkeyvalue" placeholder="موضوع مورد نظر ...">
+                            <button onclick="SendAjax(event,1);" class="btn btn-default glyphicon glyphicon-search"></button><img src="~/images/ajax-loader.gif" id="loader" hidden />
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-6 col-xs-12 pull-right">
                         <div class="switch-field available">
-                            <input id="available-filter-1" name="SearchParameter.PriceStatusType" value="All" checked="" type="radio">
+                            <span hidden id="Radiochecker">@Model.Paging.SearchParameter.PriceStatusType</span>
+
+                            <input id="available-filter-1" asp-for="@Model.Paging.SearchParameter.PriceStatusType" value="All" type="radio">
                             <label for="available-filter-1"> همه </label>
-                            <input id="available-filter-2" name="SearchParameter.PriceStatusType" value="Cash" type="radio">
-                            <label for="available-filter-2" > خریدنی </label>
-                            <input id="available-filter-3" name="SearchParameter.PriceStatusType" value="Free" type="radio">
-                            <label for="available-filter-3" > رایگان </label>
+                            <input id="available-filter-2" asp-for="@Model.Paging.SearchParameter.PriceStatusType" value="Cash" type="radio">
+                            <label for="available-filter-2"> خریدنی </label>
+                            <input id="available-filter-3" asp-for="@Model.Paging.SearchParameter.PriceStatusType" value="Free" type="radio">
+                            <label for="available-filter-3"> رایگان </label>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-6 col-xs-12 pull-left">
                         <label class="control-label col-sm-4"> ترتیب براساس</label>
-                        <select class="form-control col-sm-8" asp-for="@Model.SearchParameter.OrderStatusType" asp-items="Html.GetEnumSelectList<OrderStatusType>()"></select>
+                        <select class="form-control col-sm-8" asp-for="@Model.Paging.SearchParameter.OrderStatusType" asp-items="Html.GetEnumSelectList<OrderStatusType>()"></select>
                     </div>
                 </div>
             </div>
@@ -43,8 +43,8 @@
                             <h3> فیلتر بر اساس قیمت </h3>
                         </header>
                         <div class="price-range">
-                            <input value="1000" type="hidden" asp-for="@Model.SearchParameter.StartingPrice">
-                            <input value="2000" type="hidden" asp-for="@Model.SearchParameter.EndOfPrice">
+                            <input value="1000" type="hidden" asp-for="@Model.Paging.SearchParameter.StartingPrice">
+                            <input value="2000000" type="hidden" asp-for="@Model.Paging.SearchParameter.EndOfPrice">
                             <div class="price-bar">
                                 <div id="priceFilter"></div>
                             </div>
@@ -60,18 +60,18 @@
                         </header>
                         <div class="inner text-right">
                             <ul>
-                                @for (int item = 0; item < Model?.SearchParameter?.CourseGroups?.Count; item++)
+                                @for (int item = 0; item < Model?.Paging?.SearchParameter?.CourseGroups?.Count; item++)
                                 {
                                     <li class="checkbox">
                                         <label id="Flag" class="control-label">
 
-                                            <input asp-for="@Model.SearchParameter.CourseGroups[item].Checked" id="Check" type="checkbox" />
+                                            <input asp-for="@Model.Paging.SearchParameter.CourseGroups[item].Checked" id="Check" type="checkbox" />
                                             <i class="glyphicon glyphicon-chevron-left"></i>
-                                            @Model.SearchParameter.CourseGroups[item].Title
+                                            @Model.Paging.SearchParameter.CourseGroups[item].Title
 
                                         </label>
 
-                                        <input type="hidden" asp-for="@Model.SearchParameter.CourseGroups[item].Id" />
+                                        <input type="hidden" asp-for="@Model.Paging.SearchParameter.CourseGroups[item].Id" />
                                     </li>
                                 }
                             </ul>
@@ -83,15 +83,9 @@
                 <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
 
                     <section class="terms-items">
-                        <div class="row">
-                            <partial name="_PagedCourselistPartialView" model="Model.PagedResult.ListItem" />
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group" id="dataTables-example_paginate">
-                                    <nav Page-data="@Model.PagedResult.PageData" page-action="Index" page-controller="Course" page-search-parameter="@Model.SearchParameter"></nav>
-                                </div>
-                            </div>
+                        <div class="row" id="Changeable">
+                            <div id="ShowError" class="text-danger" hidden></div>
+                            <partial name="_PagedCourselistPartialView" model="Model.Paging.PagedResult" />
                         </div>
                     </section>
 
@@ -104,7 +98,38 @@
 @section Scripts{
     <script src="~/css/noUiSlider/nouislider.min.js"></script>
     <script src="~/js/script.js"></script>
+
     <script type="text/javascript">
+
+        var sendajaxWhenPagenationClick = function (e) {
+            e.preventDefault();
+            var x = e.target.title;
+            SendAjax(e, x);
+        };
+
+        var SendAjax = function (e, Number) {
+            e.preventDefault();
+            var model = $("#formFilter").serializeArray();
+            model.push({ name: "PageNumber", value: Number });
+
+            $("#loader").show();
+
+            $.ajax({
+                url: $('#formFilter').attr('action'),
+                method: 'GET',
+                data: model,
+                dataType: 'html',
+                success: function (result) {
+                    $("#loader").hide();
+                    $('#Changeable').html(result);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#ShowError").show();
+                    $("#ShowError").html(" - " + ajaxOptions + ": " + thrownError);
+                    $("#loader").hide();
+                }
+            });
+        };
 
         $(document).ready(function () {
 
@@ -137,10 +162,10 @@
                 var xvalue = Math.round(values[handle]);
                 if (handle) {
                     // setGetParameter('max_price', xvalue);
-                    $('#SearchParameter_EndOfPrice').val(xvalue);
+                    $('#Paging_SearchParameter_EndOfPrice').val(xvalue);
                 } else {
-                    // setGetParameter('min_price', xvalue);
-                    $('#SearchParameter_StartingPrice').val(xvalue);
+                    // setGetParameter('min_price', xvalue); "
+                    $('#Paging_SearchParameter_StartingPrice').val(xvalue);
                 }
             });
 
@@ -154,8 +179,6 @@
                 //updateSliderRange( Math.round(values[0]), Math.round(values[1]) );
             });
 
-
-
             function updateSliderRange(min, max) {
                 slider.noUiSlider.updateOptions({
                     range: {
@@ -163,8 +186,22 @@
                         'max': max
                     }
                 });
+            };
 
+            var text = $('#Radiochecker').text();
+            if (text == 'All') {
+                $('#available-filter-1').prop("checked", true);
             }
+            else if (text == 'Cash') {
+                $('#available-filter-2').prop("checked", true);
+            }
+            else if (text == 'Free') {
+                $('#available-filter-3').prop("checked", true);
+            }
+
+
         });
+        
     </script>
+
 }
