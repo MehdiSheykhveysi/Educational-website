@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -11,6 +14,7 @@ namespace Site.Web.Infrastructures
         request.QueryString.HasValue
         ? $"{request.Path}{request.QueryString}"
         : request.Path.ToString();
+
         public static string ToQueryString(this object obj)
         {
             if (obj == null) return "";

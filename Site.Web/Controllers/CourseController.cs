@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Repositories;
 using Site.Core.Infrastructures.DTO;
 using Site.Web.Infrastructures.Attributes;
+using Site.Web.Infrastructures.Compares;
 using Site.Web.Models;
 using Site.Web.Models.HomeViewModel;
 using System.Collections.Generic;
@@ -26,9 +27,18 @@ namespace Site.Web.Controllers
         {
             model.Paging.PagedResult = await courseRepository.GetPagedCourseAsync(model.Searchkeyvalue, false, 2, model.PageNumber, cancellationToken,
                 model.Paging.SearchParameter.PriceStatusType, model.Paging.SearchParameter.OrderStatusType, model.Paging.SearchParameter.StartingPrice,
-                model.Paging.SearchParameter.EndOfPrice, model.Paging.SearchParameter.CourseGroups.Where(g => g.Checked == true).Select(g => g.Id));
+                model.Paging.SearchParameter.EndOfPrice, model.Paging.SearchParameter.CourseGroups.Where(g => g.Checked == true).Select(g => g.Id),model.KeyWordTitle);
 
             List<CourseGroupVm> CourseGroups = await courseGroupRepository.NoTrackEntities.Select(g => new CourseGroupVm { Id = g.Id, Checked = false, Title = g.Title }).ToListAsync(cancellationToken);
+
+            if (model.Paging.SearchParameter.CourseGroups.Any())
+            {
+                CourseGroups.ForEach(g =>
+                {
+                    if (model.Paging.SearchParameter.CourseGroups.Contains(new CourseGroupVm { Id = g.Id }, new CourseGroupCompare()))
+                        g.Checked = true;
+                });
+            }
 
             model.Paging.SearchParameter.CourseGroups = CourseGroups;
 
@@ -43,9 +53,19 @@ namespace Site.Web.Controllers
             PagedResult<Core.Domain.Entities.Course> result = await courseRepository.GetPagedCourseAsync(model.Searchkeyvalue, false, 2, model.PageNumber, cancellationToken,
                 model.Paging.SearchParameter.PriceStatusType, model.Paging.SearchParameter.OrderStatusType, model.Paging.SearchParameter.StartingPrice,
                 model.Paging.SearchParameter.EndOfPrice, model.Paging.SearchParameter.CourseGroups.Where(g => g.Checked == true).Select(g => g.Id));
-            
+
             return PartialView("_PagedCourselistPartialView", result);
         }
 
+        public async Task<IActionResult> Detail(int CourseId, CancellationToken cancellationToken)
+        {
+            CourseDetailDTO Course = await courseRepository.GetCourseDetailAsync(CourseId, cancellationToken);
+
+            if (Course == null)
+                return NotFound();
+
+            return View(Course);
+
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Site.Core.Domain.Entities;
+using Site.Core.Infrastructures.Utilities.Compares;
 using Site.Core.Infrastructures.Utilities.Enums;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,16 @@ namespace Site.Core.Infrastructures.Utilities.Extensions
     public static class IQueryableExtension
     {
         public static IQueryable<Course> SmartWhere(this IQueryable<Course> queryable, string Title, bool IsDeleted, IEnumerable<int> SelectedGroup,
-            int MinPrice, int MaxPrice, PriceStatusType statusType)
+            int MinPrice, int MaxPrice, PriceStatusType statusType, string KeyWordTitle = "")
 
         {
             Expression<Func<Course, bool>> expression = c => (string.IsNullOrEmpty(Title) || EF.Functions.Like(c.CourseTitle, $"%{Title}%")
         && c.IsDeleted == IsDeleted);
-            
+
             switch (statusType)
             {
                 case PriceStatusType.All:
-                    queryable = queryable.Where(expression);
+                    queryable = queryable.Where(expression).Where(c => c.CoursePrice <= MaxPrice && c.CoursePrice >= MinPrice);
                     break;
                 case PriceStatusType.Free:
                     queryable = queryable.Where(expression).Where(c => c.CoursePrice < 1000);
@@ -32,6 +33,11 @@ namespace Site.Core.Infrastructures.Utilities.Extensions
             if (SelectedGroup != null && SelectedGroup.Any())
             {
                 queryable = queryable.Where(c => SelectedGroup.Contains(c.CourseGroup.Id));
+            }
+
+            if (!string.IsNullOrEmpty(KeyWordTitle))
+            {
+                queryable = queryable.Where(c => c.Keywordkeys.Any(k => k.Title == KeyWordTitle));
             }
 
             return queryable;

@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\CourseImages\CourseImageThumb\" />
     <Folder Include="wwwroot\images\CourseImages\MainEpisodThump\" />
     <Folder Include="wwwroot\images\CourseImages\BigEpisodThump\" />
     <Folder Include="wwwroot\CourseDemo\EpisodVideo\" />

@@ -13,7 +13,7 @@ namespace Site.Web.Models.HomeViewModel
         public PriceStatusType PriceStatusType { get; set; }
         public OrderStatusType OrderStatusType { get; set; }
         public int StartingPrice { get; set; } = 0;
-        public int EndOfPrice { get; set; } = 0;
+        public int EndOfPrice { get; set; } = 10000000;
         public List<CourseGroupVm> CourseGroups { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace Site.Web.Pages.Admin.CourseManagement
             string imageUploadpath = Path.Combine(hostingEnvironment.WebRootPath, "images", "CourseImages");
             string imgNewFileName = await fileHandler.UploadFileAsync(Model.UploadedImage, imageUploadpath, cancellationToken);
 
-            fileHandler.CreateImageThumb(Path.Combine(imageUploadpath, imgNewFileName), Path.Combine(imageUploadpath, "CourseImageThumb", imgNewFileName), 120);
+            fileHandler.CreateImageThumb(Path.Combine(imageUploadpath, imgNewFileName), Path.Combine(imageUploadpath, "CourseImageThumb", imgNewFileName), 80);
 
             string videoUploadPath = Path.Combine(hostingEnvironment.WebRootPath, "CourseDemo");
             string videoNewFileName = await fileHandler.UploadFileAsync(Model.DemoFile, videoUploadPath, cancellationToken);

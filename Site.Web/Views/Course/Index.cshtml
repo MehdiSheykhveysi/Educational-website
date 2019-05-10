@@ -65,7 +65,7 @@
                                     <li class="checkbox">
                                         <label id="Flag" class="control-label">
 
-                                            <input asp-for="@Model.Paging.SearchParameter.CourseGroups[item].Checked" id="Check" type="checkbox" />
+                                            <input asp-for="@Model.Paging.SearchParameter.CourseGroups[item].Checked" value="@Model.Paging.SearchParameter.CourseGroups[item].Checked" id="Check" type="checkbox" />
                                             <i class="glyphicon glyphicon-chevron-left"></i>
                                             @Model.Paging.SearchParameter.CourseGroups[item].Title
 
@@ -100,7 +100,6 @@
     <script src="~/js/script.js"></script>
 
     <script type="text/javascript">
-
         var sendajaxWhenPagenationClick = function (e) {
             e.preventDefault();
             var x = e.target.title;

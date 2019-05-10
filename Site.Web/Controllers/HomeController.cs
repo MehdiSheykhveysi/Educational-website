@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Site.Core.DataBase.Repositories;
 using Site.Core.Domain.Entities;
+using Site.Core.Infrastructures.Utilities.Enums;
 using Site.Web.Models.HomeViewModel;
 using System.Linq;
 using System.Threading;
@@ -22,7 +23,7 @@ namespace Site.Web.Controllers
 
         public async Task<IActionResult> Index(IndexViewModel model, CancellationToken cancellationToken)
         {
-            model.PagedResult = await courseRepository.GetPagedCourseAsync(model.Searchkeyvalue, false, 8, model.PageNumber, cancellationToken);
+            model.PagedResult = await courseRepository.GetPagedCourseAsync(model.Searchkeyvalue, false, 8, model.PageNumber, cancellationToken,PriceStatusType.All,OrderStatusType.Default,0,10000000);
 
             return View(model);
         }

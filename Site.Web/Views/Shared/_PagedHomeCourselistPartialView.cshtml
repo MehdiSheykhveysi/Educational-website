@@ -2,21 +2,20 @@
 
 <section class="terms-items">
     <div class="row">
+        <!-- col -->
         @foreach (var item in Model)
         {
-            <!-- col -->
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
                 <article>
-                    <a href="#" class="img-layer"><img src="@Url.Content("~/images/CourseImages/CourseImageThumb/"+@item.ImageName)" /></a>
-                    <h2><a href="#"> @item.CourseTitle </a></h2>
-
-                    @if (@item.CoursePrice == 0)
+                    <a href="/course/detail?courseid=@item.Id" class="img-layer"><img src="@Url.Content("~/images/CourseImages/CourseImageThumb/"+@item.ImageName)" /></a>
+                    <h2><a href="/course/detail?courseid=@item.Id"> @item.CourseTitle </a></h2>
+                    @if (@item.CoursePrice < 1000)
                     {
                         <span class="text-success">رایگان</span>
                     }
                     else
                     {
-                        <span class="text-success">@item.CoursePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                        <span class="text-success">@item.CoursePrice.ToString("#,0")</span>
                     }
                     <i>@item.TotalEpisodTime.ToString().Substring(0, 8)</i>
                 </article>

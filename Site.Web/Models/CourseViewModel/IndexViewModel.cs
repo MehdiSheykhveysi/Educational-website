@@ -10,5 +10,6 @@
 
         public int PageNumber { get; set; } = 1;
         public string Searchkeyvalue { get; set; }
+        public string KeyWordTitle { get; set; }
     }
 }
