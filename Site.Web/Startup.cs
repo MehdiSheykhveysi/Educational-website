@@ -23,6 +23,7 @@ using Site.Web.Infrastructures.IdentityTypePolicyImpelimentaion;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
+using Site.Core.ApplicationService.CartServise;
 
 namespace Site.Web
 {
@@ -135,13 +136,27 @@ namespace Site.Web
             services.AddSingleton<IAuthorizationHandler, TypeHandler>();
 
             services.AddAutoMapper(cfg => cfg.ValidateInlineMaps = false);
+            services.AddCookieManager(options =>
+            {
+                //allow cookie data to encrypt by default it allow encryption
+                options.AllowEncryption = true;
+                //Throw if not all chunks of a cookie are available on a request for re-assembly.
+                options.ThrowForPartialCookies = true;
+                // set null if not allow to devide in chunks
+                options.ChunkSize = null;
+                //Default Cookie expire time if expire time set to null of cookie
+                //default time is 1 day to expire cookie 
+                options.DefaultExpireTimeInDays = 10;
+            });
 
+            services.AddScoped<CartChecker>();
             services.AddScoped<CustomUserManager>();
             services.AddTransient<IEmailHandler, EmailHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IFileHandler, FileHandler>();
             services.AddTransient<IFileWriter, FileWriter>();
             services.AddTransient<IFileHelper, FileHelper>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddScoped<ITransactRepository, TransactRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<ICourseStatusRepositoty, CourseeStatusRepositoty>();

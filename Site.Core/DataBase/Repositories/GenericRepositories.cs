@@ -31,7 +31,7 @@ namespace Site.Core.DataBase.Repositories
             if (Assert.NotNull(entity))
             {
                 await Entities.AddAsync(entity, cancellationToken);
-                await context.SaveChangesAsync(cancellationToken);
+                await SaveChangesAsync(cancellationToken);
             }
         }
         public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
@@ -39,7 +39,7 @@ namespace Site.Core.DataBase.Repositories
             if (Assert.NotNull(entity))
             {
                 Entities.Update(entity);
-                await context.SaveChangesAsync(cancellationToken);
+                await SaveChangesAsync(cancellationToken);
             }
         }
         public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken)
@@ -47,8 +47,13 @@ namespace Site.Core.DataBase.Repositories
             if (Assert.NotNull(entity))
             {
                 Entities.Remove(entity);
-                await context.SaveChangesAsync(cancellationToken);
+                await SaveChangesAsync(cancellationToken);
             }
+        }
+
+        public async Task SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            await context.SaveChangesAsync(cancellationToken);
         }
     }
 }

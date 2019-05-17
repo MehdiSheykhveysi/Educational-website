@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Site.Core.Domain.Entities;
-using Site.Core.Infrastructures.Utilities.Compares;
 using Site.Core.Infrastructures.Utilities.Enums;
 using System;
 using System.Collections.Generic;

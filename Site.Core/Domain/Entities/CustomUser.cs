@@ -24,5 +24,6 @@ namespace Site.Core.Domain.Entities
         public ICollection<Course> Courses { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
         public ICollection<Transact> Transactions { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

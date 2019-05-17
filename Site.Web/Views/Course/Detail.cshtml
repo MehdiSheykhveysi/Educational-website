@@ -25,7 +25,7 @@
                                 {
                                     <i> نقدی </i>
                                 }
-                                    <span>@item.EpisodeTime.ToString().Substring(0, 8)</span>
+                                <span>@item.EpisodeTime.ToString().Substring(0, 8)</span>
                             </li>
 
                         }
@@ -159,7 +159,7 @@
                     <ul>
                         <li>
                             <span> مدت دوره </span>
-                           
+
                             <i>@Model.TotalEpisodTime.ToString().Substring(0, 8) </i>
                         </li>
                         <li>
@@ -168,14 +168,15 @@
                         </li>
                         <li>
                             <span> تعداد دانشجوها </span>
-                            <i> 0 نفر </i>
+                            <i>@Model.OrderCount </i>
                         </li>
                     </ul>
 
                     @if (Model.CoursePrice >= 1000)
                     {
-                        <a href=""> شرکت در دوره : @Model.CoursePrice.ToString("#,0") تومان </a>
+                        <a asp-controller="Order" asp-action="Create" id="SendPartnership"> شرکت در دوره : @Model.CoursePrice.ToString("#,0") تومان <img src="~/images/ajax-loader.gif" id="loader" hidden /> </a>
                     }
+                    <div class="text-danger" id="ShowError" hidden="hidden"></div>
                 </div>
 
                 <article class="teacher-info">
@@ -188,7 +189,7 @@
                     <ul>
                         <li>سطح دوره: @Model.CourseStatusTitle</li>
                         <li>وضعیت دوره: @Model.CourseLevelTitle</li>
-                        @if (Model.CoursePrice >=1000)
+                        @if (Model.CoursePrice >= 1000)
                         {
                             <li>قیمت : @Model.CoursePrice.ToString("#,0") تومان</li>
                         }
@@ -223,4 +224,41 @@
         </div>
     </section>
 </div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#SendPartnership").click(function (e) {
+                e.preventDefault();
+                $("#loader").show();
+                var CourseID =@Model.CourseID;
+                $.ajax({
+                    url: '/Order/Create',
+                    method: 'GET',
+                    dataType: 'Json',
+                    data: {
+                        CourseID
+                    },
+                    success: function (result) {
+                        if (result.status == "Success") {
+                            $("#loader").hide();
+                            $("#ShowError").show().empty();
+                            $("#ShowError").attr("class", "text-success").text(result.messageWhenSuccessed);
+                        } else if (result.status == "Error") {
+                            $("#ShowError").show().empty();
+                            $("#loader").hide();
+                            $.each(result.errors, function (index, value) {
+                                $("#ShowError").append("- " + index + " - " + value);
+                            });
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#ShowError").show();
+                        $("#ShowError").html(" - " + ajaxOptions + ": " + thrownError);
+                        $("#loader").hide();
+                    }
+                });
 
+            });
+        });
+    </script>
+}

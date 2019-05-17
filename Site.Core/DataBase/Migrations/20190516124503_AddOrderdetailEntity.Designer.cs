@@ -10,8 +10,8 @@ using Site.Core.DataBase.Context;
 namespace Site.Core.DataBase.Migrations
 {
     [DbContext(typeof(LearningSiteDbContext))]
-    [Migration("20190429043741_AddTotalTimeToCourse")]
-    partial class AddTotalTimeToCourse
+    [Migration("20190516124503_AddOrderdetailEntity")]
+    partial class AddOrderdetailEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -303,6 +303,50 @@ namespace Site.Core.DataBase.Migrations
                     b.ToTable("Keyword");
                 });
 
+            modelBuilder.Entity("Site.Core.Domain.Entities.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("newsequentialid()");
+
+                    b.Property<string>("AnonymousUserId")
+                        .HasMaxLength(14);
+
+                    b.Property<Guid?>("ClientId");
+
+                    b.Property<bool>("IsBought");
+
+                    b.Property<DateTime>("OrderingTime");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CourseId");
+
+                    b.Property<Guid?>("OrderId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetail");
+                });
+
             modelBuilder.Entity("Site.Core.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -446,6 +490,25 @@ namespace Site.Core.DataBase.Migrations
                     b.HasOne("Site.Core.Domain.Entities.Course", "Course")
                         .WithMany("Keywordkeys")
                         .HasForeignKey("CourseId");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("Site.Core.Domain.Entities.CustomUser", "Client")
+                        .WithMany("Orders")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.OrderDetail", b =>
+                {
+                    b.HasOne("Site.Core.Domain.Entities.Course", "Course")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Site.Core.Domain.Entities.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.Transact", b =>

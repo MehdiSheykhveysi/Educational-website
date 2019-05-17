@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Site.Core.DataBase.Context;
 
 namespace Site.Core.DataBase.Migrations
 {
     [DbContext(typeof(LearningSiteDbContext))]
-    partial class LearningSiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190513100503_ModifyOrderConfiguration")]
+    partial class ModifyOrderConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,6 +124,8 @@ namespace Site.Core.DataBase.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<Guid?>("OrderId");
+
                     b.Property<TimeSpan>("TotalEpisodTime");
 
                     b.Property<DateTime?>("UpdateDate");
@@ -135,6 +139,8 @@ namespace Site.Core.DataBase.Migrations
                     b.HasIndex("CourseStatusId");
 
                     b.HasIndex("CustomUserId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Course");
                 });
@@ -316,30 +322,14 @@ namespace Site.Core.DataBase.Migrations
 
                     b.Property<DateTime>("OrderingTime");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(10, 2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
 
                     b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("Site.Core.Domain.Entities.OrderDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CourseId");
-
-                    b.Property<Guid?>("OrderId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.Role", b =>
@@ -464,6 +454,10 @@ namespace Site.Core.DataBase.Migrations
                     b.HasOne("Site.Core.Domain.Entities.CustomUser", "CustomUser")
                         .WithMany("Courses")
                         .HasForeignKey("CustomUserId");
+
+                    b.HasOne("Site.Core.Domain.Entities.Order", "Order")
+                        .WithMany("Courses")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.CourseEpisod", b =>
@@ -492,19 +486,6 @@ namespace Site.Core.DataBase.Migrations
                     b.HasOne("Site.Core.Domain.Entities.CustomUser", "Client")
                         .WithMany("Orders")
                         .HasForeignKey("ClientId");
-                });
-
-            modelBuilder.Entity("Site.Core.Domain.Entities.OrderDetail", b =>
-                {
-                    b.HasOne("Site.Core.Domain.Entities.Course", "Course")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Site.Core.Domain.Entities.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.Transact", b =>

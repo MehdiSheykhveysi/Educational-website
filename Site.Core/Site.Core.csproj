@@ -10,6 +10,9 @@
     <Compile Remove="DataBase\Migrations\20190418151940_AddCourseIsDeleted.cs" />
     <Compile Remove="DataBase\Migrations\20190420061458_DoChanges.cs" />
     <Compile Remove="DataBase\Migrations\20190421192152_F.cs" />
+    <Compile Remove="DataBase\Migrations\20190429043741_AddTotalTimeToCourse.cs" />
+    <Compile Remove="DataBase\Migrations\20190513092730_ModifyOrderConfiguration.cs" />
+    <Compile Remove="DataBase\Migrations\20190514163011_AddOrderDetail.cs" />
   </ItemGroup>
 
   <ItemGroup>

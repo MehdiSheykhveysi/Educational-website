@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Site.Core.Domain.Entities.Order>
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ردیف</th>
+                        <th>تاریخ</th>
+                        <th>وضعیت </th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>@item.OrderingTime.ToShamsi()</td>
+                            <td>@item.IsBought.ToMessageString("پرداخت شده", "پرداخت نشده")</td>
+                            <td>
+                                <a class="btn btn-info" asp-controller="Order" asp-action="Detail" data-id="@item.Id" onclick="GetOrderDetail(event, this)">نمایش جرزئیات</a> <img src="~/images/ajax-loader.gif" class="loader change-image" hidden />
+                                <a class="btn btn-danger" asp-controller="Order" asp-action="Delete" data-ClientId="@item.ClientId" data-id="@item.Id" onclick="DeleteOrder(event, this)">حذف</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    var GetOrderDetail = function (e, sender) {
+        e.preventDefault();
+        var loader = $(sender).parent().find("img");
+        $(loader).show();
+        var innerHtml = $("#Changable").html();
+        var OrderId = $(sender).attr("data-id");
+
+        $.ajax({
+            url: $(sender).attr("href"),
+            type: "GET",
+            dataType: "html",
+            data: {
+                OrderId
+            },
+            success: function (data) {
+                $(loader).hide();
+                $("#Changable").html(data);
+            },
+            error: function () {
+                $(loader).hide();
+                $("#Changable").html(innerHtml);
+            }
+        });
+    };
+
+    var DeleteOrder = function (e, sender) {
+        e.preventDefault();
+        var loader = $(sender).parent().find("img");
+        $(loader).show();
+        var ClientId = $(sender).attr("data-ClientId");
+        var OrderId = $(sender).attr("data-id");
+        var innerHtml = $("#Changable").html();
+
+        $.ajax({
+            url: $(sender).attr("href"),
+            method: "GET",
+            dataType: "html",
+            data: {
+                ClientId,
+                OrderId
+            },
+            success: function (data) {
+                $(loader).hide();
+                $("#Changable").html(data);
+            },
+            error: function () {
+                $(loader).hide();
+                $("#Changable").html(innerHtml);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        $('table tr td:first-child').each(function (i) {
+            $(this).text(i + 1);
+        });
+    });
+</script>

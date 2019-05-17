@@ -41,7 +41,7 @@ namespace Site.Web.Areas.User.Controllers
                 PhoneNumber = LoggedUser.PhoneNumber,
                 RegisterDate = LoggedUser.RegisterDate.ToShamsi(),
                 AccountBalance = LoggedUser.AccountBalance,
-                UserProfileUrl = LoggedUser.Avatar
+                UserProfileUrl = LoggedUser.Avatar,
             };
 
             return View(model);
@@ -121,7 +121,7 @@ namespace Site.Web.Areas.User.Controllers
                 }
             }
             ModelState.AddModelError("", "کاربر یافت نشد");
-            result.AddErrrs(ModelState);
+            result.AddErrors(ModelState);
             return new JsonResult(result);
         }
 
@@ -130,7 +130,7 @@ namespace Site.Web.Areas.User.Controllers
         {
             AjaxUserChangrPassword model = new AjaxUserChangrPassword
             {
-                Id = User.FindFirst(ClaimTypes.NameIdentifier).Value
+                Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
             };
             return PartialView("ChangePasswordPartialView", model);
         }
@@ -156,11 +156,11 @@ namespace Site.Web.Areas.User.Controllers
                 {
                     ModelState.AddModelStateError(changeResult.Errors.Select(c => c.Description));
                 }
-                result.AddErrrs(ModelState);
+                result.AddErrors(ModelState);
                 return new JsonResult(result);
             }
             ModelState.AddModelError("", "کاربر یافت نشد");
-            result.AddErrrs(ModelState);
+            result.AddErrors(ModelState);
             return new JsonResult(result);
         }
 

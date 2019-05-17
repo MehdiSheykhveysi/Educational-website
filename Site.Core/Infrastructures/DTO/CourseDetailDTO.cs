@@ -7,6 +7,8 @@ namespace Site.Core.Infrastructures.DTO
     {
         public int CourseID { get; set; }
 
+        public int OrderCount { get; set; }
+
         public string CourseTitle { get; set; }
 
         public string CourseDescription { get; set; }

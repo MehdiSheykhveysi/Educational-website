@@ -1,0 +1,87 @@
+﻿@model Site.Core.Domain.Entities.Order
+@{
+
+    decimal sum = Model.OrderDetails.Sum(d => d.Course.CoursePrice);
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <div> <label class="text-info">تاریخ خرید : </label>@Model.OrderingTime.ToShamsi()</div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ردیف</th>
+                        <th>عنوان دوره</th>
+                        <th>مبلغ دوره</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderDetails)
+                    {
+                        <tr>
+                            <td></td>
+                            <td><a asp-controller="Course" asp-action="Detail" asp-route-CourseId="@item.Course.Id" class="text-info">@item.Course.CourseTitle</a></td>
+                            <td>@item.Course.CoursePrice.ToString("#,0")</td>
+                            <td>
+                                <a class="btn btn-danger" asp-controller="Order" asp-action="DeleteOrderDetail" data-OrderId="@Model.Id" data-id="@item.Id" onclick="DeleteOrderDetail(event, this)">حذف</a> <img src="~/images/ajax-loader.gif" class="loader change-image" hidden />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div> <label class="text-info">جمع کل : </label>@sum.ToString("#,0")</div>
+            <div>
+                @if (sum >= 0)
+                {
+                    <form>
+                        <div class="form-group">
+                            <label class="label label-info">کد تخفیف</label><input class="form-control" type="text"/><br />
+                            <label class="label label-info">مبلغ قابل پرداخت</label><input class="form-control" value="@sum.ToString("#,0")" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success" type="submit">پرداخت</button>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var DeleteOrderDetail = function (e, sender) {
+        e.preventDefault();
+        var loader = $(sender).parent().find("img");
+        $(loader).show();
+        var OrderDetailId = $(sender).attr("data-id");
+        var OrderId = $(sender).attr("data-OrderId");
+        var innerHtml = $("#Changable").html();
+
+        $.ajax({
+            url: $(sender).attr("href"),
+            method: "GET",
+            dataType: "html",
+            data: {
+                OrderDetailId,
+                OrderId
+            },
+            success: function (data) {
+                $(loader).hide();
+                $("#Changable").html(data);
+            },
+            error: function () {
+                $(loader).hide();
+                $("#Changable").html(innerHtml);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+        $('table tr td:first-child').each(function (i) {
+            $(this).text(i + 1);
+        });
+    });
+</script>

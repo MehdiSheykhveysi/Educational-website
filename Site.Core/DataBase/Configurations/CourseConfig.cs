@@ -18,6 +18,7 @@ namespace Site.Core.DataBase.Configurations
             //Relations
             builder.HasMany(c => c.Keywordkeys).WithOne(c => c.Course).HasForeignKey(c => c.CourseId);
             builder.HasOne(c => c.CustomUser).WithMany(c => c.Courses).HasForeignKey(c => c.CustomUserId);
+            builder.HasMany(c => c.OrderDetails).WithOne(d => d.Course).HasForeignKey(d => d.CourseId);
         }
     }
 }

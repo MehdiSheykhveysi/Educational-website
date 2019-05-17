@@ -84,7 +84,7 @@ namespace Site.Web.Areas.User.Controllers
 
                 return new JsonResult(result);
             }
-            result.AddErrrs(ModelState);
+            result.AddErrors(ModelState);
             return new JsonResult(result);
         }
 

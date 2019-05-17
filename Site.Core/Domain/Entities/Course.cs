@@ -43,6 +43,7 @@ namespace Site.Core.Domain.Entities
         public CourseLevel CourseLevel { get; set; }
         public CustomUser CustomUser { get; set; }
         public CourseGroup CourseGroup { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
         public ICollection<CourseEpisod> CourseEpisods { get; set; }
         public ICollection<Keyword> Keywordkeys { get; set; }
     }

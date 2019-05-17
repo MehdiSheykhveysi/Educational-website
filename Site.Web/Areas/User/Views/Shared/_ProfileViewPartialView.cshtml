@@ -6,7 +6,7 @@
             <div class="img-layer">
                 <a class="change-image" id="ClickToEdit"><i class="glyphicon glyphicon-pencil"></i></a>
                 <img src="~/images/ajax-loader(2).gif" class="loader change-image" id="ajaxloader" hidden />
-                <img src="@Url.Content("~/Images/UserProfile/"+ Model.UserProfileUrl)" id="profileView"/>
+                <img src="@Url.Content("~/Images/UserProfile/"+ Model.UserProfileUrl)" id="profileView" />
             </div>
             <div class="detail">
                 <span> @Model.UserName </span>
@@ -19,6 +19,7 @@
                 <ul>
                     <li><a asp-action="Index" asp-controller="Home" asp-area="User"> مشاهده حساب کابری </a></li>
                     <li><a asp-action="EditProfile" asp-controller="Home" asp-area="User"> ویرایش حساب کابری </a></li>
+                    <li><a asp-action="Index" asp-controller="Order" asp-area="" id="GetFactorList">مشاهده لیست فاکتور ها <img src="~/images/ajax-loader.gif" class="loader change-image" id="ajaxloader4" hidden /></a></li>
                     <li><a href="/User/Home/ChangePassword" id="ShowChangePass"> تغییر رمز عبور <img src="~/images/ajax-loader.gif" class="loader change-image" id="ajaxloader3" hidden /></a></li>
                     <li><a href="/User/Wallet/Index" id="ShowWallet">کیف پول  <img src="~/images/ajax-loader.gif" class="loader change-image" id="ajaxloader2" hidden /></a></li>
                     <li><a asp-action="LogOut" asp-controller="Account" asp-area=""> خروج از حساب کاربری </a></li>
@@ -80,12 +81,36 @@
                     $("#ajaxloader3").hide();
                     $("#Changable").html(data);
                 },
-                error: function (data) {
+                error: function () {
                     $("#ajaxloader3").hide();
                     $("#Changable").html(innerHtml);
                 }
             })
         });
 
+        $("#GetFactorList").click(function (e) {
+            e.preventDefault();
+            $("#ajaxloader4").show();
+            var innerHtml = $("#Changable").html();
+            var UserId ="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value";
+            $.ajax({
+                url: $(this).attr("href"),
+                type: "GET",
+                dataType: "html",
+                contentType:'text',
+                data: {
+                    UserId
+                },
+                success: function (data) {
+                    $("#ajaxloader4").hide();
+                    $("#Changable").html(data);
+                },
+                error: function () {
+                    $("#ajaxloader4").hide();
+                    $("#Changable").html(innerHtml);
+                }
+            })
+        });
+        
     });
 </script>
