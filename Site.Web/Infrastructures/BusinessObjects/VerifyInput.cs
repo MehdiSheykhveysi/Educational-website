@@ -1,4 +1,6 @@
-﻿namespace Site.Web.Infrastructures.BusinessObjects
+﻿using Site.Core.Domain.Entities;
+
+namespace Site.Web.Infrastructures.BusinessObjects
 {
     public class VerifyInput
     {

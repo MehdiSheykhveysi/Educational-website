@@ -10,6 +10,7 @@ namespace Site.Core.DataBase.Repositories
     {
         Task<Order> FindBySpecifiedIdAsync(Expression<Func<Order, bool>> WhereCondition, CancellationToken cancellationToken);
         Task<int> GetOrderedCountAsync(int CourseId, CancellationToken cancellationToken);
-        Task DeleteOrderDetailAsync(string OrderId, string OrderDetailId, CancellationToken cancellationToken);
+        Task DeleteOrderDetailAsync(Order order, string OrderDetailId, CancellationToken cancellationToken);
+        Task<CustomUser> GetAnonymousUser(string AnonymousUserId, CancellationToken cancellationToken);
     }
 }

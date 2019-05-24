@@ -21,9 +21,11 @@ namespace Site.Core.Domain.Entities
 
     public enum TransactType
     {
-        [Display(Name = "بدهکار")]
+        [Display(Name = "برداشت از حساب")]
         Debtor = 1,
-        [Display(Name = "طلبکار")]
-        Creditor = 2
+        [Display(Name = "واریز به حساب")]
+        Creditor = 2,
+        [Display(Name ="خرید")]
+        Payment=2
     }
 }

@@ -250,6 +250,9 @@ namespace Site.Core.DataBase.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<string>("PaymentToken")
+                        .HasMaxLength(20);
+
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(11);
 
@@ -281,6 +284,28 @@ namespace Site.Core.DataBase.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Site.Core.Domain.Entities.DisCount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Count");
+
+                    b.Property<int>("DisCountPercent");
+
+                    b.Property<DateTime>("MaxDate");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(20);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DisCount");
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.Keyword", b =>
@@ -315,6 +340,9 @@ namespace Site.Core.DataBase.Migrations
                     b.Property<bool>("IsBought");
 
                     b.Property<DateTime>("OrderingTime");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("Id");
 

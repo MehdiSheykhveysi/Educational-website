@@ -7,7 +7,6 @@ using Site.Core.ApplicationService.SiteSettings;
 using Site.Core.DataBase.Repositories;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Utilities;
-using Site.Web.Areas.User.Models.HomeModels;
 using Site.Web.Areas.User.Models.WalletModels;
 using Site.Web.Infrastructures.BusinessObjects;
 using Site.Web.Infrastructures.Interfaces;
@@ -67,14 +66,16 @@ namespace Site.Web.Areas.User.Controllers
                 PayInput input = new PayInput();
                 CustomUser user = await UserManager.GetUserAsync(User);
                 input.Deposits = model.Deposits;
-                input.Description = "شارژ حساب";
-                input.Redirect = SiteSetting.CallBackUrl;
+                input.Description = "عملیات شارژ حساب";
+                input.Redirect = SiteSetting.CallBackUrl + $"?transactType={TransactType.Creditor}";
                 input.PhoneNumber = user.PhoneNumber;
-                PaymentRequest response = await Payment.PayAsync(input, cancellationToken); ;
+                PaymentRequest response = await Payment.PayAsync(input, cancellationToken);
                 if (Assert.NotNull(response) && response.Status == 1 && Assert.NotNull(response.Token))
                 {
                     result.Status = "Success";
                     result.RedirectUrl = SiteSetting.RedirectUrl + response.Token;
+                    user.PaymentToken = response.Token;
+                    await UserManager.UpdateAsync(user);
                     return new JsonResult(result);
                 }
                 else
@@ -94,11 +95,16 @@ namespace Site.Web.Areas.User.Controllers
         {
             VerifyResponse verifyResponse = await Payment.VerifyAsync(verifyInput.Token, cancellationToken);
             VerifyViewModel model = Mapper.Map<VerifyViewModel>(verifyResponse);
-            model.Message = "عملیات شارژ انجام نشد";
+            model.Message = "عملیات انجام نشد";
             if (verifyResponse.Status == "1" && verifyResponse.Message == "OK")
             {
-                model.Message = "عملیات شارژ با موفقیت انجام شد";
-                CustomUser user = await UserManager.GetUserAsync(User);
+                model.Message = "عملیات با موفقیت انجام شد ";
+                CustomUser user;
+                if (User.Identity.IsAuthenticated)
+                    user = await UserManager.GetUserAsync(User);
+                else
+                    user = await UserManager.GetByToken(verifyInput.Token, cancellationToken);
+
                 user.Transactions = new List<Transact> {
                         new Transact
                     {
@@ -110,6 +116,7 @@ namespace Site.Web.Areas.User.Controllers
                         TransactId=verifyResponse.TransId
                     }
                 };
+                user.PaymentToken = string.Empty;
                 user.AccountBalance += verifyResponse.Amount.ToDecimal();
                 await UserManager.UpdateAsync(user);
             }

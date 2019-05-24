@@ -19,6 +19,7 @@ namespace Site.Core.Domain.Entities
         public DateTime RegisterDate { get; set; }
         public decimal AccountBalance { get; set; }
         public bool IsDeleted { get; set; }
+        public string PaymentToken { get; set; }
 
         //Navigation Peroperties
         public ICollection<Course> Courses { get; set; }

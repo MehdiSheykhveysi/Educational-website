@@ -38,16 +38,18 @@ namespace Site.Web.Controllers
                 {
                     if (model.Paging.SearchParameter.CourseGroups.Contains(new CourseGroupVm { Id = g.Id }, new CourseGroupCompare()))
                         g.Checked = true;
+                    else
+                        g.Checked = false;
                 });
             }
-
+            model.Paging.SearchParameter.CourseGroups.Clear();
             model.Paging.SearchParameter.CourseGroups = CourseGroups;
 
             return View(model);
         }
 
         [AjaxOnly]
-        public async Task<IActionResult> LiveSearch(Site.Web.Models.CourseViewModel.IndexViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> LiveSearch(Models.CourseViewModel.IndexViewModel model, CancellationToken cancellationToken)
         {
             PagedResult<Core.Domain.Entities.Course> result = await courseRepository.GetPagedCourseAsync(model.Searchkeyvalue, false, 2, model.PageNumber, cancellationToken,
                 model.Paging.SearchParameter.PriceStatusType, model.Paging.SearchParameter.OrderStatusType, model.Paging.SearchParameter.StartingPrice,

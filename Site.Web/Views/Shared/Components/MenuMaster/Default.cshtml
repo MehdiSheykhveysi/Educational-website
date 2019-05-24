@@ -1,7 +1,5 @@
 ﻿@model List<CourseGroup>
-@{
-    int count = 0;
-}
+
 <div class="main-menu">
     <div class="container">
         <nav>
@@ -11,13 +9,13 @@
                 @foreach (var group in Model.Where(g => g.ParentId == null))
                 {
                 <li>
-                    <a href="/Course/Index?Paging.SearchParameter.CourseGroups[@(count++)].Checked=true&Paging.SearchParameter.CourseGroups[0].Title='@group.Title'&&Paging.SearchParameter.CourseGroups[0].Id=@group.Id"> @group.Title </a>
+                    <a href="/Course/Index?Paging.SearchParameter.CourseGroups[0].Checked=true&Paging.SearchParameter.CourseGroups[0].Title='@group.Title'&&Paging.SearchParameter.CourseGroups[0].Id=@group.Id"> @group.Title </a>
                     @if (Model.Any(g => g.ParentId == group.Id))
                     {
                         <ul>
                             @foreach (var sub in Model.Where(g => g.ParentId == group.Id))
                             {
-                                <li><a href="/Course/Index?Paging.SearchParameter.CourseGroups[@(count++)].Checked=true&Paging.SearchParameter.CourseGroups[0].Title='@sub.Title'&Paging.SearchParameter.CourseGroups[0].Id=@sub.Id"> @sub.Title </a></li>
+                            <li><a href="/Course/Index?Paging.SearchParameter.CourseGroups[0].Checked=true&Paging.SearchParameter.CourseGroups[0].Title='@sub.Title'&Paging.SearchParameter.CourseGroups[0].Id=@sub.Id"> @sub.Title </a></li>
                             }
                         </ul>
                     }

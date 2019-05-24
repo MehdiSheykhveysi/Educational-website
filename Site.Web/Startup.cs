@@ -151,6 +151,7 @@ namespace Site.Web
 
             services.AddScoped<CartChecker>();
             services.AddScoped<CustomUserManager>();
+            services.AddTransient<IDisCountRepository, DisCountRepository>();
             services.AddTransient<IEmailHandler, EmailHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IFileHandler, FileHandler>();

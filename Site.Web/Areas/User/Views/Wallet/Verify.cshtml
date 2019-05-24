@@ -3,13 +3,28 @@
 <div class="container-content">
 
     <div class="panel panel-default">
-        <div> @Model.Message</div>
-        <div>@Model.Amount</div>
-        <div>@Model.Mobile</div>
-        <div>@Model.ErrorMessage</div>
-        <div>@Model.CardNumber</div>
-        <div>@Model.Description</div>
-        <div>@Model.FactorNumber</div>
+        @if (Model.Status == "1")
+        {
+            <div class="alert alert-success">
+                <div>مبلغ : @Model.Amount</div>
+                <div>شماره تراکنش : @Model.TransId</div>
+                <div>شماره موبایل :  @Model.Mobile</div>
+                <div>شماره کارت :  @Model.CardNumber</div>
+                <div>شماره فاکتور :  @Model.FactorNumber</div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <div>مبلغ : @Model.Amount</div>
+                <div>شماره تراکنش : @Model.TransId</div>
+                <div>شماره موبایل :  @Model.Mobile</div>
+                <div>شماره کارت :  @Model.CardNumber</div>
+                <div>شماره فاکتور :  @Model.FactorNumber</div>
+                <div>پیغام خطا :  @Model.ErrorMessage</div>
+            </div>
+        }
+
     </div>
 
 </div>

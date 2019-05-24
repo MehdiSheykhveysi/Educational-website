@@ -33,6 +33,7 @@ namespace Site.Core.ApplicationService.CartServise
             {
                 order.IsBought = false;
                 order.OrderingTime = DateTime.Now;
+                order.TotalPrice = course.CoursePrice;
                 order.OrderDetails = new List<OrderDetail>
                 {
                     new OrderDetail
@@ -56,10 +57,24 @@ namespace Site.Core.ApplicationService.CartServise
                     CourseId = course.Id
                 });
 
+                currentOrder.TotalPrice += course.CoursePrice;
+
                 await orderRepository.UpdateAsync(currentOrder, cancellationToken);
                 return true;
             }
 
+        }
+
+        public async Task DeleteOrderDetailAsync(string OrderDetailId, string OrderId, string CourseId, CancellationToken cancellationToken)
+        {
+            Order order = await orderRepository.GetByIdAsync(Guid.Parse(OrderId), cancellationToken);
+            if (!order.IsBought)
+            {
+                decimal CoursePrice = courseRepository.NoTrackEntities.FirstOrDefault(c => c.Id.ToString() == CourseId).CoursePrice;
+                order.TotalPrice -= CoursePrice;
+
+                await orderRepository.DeleteOrderDetailAsync(order, OrderDetailId, cancellationToken);
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Site.Core.Domain.Entities
             IsBought = IsBoughted;
         }
         public bool IsBought { get; set; }
+        public decimal TotalPrice { get; set; }
         public DateTime OrderingTime { get; set; }
         public string AnonymousUserId { get; set; }
 

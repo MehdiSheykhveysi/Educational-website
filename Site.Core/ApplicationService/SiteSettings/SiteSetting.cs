@@ -8,5 +8,6 @@
         public string GatewayResult { get; set; }
         public string RedirectUrl { get; set; }
         public string CallBackUrl { get; set; }
+        public string BuyCourseCallBackUrl { get; set; }
     }
 }

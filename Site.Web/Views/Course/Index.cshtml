@@ -5,7 +5,7 @@
         <section class="term-categories">
             <div class="top-bar">
                 <header>
-                    <h1> دوره های <span> برنامه نویسی </span> </h1> <span> @Model.Paging.PagedResult.PageData.TotalItem دوره </span>
+                    <h1> دوره های <span> برنامه نویسی </span> </h1> <span> @Model.Paging.PagedResult.ListItem.Count دوره </span>
                 </header>
 
                 <div class="row">
@@ -63,9 +63,9 @@
                                 @for (int item = 0; item < Model?.Paging?.SearchParameter?.CourseGroups?.Count; item++)
                                 {
                                     <li class="checkbox">
-                                        <label id="Flag" class="control-label">
-
-                                            <input asp-for="@Model.Paging.SearchParameter.CourseGroups[item].Checked" value="@Model.Paging.SearchParameter.CourseGroups[item].Checked" id="Check" type="checkbox" />
+                                        <label  class="control-label">
+                                            <input asp-for="@Model.Paging.SearchParameter.CourseGroups[item].Title" hidden/>
+                                            <input asp-for="@Model.Paging.SearchParameter.CourseGroups[item].Checked" value="@Model.Paging.SearchParameter.CourseGroups[item].Checked" type="checkbox" />
                                             <i class="glyphicon glyphicon-chevron-left"></i>
                                             @Model.Paging.SearchParameter.CourseGroups[item].Title
 
@@ -154,16 +154,13 @@
                 } else {
                     marginMin.innerHTML = xvalue;
                 }
-                //console.log(values[handle]);
             });
 
             slider.noUiSlider.on('change', function (values, handle) {
                 var xvalue = Math.round(values[handle]);
                 if (handle) {
-                    // setGetParameter('max_price', xvalue);
                     $('#Paging_SearchParameter_EndOfPrice').val(xvalue);
                 } else {
-                    // setGetParameter('min_price', xvalue); "
                     $('#Paging_SearchParameter_StartingPrice').val(xvalue);
                 }
             });
@@ -197,10 +194,8 @@
             else if (text == 'Free') {
                 $('#available-filter-3').prop("checked", true);
             }
-
-
+            
         });
         
     </script>
-
 }

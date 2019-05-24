@@ -2,6 +2,8 @@
 {
     public class VerifyViewModel
     {
+        public string Status { get; set; }
+        public string TransId { get; set; }
         public string Amount { get; set; }
         public string Message { get; set; }
         public string Mobile { get; set; }

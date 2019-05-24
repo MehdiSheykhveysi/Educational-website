@@ -24,13 +24,21 @@ namespace Site.Core.DataBase.Repositories
             return await NoTrackEntities.Where(predicate: o => !o.IsBought).Include(o => o.OrderDetails).Select(c => c.OrderDetails.Count(od => od.CourseId == CourseId)).FirstOrDefaultAsync();
         }
 
-        public async Task DeleteOrderDetailAsync(string OrderId, string OrderDetailId, CancellationToken cancellationToken)
+        public async Task DeleteOrderDetailAsync(Order order, string OrderDetailId, CancellationToken cancellationToken)
         {
-            OrderDetail detail = new OrderDetail();
-            detail.Id = int.Parse(OrderDetailId);
-            detail.OrderId = Guid.Parse(OrderId);
+            OrderDetail detail = new OrderDetail
+            {
+                Id = int.Parse(OrderDetailId),
+                OrderId = order.Id
+            };
             OrderDetails.Remove(detail);
-            await SaveChangesAsync(cancellationToken);
+
+            await UpdateAsync(order, cancellationToken);
+        }
+
+        public async Task<CustomUser> GetAnonymousUser(string AnonymousUserId, CancellationToken cancellationToken)
+        {
+            return await NoTrackEntities.Include(o => o.Client).Where(o => o.AnonymousUserId == AnonymousUserId).Select(o => o.Client).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

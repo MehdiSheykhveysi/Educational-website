@@ -9,6 +9,7 @@
                         <th>ردیف</th>
                         <th>تاریخ</th>
                         <th>وضعیت </th>
+                        <th>مبلغ</th>
                         <th>عملیات</th>
                     </tr>
                 </thead>
@@ -19,9 +20,13 @@
                             <td></td>
                             <td>@item.OrderingTime.ToShamsi()</td>
                             <td>@item.IsBought.ToMessageString("پرداخت شده", "پرداخت نشده")</td>
+                            <td>@item.TotalPrice.ToString("#,0")</td>
                             <td>
                                 <a class="btn btn-info" asp-controller="Order" asp-action="Detail" data-id="@item.Id" onclick="GetOrderDetail(event, this)">نمایش جرزئیات</a> <img src="~/images/ajax-loader.gif" class="loader change-image" hidden />
-                                <a class="btn btn-danger" asp-controller="Order" asp-action="Delete" data-ClientId="@item.ClientId" data-id="@item.Id" onclick="DeleteOrder(event, this)">حذف</a>
+                                @if (!item.IsBought)
+                                {
+                                    <a class="btn btn-danger" asp-controller="Order" asp-action="Delete" data-ClientId="@item.ClientId" data-id="@item.Id" onclick="DeleteOrder(event, this)">حذف</a>
+                                }
                             </td>
                         </tr>
                     }

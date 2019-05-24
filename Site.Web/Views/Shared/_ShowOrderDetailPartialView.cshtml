@@ -1,8 +1,5 @@
 ﻿@model Site.Core.Domain.Entities.Order
-@{
 
-    decimal sum = Model.OrderDetails.Sum(d => d.Course.CoursePrice);
-}
 
 <div class="row">
     <div class="col-md-9">
@@ -25,24 +22,35 @@
                             <td></td>
                             <td><a asp-controller="Course" asp-action="Detail" asp-route-CourseId="@item.Course.Id" class="text-info">@item.Course.CourseTitle</a></td>
                             <td>@item.Course.CoursePrice.ToString("#,0")</td>
+                            @if (!Model.IsBought)
+                            {
                             <td>
-                                <a class="btn btn-danger" asp-controller="Order" asp-action="DeleteOrderDetail" data-OrderId="@Model.Id" data-id="@item.Id" onclick="DeleteOrderDetail(event, this)">حذف</a> <img src="~/images/ajax-loader.gif" class="loader change-image" hidden />
+                                <a class="btn btn-danger Delete" asp-controller="Order" asp-action="DeleteOrderDetail" data-OrderId="@Model.Id" data-id="@item.Id" data-CourseId="@item.CourseId" onclick="DeleteOrderDetail(event, this)">حذف</a> <img src="~/images/ajax-loader.gif" class="loader change-image" hidden />
                             </td>
+                            }
+                            else
+                            {
+                                <td><a class="btn btn-info"  asp-controller="Course" asp-action="Detail" asp-route-CourseId="@item.Course.Id" id="MoreDetail">جزئیات بیشتر</a></td>
+                            }
                         </tr>
                     }
                 </tbody>
             </table>
-            <div> <label class="text-info">جمع کل : </label>@sum.ToString("#,0")</div>
+            <div> <label class="text-info">جمع کل : </label>@Model.TotalPrice.ToString("#,0")</div>
             <div>
-                @if (sum >= 0)
+                <div class="form-group">
+                    <div id="ShowError" class="text-danger" hidden></div>
+                </div>
+                @if (Model.TotalPrice >= 0 && !Model.IsBought)
                 {
-                    <form>
+                    <form asp-controller="Order" asp-action="Pay" asp-area="" method="post" id="Orderpayment">
+                        <input name="OrderId" value="@Model.Id" hidden />
                         <div class="form-group">
-                            <label class="label label-info">کد تخفیف</label><input class="form-control" type="text"/><br />
-                            <label class="label label-info">مبلغ قابل پرداخت</label><input class="form-control" value="@sum.ToString("#,0")" readonly="readonly" />
+                            <label class="label label-info">کد تخفیف</label><input name="DisCountTitle" class="form-control" type="text" /><br />
+                            <label class="label label-info">مبلغ قابل پرداخت</label><input class="form-control" value="@Model.TotalPrice.ToString("#,0")" readonly="readonly" />
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-success" type="submit">پرداخت</button>
+                            <button class="btn btn-success" type="submit" id="Submit"> پرداخت</button> <img src="~/images/ajax-loader.gif" id="loadder2" class="loader change-image" hidden />
                         </div>
                     </form>
                 }
@@ -58,6 +66,7 @@
         $(loader).show();
         var OrderDetailId = $(sender).attr("data-id");
         var OrderId = $(sender).attr("data-OrderId");
+        var CourseId = $(sender).attr("data-CourseId");
         var innerHtml = $("#Changable").html();
 
         $.ajax({
@@ -66,7 +75,8 @@
             dataType: "html",
             data: {
                 OrderDetailId,
-                OrderId
+                OrderId,
+                CourseId
             },
             success: function (data) {
                 $(loader).hide();
@@ -80,6 +90,47 @@
     };
 
     $(document).ready(function () {
+
+        $("#Submit").click(function (e) {
+            e.preventDefault();
+            var model = $("#Orderpayment").serialize();
+            var token = $('input[name=__RequestVerificationToken]').val();
+            model.__RequestVerificationToken = token;
+            $("#loader2").show();
+
+            $.ajax({
+                url: $("#Orderpayment").attr("action"),
+                method: $("#Orderpayment").attr("method"),
+                dataType: 'json',
+                data: model,
+                success: function (result) {
+                    if (result.status == "Success") {
+                        $("#loader2").hide();
+                        if (result.redirectUrl != "")
+                            window.location.href = result.redirectUrl;
+                        else {
+                            $("#ShowError").show();
+                            $("#ShowError").attr("class", "text-success");
+                            $("#ShowError").text(result.messageWhenSuccessed);
+                            $("#Orderpayment").hide();
+                            $(".Delete").hide();
+                        }
+                    } else if (result.status == "Error") {
+                        $("#ShowError").show();
+                        $("#loader2").hide();
+                        $.each(result.errors, function (index, value) {
+                            $("#ShowError").append("- " + index + " - " + value);
+                        });
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#ShowError").show();
+                    $("#ShowError").html(" - " + ajaxOptions + ": " + thrownError);
+                    $("#loader").hide();
+                }
+            });
+        });
+
         $('table tr td:first-child').each(function (i) {
             $(this).text(i + 1);
         });

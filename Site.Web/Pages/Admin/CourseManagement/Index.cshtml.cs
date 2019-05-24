@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Site.Core.DataBase.Repositories;
 using Site.Core.Infrastructures.DTO;
+using Site.Core.Infrastructures.Utilities.Enums;
 using Site.Web.Models.PagesModels.CourseManageModel;
 using System.Collections.Generic;
 using System.Threading;
@@ -24,7 +25,7 @@ namespace Site.Web.Pages.Admin.CourseManagement
 
         public async Task OnGetAsync(CancellationToken cancellationToken, int PageNumber = 1, bool IsDeleted = false, string Searckkeyvalue = null)
         {
-            PagedResult<Core.Domain.Entities.Course> PagedResult = await CourseRepository.GetPagedCourseAsync(Searckkeyvalue, IsDeleted, 3, PageNumber, cancellationToken);
+            PagedResult<Core.Domain.Entities.Course> PagedResult = await CourseRepository.GetPagedCourseAsync(Searckkeyvalue, IsDeleted, 3, PageNumber, cancellationToken, PriceStatusType.All, OrderStatusType.Default, 0, 10000000);
             Model.PagedResult.PageData = PagedResult.PageData;
             Model.PagedResult.ListItem = mapper.Map<List<CourseVm>>(PagedResult.ListItem);
             Model.Searckkeyvalue = Searckkeyvalue;

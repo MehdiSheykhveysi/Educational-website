@@ -18,6 +18,7 @@ namespace Site.Core.DataBase.Configurations
             builder.Property(p => p.EmailConfirmed).IsRequired();
             builder.Property(p => p.Avatar).HasMaxLength(300);
             builder.Property(p => p.PhoneNumber).HasMaxLength(11);
+            builder.Property(p => p.PaymentToken).HasMaxLength(20);
             builder.Property(p => p.RegisterDate).HasColumnType("datetime");
 
             //Relations

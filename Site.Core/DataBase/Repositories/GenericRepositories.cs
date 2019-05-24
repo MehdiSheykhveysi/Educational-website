@@ -51,7 +51,7 @@ namespace Site.Core.DataBase.Repositories
             }
         }
 
-        public async Task SaveChangesAsync(CancellationToken cancellationToken)
+        private async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
             await context.SaveChangesAsync(cancellationToken);
         }

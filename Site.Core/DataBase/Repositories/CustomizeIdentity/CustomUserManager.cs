@@ -37,5 +37,9 @@ namespace Site.Core.DataBase.Repositories.CustomizeIdentity
             paged.PageData.ItemPerPage = Count;
             return paged;
         }
+        public async Task<CustomUser> GetByToken(string Token, CancellationToken cancellationToken)
+        {
+            return await Users.FirstOrDefaultAsync(u => u.PaymentToken == Token, cancellationToken);
+        }
     }
 }
