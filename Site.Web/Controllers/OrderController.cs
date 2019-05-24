@@ -149,7 +149,7 @@ namespace Site.Web.Controllers
 
             if (!string.IsNullOrEmpty(DisCountTitle))
             {
-                DisCount = await disCountRepository.GetByTitle(DisCountTitle, cancellationToken);
+                DisCount = await disCountRepository.GetByTitle(DisCountTitle.Trim(), cancellationToken);
                 input.Deposits = DisCount != null ? DisCountHelper.ComputeDisCount(DisCount, order.TotalPrice) : order.TotalPrice;
             }
 

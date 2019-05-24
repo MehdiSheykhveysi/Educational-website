@@ -13,6 +13,7 @@
     <link href="~/AdminStaticFiles/css/main.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery-2.2.3.min.js"></script>
     <link href="~/AdminStaticFiles/css/bootstrap-tagsinput.css" rel="stylesheet" />
+    @RenderSection("TopScripts", false);
 </head>
 <body>
     <div id="wrapper">
@@ -78,6 +79,18 @@
                                 </li>
                                 <li>
                                     <a asp-page="/Admin/CourseManagement/Create"> افزودن دوره جدید</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-cog"></i> مدیریت کد های تخفیف<span class="glyphicon glyphicon-arrow-down"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-page="/Admin/DisCountManagement/Index"> لیست کدها</a>
+                                </li>
+                                <li>
+                                    <a asp-page="/Admin/DisCountManagement/Create"> افزودن کد جدید</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

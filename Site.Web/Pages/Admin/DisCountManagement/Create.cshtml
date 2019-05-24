@@ -1,0 +1,91 @@
+﻿@page
+@model Site.Web.Pages.Admin.DisCountManagement.CreateModel
+@{
+    ViewData["Title"] = "ساختن کد تخفیف";
+    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<form class="form-horizontal" method="post">
+    <div class="well col-sm-7 col-md-7 ">
+
+        <fieldset>
+
+            <!-- Form Name -->
+            <div class="text-center">
+                <h2><b>ساخت کد تفیف جدید</b></h2><br>
+            </div>
+            <!-- Text input-->
+
+            <div class="form-group">
+                <div class="text-right col-md-8 ">
+                    <div class="input-group">
+                        <div asp-validation-summary="All" class="text-danger glyphicon glyphicon-warning-sign" hidden></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8 text-right">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-ok-circle"></i></span>
+                        <input asp-for="@Model.Model.Title" placeholder="نام کد" class="form-control" type="text" required>
+                        <span asp-validation-for="@Model.Model.Title" class="text-danger "></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8 text-right">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+                        <input asp-for="@Model.Model.Count" placeholder="تعداد از این کد" class="form-control" type="number" required>
+                        <span asp-validation-for="@Model.Model.Count" class="text-danger "></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8 text-right">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-signal"></i></span>
+                        <input asp-for="@Model.Model.DisCountPercent" placeholder="درصد کد تخفیف" class="form-control" type="number" required>
+                        <span asp-validation-for="@Model.Model.DisCountPercent" class="text-danger "></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8 text-right">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        <input asp-for="@Model.Model.StartDate" placeholder="تاریخ شروع اعتبار" onclick="PersianDatePicker.Show(this,'@DateTime.Now.ToShamsi()');" class="form-control" type="text" required>
+                        <span asp-validation-for="@Model.Model.StartDate" class="text-danger "></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-8 text-right">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        <input asp-for="@Model.Model.MaxDate" placeholder="تاریخ پایان اعتبار" onclick="PersianDatePicker.Show(this,'@DateTime.Now.ToShamsi()');" class="form-control" type="text" required>
+                        <span asp-validation-for="@Model.Model.MaxDate" class="text-danger "></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="text-right">
+                    <br>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" class="btn btn-warning">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspذخیره <span class="glyphicon glyphicon-save"></span>&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+                </div>
+            </div>
+
+        </fieldset>
+
+    </div>
+
+</form>
+@section TopScripts{
+    <script type="text/javascript" src="~/AdminStaticFiles/js/PersianDatePicker.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="~/AdminStaticFiles/css/PersianDatePicker.min.css" />
+}
