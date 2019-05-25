@@ -16,16 +16,18 @@
                         @foreach (var item in Model.Episods)
                         {
                             <li>
-                                <h3> @item.EpisodTitle </h3>
-                                @if (item.IsFree)
-                                {
-                                    <i> رایگان </i>
-                                }
-                                else
-                                {
-                                    <i> نقدی </i>
-                                }
-                                <span>@item.EpisodeTime.ToString().Substring(0, 8)</span>
+                                <a class="link alert-link" asp-controller="Order" asp-action="DownloadFile" asp-route-EpisodId="@item.EpisodID">
+                                    <h3> @item.EpisodTitle </h3>
+                                    @if (item.IsFree)
+                                    {
+                                        <i> رایگان </i>
+                                    }
+                                    else
+                                    {
+                                        <i> نقدی </i>
+                                    }
+                                    <span>@item.EpisodeTime.ToString().Substring(0, 8)</span>
+                                </a>
                             </li>
 
                         }
@@ -175,7 +177,14 @@
                     @if (Model.CoursePrice >= 1000)
                     {
                         <a asp-controller="Order" asp-action="Create" id="SendPartnership"> شرکت در دوره : @Model.CoursePrice.ToString("#,0") تومان <img src="~/images/ajax-loader.gif" id="loader" hidden /> </a>
+
+                        if (TempData["Message"] != null)
+                        {
+                            <div class="alert alert-danger" id="BuyStatus"><p>@TempData["Message"]</p></div>
+                        }
+
                     }
+
                     <div class="text-danger" id="ShowError" hidden="hidden"></div>
                 </div>
 
@@ -242,10 +251,12 @@
                         if (result.status == "Success") {
                             $("#loader").hide();
                             $("#ShowError").show().empty();
+                            $("#BuyStatus").hide();
                             $("#ShowError").attr("class", "text-success").text(result.messageWhenSuccessed);
                         } else if (result.status == "Error") {
                             $("#ShowError").show().empty();
                             $("#loader").hide();
+                            $("#BuyStatus").hide();
                             $.each(result.errors, function (index, value) {
                                 $("#ShowError").append("- " + index + " - " + value);
                             });

@@ -13,7 +13,7 @@ namespace Site.Core.Domain.Entities
         public bool IsFree { get; set; }
 
         //Foreign key
-        public int? CourseId { get; set; }
+        public int CourseId { get; set; }
 
         //Navigation Property
         public Course Course { get; set; }

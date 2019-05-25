@@ -145,7 +145,7 @@ namespace Site.Core.DataBase.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CourseId");
+                    b.Property<int>("CourseId");
 
                     b.Property<TimeSpan>("EpisodeTime");
 
@@ -498,7 +498,8 @@ namespace Site.Core.DataBase.Migrations
                 {
                     b.HasOne("Site.Core.Domain.Entities.Course", "Course")
                         .WithMany("CourseEpisods")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Site.Core.Domain.Entities.CourseGroup", b =>

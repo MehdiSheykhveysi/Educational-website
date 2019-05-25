@@ -12,5 +12,6 @@ namespace Site.Core.DataBase.Repositories
         Task<int> GetOrderedCountAsync(int CourseId, CancellationToken cancellationToken);
         Task DeleteOrderDetailAsync(Order order, string OrderDetailId, CancellationToken cancellationToken);
         Task<CustomUser> GetAnonymousUser(string AnonymousUserId, CancellationToken cancellationToken);
+        bool IsBuyByUser(Guid UserId, int CourseId);
     }
 }

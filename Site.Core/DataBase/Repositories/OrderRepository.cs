@@ -40,5 +40,10 @@ namespace Site.Core.DataBase.Repositories
         {
             return await NoTrackEntities.Include(o => o.Client).Where(o => o.AnonymousUserId == AnonymousUserId).Select(o => o.Client).FirstOrDefaultAsync(cancellationToken);
         }
+
+        public bool IsBuyByUser(Guid UserId, int CourseId)
+        {
+            return NoTrackEntities.Any(e => e.ClientId == UserId && e.OrderDetails.Any(d => d.CourseId == CourseId) && e.IsBought);
+        }
     }
 }

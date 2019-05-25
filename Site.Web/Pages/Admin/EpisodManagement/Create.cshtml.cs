@@ -66,6 +66,7 @@ namespace Site.Web.Pages.Admin.EpisodManagement
             Course course = await courseRepository.GetByIdAsync(Model.CourseId, cancellationToken);
             course.TotalEpisodTime += episod.EpisodeTime;
             episod.Course = course;
+            episod.CourseId = course.Id;
             await courseEpisodRepository.AddAsync(episod, cancellationToken);
 
             return RedirectToPage("/Admin/EpisodManagement/Index", new { Model.CourseId });

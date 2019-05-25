@@ -66,7 +66,7 @@ namespace Site.Web.Controllers
                 return NotFound();
             else
                 Course.OrderCount = await orderRepository.GetOrderedCountAsync(CourseId, cancellationToken);
-
+            
             return View(Course);
 
         }

@@ -22,18 +22,22 @@ using Site.Web.Infrastructures.Attributes;
 using Site.Web.Infrastructures.BusinessObjects;
 using Site.Web.Infrastructures.Interfaces;
 using Site.Core.Infrastructures.Utilities.Extensions;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Site.Web.Controllers
 {
     [Authorize]
     public class OrderController : Controller
     {
-        public OrderController(ICourseRepository CourseRepository, ICookieManager CookieManager, IOrderRepository OrderRepository, IDisCountRepository DisCountRepository, IPayment Payment, IMapper Mapper, CustomUserManager CustomUserManager, IOptionsSnapshot<SiteSetting> SiteSetting, CartChecker Cart)
+        public OrderController(ICourseRepository CourseRepository, ICookieManager CookieManager, IHostingEnvironment HostingEnvironment, IOrderRepository OrderRepository, IDisCountRepository DisCountRepository, ICourseEpisodRepository CourseEpisodRepository, IPayment Payment, IMapper Mapper, CustomUserManager CustomUserManager, IOptionsSnapshot<SiteSetting> SiteSetting, CartChecker Cart)
         {
             courseRepository = CourseRepository;
             cookieManager = CookieManager;
             orderRepository = OrderRepository;
             disCountRepository = DisCountRepository;
+            courseEpisodRepository = CourseEpisodRepository;
+            hostingEnvironment = HostingEnvironment;
             payment = Payment;
             mapper = Mapper;
             customUserManager = CustomUserManager;
@@ -45,8 +49,10 @@ namespace Site.Web.Controllers
         private readonly IOrderRepository orderRepository;
         private readonly ICookieManager cookieManager;
         private readonly IDisCountRepository disCountRepository;
+        private readonly IHostingEnvironment hostingEnvironment;
         private readonly IPayment payment;
         private readonly IMapper mapper;
+        private readonly ICourseEpisodRepository courseEpisodRepository;
         private readonly CustomUserManager customUserManager;
         private readonly SiteSetting siteSetting;
         private readonly CartChecker cart;
@@ -205,12 +211,12 @@ namespace Site.Web.Controllers
 
             return new JsonResult(result);
         }
-
+        //https://localhost:5001/Order/Verify?status=1&token=dA
         [AllowAnonymous]
         public async Task<IActionResult> Verify(VerifyInput verifyInput, CancellationToken cancellationToken)
         {
             VerifyResponse verifyResponse = await payment.VerifyAsync(verifyInput.Token, cancellationToken);
-            VerifyViewModel model = Mapper.Map<VerifyViewModel>(verifyResponse);
+            VerifyViewModel model = mapper.Map<VerifyViewModel>(verifyResponse);
             model.Message = "عملیات انجام نشد";
             if (verifyResponse.Status == "1" && verifyResponse.Message == "OK")
             {
@@ -235,7 +241,34 @@ namespace Site.Web.Controllers
                 user.PaymentToken = string.Empty;
                 await customUserManager.UpdateAsync(user);
             }
-            return View(model);
+            return View("~/Areas/User/Views/Wallet/Verify.cshtml", model);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> DownloadFile(int EpisodId, CancellationToken cancellationToken)
+        {
+            CourseEpisod selectedEpisod = await courseEpisodRepository.GetByIdAsync(EpisodId, cancellationToken);
+
+            string filepath = Path.Combine(hostingEnvironment.WebRootPath, "CourseDemo", "EpisodVideo", selectedEpisod.FileName);
+
+            if (selectedEpisod.IsFree)
+            {
+                byte[] file = System.IO.File.ReadAllBytes(filepath);
+                return File(file, "application/force-download", selectedEpisod.FileName);
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                if (orderRepository.IsBuyByUser(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), selectedEpisod.CourseId))
+                {
+                    byte[] file = System.IO.File.ReadAllBytes(filepath);
+                    return File(file, "application/force-download", selectedEpisod.FileName);
+                }
+            }
+
+            TempData["Message"] = "ابتدا باید دوره را خریداری کنید";
+
+            return Redirect($"/Course/Detail?CourseId={selectedEpisod.CourseId}");
         }
     }
 }
