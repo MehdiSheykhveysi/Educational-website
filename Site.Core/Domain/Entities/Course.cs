@@ -46,5 +46,6 @@ namespace Site.Core.Domain.Entities
         public ICollection<OrderDetail> OrderDetails { get; set; }
         public ICollection<CourseEpisod> CourseEpisods { get; set; }
         public ICollection<Keyword> Keywordkeys { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }

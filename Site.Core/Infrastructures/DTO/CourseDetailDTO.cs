@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Site.Core.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace Site.Core.Infrastructures.DTO

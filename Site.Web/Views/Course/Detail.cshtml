@@ -1,19 +1,19 @@
-﻿@model Site.Core.Infrastructures.DTO.CourseDetailDTO
+﻿@model Site.Web.Models.CourseViewModel.CourseDetailVm
 
 <div class="container">
     <section class="term-content">
-        <header><h1> @Model.CourseTitle </h1></header>
+        <header><h1> @Model.CourseDetail.CourseTitle </h1></header>
         <div class="row">
 
             <div class="col-md-8 col-sm-12 col-xs-12 pull-left">
                 <section class="term-description">
-                    <img src="@Url.Content("~/images/CourseImages/"+ Model.ImageName)" />
+                    <img src="@Url.Content("~/images/CourseImages/"+ Model.CourseDetail.ImageName)" />
 
-                    @Html.Raw(Model.CourseDescription)
+                    @Html.Raw(Model.CourseDetail.CourseDescription)
 
                     <h2> سرفصل های این دوره : </h2>
                     <ul>
-                        @foreach (var item in Model.Episods)
+                        @foreach (var item in Model.CourseDetail.Episods)
                         {
                             <li>
                                 <a class="link alert-link" asp-controller="Order" asp-action="DownloadFile" asp-route-EpisodId="@item.EpisodID">
@@ -37,120 +37,16 @@
                 <section class="user-comments">
                     <header><h3> نظرات کاربران </h3></header>
                     <div class="inner">
-                        <form>
-                            <div class="row">
-                                <div class="col-md-4 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="نام و نام خانوادگی">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="ایمیل">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="شماره تماس">
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <textarea class="form-control" placeholder="متن نظر"></textarea>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-8 col-sm-7 col-xs-7">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="کد امنیتی">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-5 col-xs-5">
-                                            <img src="images/captcha.jpg">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12">
-                                    <button type="submit" class="btn btn-success"> ثبت دیدگاه </button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <div class="comment-list">
-                            <!-- row -->
-                            <div class="comment-row">
-                                <img src="images/pic/avatar.jpg">
-                                <div class="left-col">
-                                    <h3> میترا رحیمی </h3>
-                                    <span>12/03/1397</span>
-                                    <p>
-                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /row -->
-                            <!-- row -->
-                            <div class="comment-row">
-                                <img src="images/pic/avatar.jpg">
-                                <div class="left-col">
-                                    <h3> میترا رحیمی </h3>
-                                    <span>12/03/1397</span>
-                                    <p>
-                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /row -->
-                            <!-- row -->
-                            <div class="comment-row">
-                                <img src="images/pic/avatar.jpg">
-                                <div class="left-col">
-                                    <h3> میترا رحیمی </h3>
-                                    <span>12/03/1397</span>
-                                    <p>
-                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /row -->
-                            <!-- row -->
-                            <div class="comment-row">
-                                <img src="images/pic/avatar.jpg">
-                                <div class="left-col">
-                                    <h3> میترا رحیمی </h3>
-                                    <span>12/03/1397</span>
-                                    <p>
-                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /row -->
-                            <!-- row -->
-                            <div class="comment-row">
-                                <img src="images/pic/avatar.jpg">
-                                <div class="left-col">
-                                    <h3> میترا رحیمی </h3>
-                                    <span>12/03/1397</span>
-                                    <p>
-                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /row -->
-
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><i class="zmdi zmdi-chevron-right"></i></span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true"><i class="zmdi zmdi-chevron-left"></i></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <partial name="CreateCommentPartialView" model="null" />
+                        }
+                        else
+                        {
+                            <div><p class="text-danger">برای ثبت نظر باید <a asp-action="LogIn" asp-area="" asp-controller="Account" asp-route-ReturnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">وارد</a> اکانت خود شوید </p></div>
+                        }
+                        <div class="comment-list" id="listComment">
+                            <partial name="CommentListPartialView" model="@Model.PagedComment" />
                         </div>
                     </div>
                 </section>
@@ -162,21 +58,21 @@
                         <li>
                             <span> مدت دوره </span>
 
-                            <i>@Model.TotalEpisodTime.ToString().Substring(0, 8) </i>
+                            <i>@Model.CourseDetail.TotalEpisodTime.ToString().Substring(0, 8) </i>
                         </li>
                         <li>
                             <span> تعداد ویدیوها </span>
-                            <i> @Model.Episods.Count()</i>
+                            <i> @Model.CourseDetail.Episods.Count()</i>
                         </li>
                         <li>
                             <span> تعداد دانشجوها </span>
-                            <i>@Model.OrderCount </i>
+                            <i>@Model.CourseDetail.OrderCount </i>
                         </li>
                     </ul>
 
-                    @if (Model.CoursePrice >= 1000)
+                    @if (Model.CourseDetail.CoursePrice >= 1000)
                     {
-                        <a asp-controller="Order" asp-action="Create" id="SendPartnership"> شرکت در دوره : @Model.CoursePrice.ToString("#,0") تومان <img src="~/images/ajax-loader.gif" id="loader" hidden /> </a>
+                        <a asp-controller="Order" asp-action="Create" id="SendPartnership"> شرکت در دوره : @Model.CourseDetail.CoursePrice.ToString("#,0") تومان <img src="~/images/ajax-loader.gif" id="loader" hidden /> </a>
 
                         if (TempData["Message"] != null)
                         {
@@ -189,25 +85,25 @@
                 </div>
 
                 <article class="teacher-info">
-                    <img src="@Url.Content("~/images/UserProfile/"+Model.TeacherUserName)" style="width:20px;height:20px;" />
-                    <h2> مدرس : @Model.TeacherUserName </h2>
+                    <img src="@Url.Content("~/images/UserProfile/"+Model.CourseDetail.TeacherUserName)" style="width:20px;height:20px;" />
+                    <h2> مدرس : @Model.CourseDetail.TeacherUserName </h2>
                 </article>
 
                 <article class="term-info">
                     <h2> اطلاعات این دوره </h2>
                     <ul>
-                        <li>سطح دوره: @Model.CourseStatusTitle</li>
-                        <li>وضعیت دوره: @Model.CourseLevelTitle</li>
-                        @if (Model.CoursePrice >= 1000)
+                        <li>سطح دوره: @Model.CourseDetail.CourseStatusTitle</li>
+                        <li>وضعیت دوره: @Model.CourseDetail.CourseLevelTitle</li>
+                        @if (Model.CourseDetail.CoursePrice >= 1000)
                         {
-                            <li>قیمت : @Model.CoursePrice.ToString("#,0") تومان</li>
+                            <li>قیمت : @Model.CourseDetail.CoursePrice.ToString("#,0") تومان</li>
                         }
                         else
                         {
                             <li> رایگان </li>
                         }
-                        <li>تاریخ ثبت این دوره : @Model.CreateDate.ToShamsi()</li>
-                        <li>آخرین بروزرسانی دوره : @Model.UpdateDate?.ToShamsi()</li>
+                        <li>تاریخ ثبت این دوره : @Model.CourseDetail.CreateDate.ToShamsi()</li>
+                        <li>آخرین بروزرسانی دوره : @Model.CourseDetail.UpdateDate?.ToShamsi()</li>
                     </ul>
                 </article>
 
@@ -219,10 +115,10 @@
                     <a href=""><i class="fa fa-linkedin"></i></a>
                 </div>
 
-                @if (Model.Keywords != null)
+                @if (Model.CourseDetail.Keywords != null)
                 {
                     <div class="tags-layer">
-                        @foreach (var tag in Model.Keywords)
+                        @foreach (var tag in Model.CourseDetail.Keywords)
                         {
                             <a href="/Course/Index?KeyWordTitle=@tag.Title"> @tag.Title </a>
                         }
@@ -234,12 +130,90 @@
     </section>
 </div>
 @section Scripts{
+    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        var sendajaxWhenPagenationClick = function (e) {
+            var x = e.target.title;
+            $.ajax({
+                url: '/Course/GetComments',
+                method: 'GET',
+                data: {
+                    CourseId:@Model.CourseDetail.CourseID,
+                    CurrentPageNumber: x
+                },
+                dataType: 'html',
+                success: function (result) {
+                    $("#loader2").hide();
+                    $('#listComment').html(result);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#ShowError2").show();
+                    $("#ShowError2").html(" - " + ajaxOptions + ": " + thrownError);
+                    $("#loader2").hide();
+                }
+            });
+        };
+
+        $(document).ready(function () {
+            $('#CommnetSubmit').attr('disabled', true);
+            $('textarea').on('keyup', function () {
+                var textarea_value = $("#Body").val();
+                if (textarea_value != '') {
+                    $('#CommnetSubmit').attr('disabled', false);
+                } else {
+                    $('#CommnetSubmit').attr('disabled', true);
+                }
+            });
+        });
+
+        var SubmitComment = function (e2, sender) {
+            e2.preventDefault();
+
+            var model = $("#CreateComment").serializeArray();
+            var Number = 1;
+            model.push({ name: "CurrentPageNumber", value: Number });
+
+            $("#loader2").show();
+
+            $.ajax({
+                url: $('#CreateComment').attr('action'),
+                method: 'POST',
+                data: model,
+                success: function (result, status, xhr) {
+                    $("#loader2").hide();
+                    var ct = xhr.getResponseHeader("content-type") || "";
+                    if (ct.indexOf('html') > -1) {
+                        $("#ShowError2").show().empty();
+                        $("#Body").val("");
+                        $('#listComment').html(result);
+                    }
+                    if (ct.indexOf('json') > -1) {
+                        if (result.status == "Error") {
+                            $("#ShowError2").show().empty();
+                            $.each(result.errors, function (index, value) {
+                                $("#ShowError2").append("- " + index + " - " + value);
+                            });
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#ShowError2").show();
+                    $("#ShowError2").html(" - " + ajaxOptions + ": " + thrownError);
+                    $("#loader2").hide();
+                }
+            }).done(function () {
+                $('#CommnetSubmit').attr('disabled', true);
+            });
+        };
+    </script>
     <script>
         $(document).ready(function () {
+
             $("#SendPartnership").click(function (e) {
+
                 e.preventDefault();
                 $("#loader").show();
-                var CourseID =@Model.CourseID;
+                var CourseID =@Model.CourseDetail.CourseID;
                 $.ajax({
                     url: '/Order/Create',
                     method: 'GET',
@@ -268,8 +242,8 @@
                         $("#loader").hide();
                     }
                 });
-
             });
         });
+
     </script>
 }

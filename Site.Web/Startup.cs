@@ -165,6 +165,7 @@ namespace Site.Web
             services.AddScoped<ICourseGroupRepository, CourseGroupRepository>();
             services.AddScoped<ICourseEpisodRepository, CourseEpisodRepository>();
             services.AddScoped<IKeywordRepository, KeywordRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IImageResizer, ImageResizer>();
             services.AddTransient<IPayment, PaymnetPayIr>();
         }

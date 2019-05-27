@@ -46,7 +46,6 @@ namespace Site.Web.TagHelpers
                     {
                         a.Attributes["title"] = i.ToString();
                         a.Attributes["onclick"] = "sendajaxWhenPagenationClick(event);";
-                        a.Attributes["href"] = "#";
                     }
                     else
                         a.Attributes["href"] = urlHelper.Action(PageAction, PageController, new

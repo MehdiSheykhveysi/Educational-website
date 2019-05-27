@@ -1,0 +1,18 @@
+﻿@model Site.Web.Models.CourseViewModel.CourseCreateCommnet
+
+<div id="ShowError2" class="text-danger" hidden></div>
+<form id="CreateComment" asp-controller="Course" asp-action="CreateComment">
+    <div class="row">
+        <div class="col-md-8 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <textarea class="form-control" asp-for="@Model.Body" maxlength="250" placeholder="متن نظر" required></textarea>
+                <span asp-validation-for="@Model.Body" class="text-danger "></span>
+                <span asp-validation-for="@Model.CourseId" class="text-danger "></span>
+            </div>
+        </div>
+        <input type="hidden" asp-for="@Model.CourseId" />
+        <div class="col-xs-11">
+            <input type="submit" onclick="SubmitComment(event, this);" id="CommnetSubmit" class="btn btn-success" value="ثبت دیدگاه" /><img src="~/images/ajax-loader.gif" id="loader2" hidden /> 
+        </div>
+    </div>
+</form>

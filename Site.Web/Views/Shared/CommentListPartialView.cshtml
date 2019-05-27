@@ -1,0 +1,20 @@
+﻿@model Site.Core.Infrastructures.DTO.PagedResult<Site.Core.Infrastructures.DTO.CommentDTO>
+
+@foreach (var item in Model.ListItem)
+{
+    <!-- row -->
+    <div class="comment-row">
+        <img src="@Url.Content("~/images/UserProfile/"+item.UserAvatar)">
+        <div class="left-col">
+            <h3> @item.Name</h3>
+            <p>
+                @item.Body
+            </p>
+        </div>
+    </div>
+}
+<!-- /row -->
+
+<nav aria-label="Page navigation">
+    <nav Page-data="@Model.PageData" page-active-ajax-sender="true" page-action="GetComments" page-controller="Course"></nav>
+</nav>
