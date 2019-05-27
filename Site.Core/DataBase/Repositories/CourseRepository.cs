@@ -69,5 +69,6 @@ namespace Site.Core.DataBase.Repositories
                 }).FirstOrDefaultAsync(c => c.CourseID == CourseId, cancellationToken);
             return course;
         }
+        
     }
 }

@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Site.Core.Domain.Entities;
 using Site.Core.Infrastructures.Utilities.Extensions;
 using System;
+using System.Data.Common;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Site.Core.DataBase.Context
 {
@@ -31,6 +34,17 @@ namespace Site.Core.DataBase.Context
             builder.SetUpDecimal();
             builder.RegisterDbSetClass<IEntity>(this.GetType().Assembly);
             builder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+        }
+
+        public async Task OpenConnectionAsync(CancellationToken cancellationToken)
+        {
+            await Database.OpenConnectionAsync(cancellationToken);
+        }
+
+        public DbCommand Command()
+        {
+            DbCommand cmd = Database.GetDbConnection().CreateCommand();
+            return cmd;
         }
     }
 

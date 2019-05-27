@@ -21,7 +21,8 @@ namespace Site.Core.DataBase.Repositories
 
         public async Task<int> GetOrderedCountAsync(int CourseId, CancellationToken cancellationToken)
         {
-            return await NoTrackEntities.Where(predicate: o => !o.IsBought).Include(o => o.OrderDetails).Select(c => c.OrderDetails.Count(od => od.CourseId == CourseId)).FirstOrDefaultAsync();
+            int count = await OrderDetails.AsNoTracking().CountAsync(c => c.CourseId == CourseId);
+            return count; 
         }
 
         public async Task DeleteOrderDetailAsync(Order order, string OrderDetailId, CancellationToken cancellationToken)

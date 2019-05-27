@@ -30,13 +30,14 @@ namespace Site.Web
     public class Startup
     {
         private readonly SiteSetting siteSetting;
+        private IConfiguration Configuration { get; set; }
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             siteSetting = configuration.GetSection(nameof(SiteSetting)).Get<SiteSetting>();
         }
-        private IConfiguration Configuration { get; set; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SiteSetting>(Configuration.GetSection("SiteSetting"));
@@ -166,6 +167,7 @@ namespace Site.Web
             services.AddScoped<ICourseEpisodRepository, CourseEpisodRepository>();
             services.AddScoped<IKeywordRepository, KeywordRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ISpReaderRepository, SpReaderRepository>();
             services.AddScoped<IImageResizer, ImageResizer>();
             services.AddTransient<IPayment, PaymnetPayIr>();
         }
