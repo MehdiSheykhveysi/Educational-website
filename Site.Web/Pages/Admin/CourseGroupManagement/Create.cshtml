@@ -1,0 +1,46 @@
+﻿@page
+@model Site.Web.Pages.Admin.CourseGroupManagement.CreateModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<form class="form-horizontal" method="post">
+    <div class="well col-sm-7 col-md-7 ">
+
+        <fieldset>
+
+            <!-- Form Name -->
+            <div class="text-center">
+                <h2><b>ساخت گروه جدید</b></h2><br>
+            </div>
+            <!-- Text input-->
+            <div class="form-group">
+                <div class="text-right col-md-8 ">
+                    <div class="input-group">
+                        <div asp-validation-summary="All" class="text-danger glyphicon glyphicon-warning-sign" hidden></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8 text-right">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-certificate"></i></span>
+                        <input type="hidden" asp-for="@Model.Model.ParentId" />
+                        <input asp-for="@Model.Model.GroupTitle" placeholder="نام گره" class="form-control" type="text" required>
+                        <span asp-validation-for="@Model.Model.GroupTitle" class="text-danger "></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="text-right">
+                    <br>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" class="btn btn-warning">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspذخیره <span class="glyphicon glyphicon-save"></span>&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+</form>
